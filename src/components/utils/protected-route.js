@@ -1,19 +1,21 @@
 // @flow
 import * as React from 'react'
 import { Route, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { authSuccessSelector } from '../../selectors/authSelectors'
 
 type Props = {
   component: Function,
   loggedIn: boolean,
 }
 
-const ProtectedRoute = ({ component: Component, ...rest }: Props) => (
+const ProtectedRoute = ({ component: Component, loggedIn, ...rest }: Props): React.Node => (
   <Route
     {...rest}
-    render={props =>
-      props.loggedIn ? <Component {...props} /> : <Redirect to={{ pathname: '/login' }} push />
-    }
+    render={() => (loggedIn ? <Component /> : <Redirect to={{ pathname: '/login' }} push />)}
   />
 )
 
-export default ProtectedRoute
+const mapStateToProps = state => ({ loggedIn: authSuccessSelector(state) })
+
+export default connect(mapStateToProps)(ProtectedRoute)

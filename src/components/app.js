@@ -1,25 +1,35 @@
 // @flow
 import * as React from 'react'
-import { Switch, Route, Link } from 'react-router-dom'
+import { Switch, Route, withRouter } from 'react-router-dom'
 import Reboot from 'material-ui/Reboot'
 
+import Login from './routes/login'
 import Title from './common/title'
+import ConnectedLayout from './common/layout'
+import ProtectedRoute from './utils/protected-route'
+import Dashboard from './routes/dashboard'
 
 const Index = () => <Title>React Silicon Life</Title>
-const Example = () => <Title>React Silicon Example</Title>
 
-const App = () => (
+const App = (): React.Node => (
   <React.Fragment>
     <Reboot />
-    <nav>
-      <Link to="/">Index</Link>
-      <Link to="/example">Example</Link>
-    </nav>
-    <Switch>
-      <Route path="/example" component={Example} />
-      <Route path="/" component={Index} exact />
-    </Switch>
+    <ConnectedLayout>
+      <Switch>
+        <ProtectedRoute path="/dashboard" component={Dashboard} />
+        <Route path="/" component={Index} exact />
+        <Route path="/login" component={Login} exact />
+      </Switch>
+    </ConnectedLayout>
+
+    <style jsx global>{`
+      html,
+      body,
+      #app {
+        height: 100%;
+      }
+    `}</style>
   </React.Fragment>
 )
 
-export default App
+export default withRouter(App)

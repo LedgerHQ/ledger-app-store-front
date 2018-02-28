@@ -6,8 +6,10 @@ type Props = {
   children: React.Node,
 }
 
-const Title = ({ children }: Props): React.Node => (
-  <Typography variant="title">{children}</Typography>
+const Title = ({ children, ...rest }: Props): React.Node => (
+  <Typography variant="title" {...rest}>
+    {children}
+  </Typography>
 )
 
 export default Title
