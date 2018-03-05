@@ -3,14 +3,12 @@ import * as React from 'react'
 import Button from 'material-ui/Button'
 import Tooltip from 'material-ui/Tooltip'
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
-import Dialog, { DialogTitle } from 'material-ui/Dialog'
 import Paper from 'material-ui/Paper'
-import Typography from 'material-ui/Typography'
-import { CircularProgress } from 'material-ui/Progress'
 import { withStyles } from 'material-ui/styles'
 import AddIcon from 'material-ui-icons/Add'
 
 import Title from '../common/title'
+import DeviceDialog from '../common/dialog/device-dialog'
 
 type Props = {
   classes: Object,
@@ -19,12 +17,11 @@ type Props = {
 
 type State = {
   open: boolean,
+  success: boolean,
+  error: boolean,
 }
 
 const styles = theme => ({
-  dialog: {
-    paddingBottom: theme.spacing.unit,
-  },
   paper: {
     width: '100%',
     maxWidth: '900px',
@@ -49,18 +46,46 @@ class Dashboard extends React.Component<Props, State> {
 
   state = {
     open: false,
+    success: false,
+    error: false,
+  }
+
+  componentDidUpdate(prevProps, { open: prevOpen, success: prevSuccess }) {
+    const { open, success } = this.state
+    if (!prevOpen && open && (!prevSuccess && !success)) {
+      this.deviceCheck = setInterval(() => {
+        this.setState(
+          state => ({ ...state, success: true }),
+          () => {
+            if (this.deviceCheck) {
+              clearInterval(this.deviceCheck)
+            }
+          },
+        )
+      }, 5000)
+    }
+
+    if (prevOpen && !open && this.deviceCheck) {
+      clearInterval(this.deviceCheck)
+    }
+  }
+
+  invokeChallenge = async () => {
+    // const req = await fetch('challenge/api')
+    // const json = await
   }
 
   toggleDialog = (bool: boolean): Function => (): void => {
     this.setState(state => ({
       ...state,
       open: bool,
+      success: bool ? state.success : false,
     }))
   }
 
-  render() {
+  render(): React.Node {
     const { classes, devices } = this.props
-    const { open } = this.state
+    const { open, success, error } = this.state
 
     return (
       <React.Fragment>
@@ -76,7 +101,8 @@ class Dashboard extends React.Component<Props, State> {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell> Name </TableCell> <TableCell number> Date Added </TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell numeric>Date Added</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -90,19 +116,15 @@ class Dashboard extends React.Component<Props, State> {
             </TableBody>
           </Table>
         </Paper>
-        <Dialog className={classes.dialog} open={open} onClose={this.toggleDialog(false)}>
-          <DialogTitle>Add New Device</DialogTitle>
-          <Typography variant="subheading" align="center">
-            Plug your device
-          </Typography>
-          <div className="center">
-            <CircularProgress />
-          </div>
-        </Dialog>
+
+        <DeviceDialog
+          error={error}
+          success={success}
+          open={open}
+          closeDialog={this.toggleDialog(false)}
+        />
+
         <style jsx>{`
-          .center {
-            text-align: center;
-          }
           .fab {
             position: fixed;
             bottom: 80px;
