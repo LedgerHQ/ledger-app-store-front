@@ -1,5 +1,7 @@
 // @flow
 import * as React from 'react'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
 import Button from 'material-ui/Button'
 import Tooltip from 'material-ui/Tooltip'
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
@@ -9,10 +11,12 @@ import AddIcon from 'material-ui-icons/Add'
 
 import Title from '../common/title'
 import DeviceDialog from '../common/dialog/device-dialog'
+import { registerU2FDevice as registerU2FDeviceAction } from '../../actions/deviceActions'
 
 type Props = {
   classes: Object,
   devices?: [],
+  registerU2FDevice: Function,
 }
 
 type State = {
@@ -53,12 +57,14 @@ class Dashboard extends React.Component<Props, State> {
   componentDidUpdate(prevProps, { open: prevOpen, success: prevSuccess }) {
     const { open, success } = this.state
     if (!prevOpen && open && (!prevSuccess && !success)) {
-      this.deviceCheck = setInterval(() => {
+      const { registerU2FDevice } = this.props
+      registerU2FDevice()
+      this.deviceCheck = setTimeout(() => {
         this.setState(
           state => ({ ...state, success: true }),
           () => {
             if (this.deviceCheck) {
-              clearInterval(this.deviceCheck)
+              clearTimeout(this.deviceCheck)
             }
           },
         )
@@ -66,7 +72,7 @@ class Dashboard extends React.Component<Props, State> {
     }
 
     if (prevOpen && !open && this.deviceCheck) {
-      clearInterval(this.deviceCheck)
+      clearTimeout(this.deviceCheck)
     }
   }
 
@@ -136,4 +142,11 @@ class Dashboard extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(Dashboard)
+const mapStateToProps = () => ({})
+
+const enhancer = compose(
+  withStyles(styles),
+  connect(mapStateToProps, { registerU2FDevice: registerU2FDeviceAction }),
+)
+
+export default enhancer(Dashboard)

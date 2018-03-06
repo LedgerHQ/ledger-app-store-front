@@ -13,6 +13,7 @@ export default merge(webpackBaseConfig, {
     historyApiFallback: true,
     port: 9000,
     hot: true,
+    https: true,
   },
 
   plugins: [new webpack.HotModuleReplacementPlugin()],

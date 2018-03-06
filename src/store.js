@@ -4,15 +4,17 @@ import thunk from 'redux-thunk'
 import reducers from './reducers'
 
 /* eslint-disable no-underscore-dangle */
-const devTools =
-  process.browser && window.__REDUX_DEVTOOLS_EXTENSION__
-    ? window.__REDUX_DEVTOOLS_EXTENSION__()
-    : f => f
+const composeEnhancers =
+  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+      })
+    : compose
 /* eslint-enable no-underscore-dangle */
 
 export default initialState => {
   const middlewares = [thunk]
-  const enhancers = compose(applyMiddleware(...middlewares), devTools)
+  const enhancers = composeEnhancers(applyMiddleware(...middlewares))
 
   const store = createStore(reducers, initialState, enhancers)
 

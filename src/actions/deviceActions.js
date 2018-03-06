@@ -1,6 +1,7 @@
 // @flow
-import * as types from './actionTypes'
 // import u2f from 'u2f-api'
+import * as types from './actionTypes'
+import sleep from '../utils/sleep'
 
 type Action = {
   type: string,
@@ -36,6 +37,16 @@ export const u2fDeviceRegisterError = (error: string): Action => ({
 
 export const registerU2FDevice = (): Function => async dispatch => {
   dispatch(addU2FDevice())
+  sleep(1000)
+  dispatch(u2fDeviceChallenge('challenge'))
+  sleep(1000)
+  dispatch(u2fDeviceChallengeSuccess())
+  // dispatch(u2fDeviceChallengeError('device error'))
+  sleep(1000)
+  dispatch(u2fDeviceRegister())
+  sleep(1000)
+  dispatch(u2fDeviceRegisterSuccess())
+  // dispatch(u2fDeviceRegisterError('server register error'))
 
   // MOCK WORKFLOW
   // try {

@@ -1,3 +1,4 @@
+import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CleanWebpackPlugin from 'clean-webpack-plugin'
 import path from 'path'
@@ -21,6 +22,9 @@ export default {
     new HtmlWebpackPlugin({
       title: 'React Silicon Life',
       template: 'index.html',
+    }),
+    new webpack.DefinePlugin({
+      __DEV__: process.env.NODE_ENV !== 'production',
     }),
   ],
 
