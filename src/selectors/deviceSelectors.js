@@ -1,7 +1,7 @@
 // @flow
 import { createSelector } from 'reselect'
 
-export const deviceSelector = state => state.device
+export const deviceSelector = (state: Object): Object => state.device
 
 export const deviceSuccessSelector = createSelector(deviceSelector, device => device.deviceSuccess)
 

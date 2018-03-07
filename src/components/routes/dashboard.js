@@ -40,7 +40,7 @@ const styles = theme => ({
   },
 })
 
-class Dashboard extends React.Component<Props, State> {
+export class Dashboard extends React.Component<Props, State> {
   props: Props
   state: State
 
@@ -54,7 +54,9 @@ class Dashboard extends React.Component<Props, State> {
     error: false,
   }
 
-  componentDidUpdate(prevProps, { open: prevOpen, success: prevSuccess }) {
+  deviceCheck = null
+
+  componentDidUpdate(prevProps: Props, { open: prevOpen, success: prevSuccess }: State) {
     const { open, success } = this.state
     if (!prevOpen && open && (!prevSuccess && !success)) {
       const { registerU2FDevice } = this.props

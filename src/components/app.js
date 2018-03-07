@@ -3,11 +3,11 @@ import * as React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import Reboot from 'material-ui/Reboot'
 
-import Login from './routes/login'
+import LoginConnected from './routes/login'
 import Title from './common/title'
 import ConnectedLayout from './common/layout'
 import ProtectedRoute from './utils/protected-route'
-import Dashboard from './routes/dashboard'
+import DashboardConnected from './routes/dashboard'
 
 const Index = () => <Title>React Silicon Life</Title>
 
@@ -16,9 +16,9 @@ const App = (): React.Node => (
     <Reboot />
     <ConnectedLayout>
       <Switch>
-        <ProtectedRoute path="/dashboard" component={Dashboard} />
+        <ProtectedRoute path="/dashboard" component={DashboardConnected} />
         <Route path="/" component={Index} exact />
-        <Route path="/login" component={Login} exact />
+        <Route path="/login" component={LoginConnected} exact />
       </Switch>
     </ConnectedLayout>
 

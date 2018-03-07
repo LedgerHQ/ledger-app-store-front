@@ -1,4 +1,5 @@
 // @flow
+/* globals SyntheticEvent */
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
@@ -8,50 +9,48 @@ import Button from 'material-ui/Button'
 
 import Title from '../common/title'
 import { login as loginAction } from '../../actions/authActions'
-import { authSuccessSelector } from '../../selectors/authSelectors'
+import { isLoggedInSelector, authErrorSelector } from '../../selectors/authSelectors'
 
 type Props = {
   login: Function,
+  error?: string,
   loggedIn: boolean,
 }
 
 type State = {
-  email?: string,
-  password?: string,
+  username: string,
+  password: string,
 }
 
-const emailRegEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
-class Login extends React.Component<Props, State> {
+export class Login extends React.Component<Props, State> {
   props: Props
   state: State
 
+  static defaultProps = {
+    error: '',
+  }
+
   state = {
-    email: '',
+    username: '',
     password: '',
   }
 
-  login = evt => {
+  login = (evt: SyntheticEvent<HTMLFormElement>) => {
     const { login } = this.props
-    const { email, password } = this.state
+    const { username, password } = this.state
     evt.preventDefault()
-    if (
-      this.state.email &&
-      this.state.password &&
-      this.state.password.length >= 6 &&
-      emailRegEx.test(this.state.email)
-    ) {
-      login(email, password)
+    if (username.length >= 4 && password.length >= 6) {
+      login(username, password)
     }
   }
 
-  onChange = (field: 'email' | 'password'): Function => evt => {
+  onChange = (field: 'username' | 'password'): Function => evt => {
     const { value } = evt.currentTarget
     this.setState(state => ({ ...state, [field]: value }))
   }
 
   render() {
-    const { loggedIn } = this.props
+    const { loggedIn, error } = this.props
     return loggedIn ? (
       <Redirect to="/dashboard" />
     ) : (
@@ -64,12 +63,12 @@ class Login extends React.Component<Props, State> {
             <div>
               <form onSubmit={this.login}>
                 <TextField
-                  id="email"
-                  label="email"
-                  type="email"
+                  id="username"
+                  label="username"
+                  type="string"
                   className="input"
-                  value={this.state.email}
-                  onChange={this.onChange('email')}
+                  value={this.state.username}
+                  onChange={this.onChange('username')}
                   fullWidth
                 />
 
@@ -82,6 +81,7 @@ class Login extends React.Component<Props, State> {
                   onChange={this.onChange('password')}
                   fullWidth
                 />
+                <div className="error">{error}</div>
                 <Button className="input" variant="raised" color="primary" type="submit">
                   Login
                 </Button>
@@ -111,7 +111,8 @@ class Login extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: Object): Object => ({
-  loggedIn: authSuccessSelector(state),
+  loggedIn: isLoggedInSelector(state),
+  error: authErrorSelector(state),
 })
 
 export default connect(mapStateToProps, { login: loginAction })(Login)

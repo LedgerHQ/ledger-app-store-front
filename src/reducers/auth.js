@@ -2,11 +2,12 @@
 import * as types from '../actions/actionTypes'
 
 type State = {
-  email: string,
+  username: string,
   loading: boolean,
   success: boolean,
   pending: boolean,
   error: string,
+  token: string,
 }
 
 type Action = {
@@ -15,11 +16,12 @@ type Action = {
 }
 
 const initialState: State = {
-  email: '',
+  username: '',
   loading: false,
-  success: true,
+  success: false,
   pending: false,
   error: '',
+  token: '',
 }
 
 const authReducer = (state: State = initialState, action: Action): State => {
@@ -28,13 +30,15 @@ const authReducer = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         loading: true,
-        email: action.payload,
+        username: action.payload,
       }
     case types.LOGIN_SUCCESS:
       return {
         ...state,
         success: true,
         loading: false,
+        pending: false,
+        token: action.payload,
       }
     case types.LOGIN_ERROR:
       return {
@@ -43,10 +47,10 @@ const authReducer = (state: State = initialState, action: Action): State => {
         loading: false,
         error: action.payload,
       }
-    case types.LOGIN_PENDING:
+    case types.LOGIN_U2F:
       return {
         ...state,
-        pending: action.payload,
+        pending: true,
       }
     default:
       return state
