@@ -1,6 +1,5 @@
 // @flow
 import fetch from 'unfetch'
-// import u2fApi from 'u2f-api'
 
 import * as types from './actionTypes'
 

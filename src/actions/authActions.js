@@ -54,19 +54,4 @@ export const login = (username: string, password: string): Function => async (
   } catch (err) {
     dispatch(loginError(err))
   }
-
-  // if (json.success) {
-  //   if (json.challengeRequested) {
-  //     dispatch(loginPending(true))
-  //     dispatch(loginSuccess())
-  //     // dispatch(u2fAuth(json.challenge))
-  //   } else {
-  //     dispatch(loginSuccess())
-  //   }
-  // } else {
-  //   dispatch(loginError(json.error))
-  // }
-  // } catch (error) {
-  //   dispatch(loginError(error.error))
-  // }
 }

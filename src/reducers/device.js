@@ -2,7 +2,6 @@
 import * as types from '../actions/actionTypes'
 
 type State = {
-  challenge: string,
   pending: boolean,
   deviceSuccess: boolean,
   deviceError: string,
@@ -16,7 +15,6 @@ type Action = {
 }
 
 const initialState: State = {
-  challenge: '',
   pending: false,
   deviceSuccess: false,
   deviceError: '',
@@ -31,11 +29,6 @@ const deviceReducer = (state: State = initialState, action: Action): State => {
         ...initialState,
         pending: true,
       }
-    case types.U2F_DEVICE_CHALLENGE:
-      return {
-        ...state,
-        challenge: action.payload,
-      }
     case types.U2F_DEVICE_CHALLENGE_SUCCESS:
       return {
         ...state,
@@ -44,24 +37,22 @@ const deviceReducer = (state: State = initialState, action: Action): State => {
     case types.U2F_DEVICE_CHALLENGE_ERROR:
       return {
         ...state,
-        challenge: '',
         pending: false,
         deviceError: action.payload,
       }
     case types.U2F_DEVICE_REGISTER_SUCCESS:
       return {
         ...state,
-        challenge: '',
         pending: false,
         registerSuccess: true,
       }
     case types.U2F_DEVICE_REGISTER_ERROR:
       return {
         ...state,
-        challenge: '',
         pending: false,
         registerError: action.payload,
       }
+    case types.U2F_DEVICE_CHALLENGE:
     default:
       return state
   }

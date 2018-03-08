@@ -55,6 +55,7 @@ export class Dashboard extends React.Component<Props, State> {
   }
 
   deviceCheck = null
+  checkLoops = 0
 
   componentDidUpdate(prevProps: Props, { open: prevOpen, success: prevSuccess }: State) {
     const { open, success } = this.state
@@ -76,11 +77,6 @@ export class Dashboard extends React.Component<Props, State> {
     if (prevOpen && !open && this.deviceCheck) {
       clearTimeout(this.deviceCheck)
     }
-  }
-
-  invokeChallenge = async () => {
-    // const req = await fetch('challenge/api')
-    // const json = await
   }
 
   toggleDialog = (bool: boolean): Function => (): void => {

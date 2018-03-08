@@ -1,7 +1,8 @@
 // @flow
-// import u2f from 'u2f-api'
+import * as u2f from '../api/u2f'
 import * as types from './actionTypes'
-import sleep from '../utils/sleep'
+import * as deviceApi from '../api/deviceApi'
+import { authTokenSelector } from '../selectors/authSelectors'
 
 type Action = {
   type: string,
@@ -10,9 +11,8 @@ type Action = {
 
 export const addU2FDevice = (): Action => ({ type: types.ADD_U2F_DEVICE })
 
-export const u2fDeviceChallenge = (challenge: string): Action => ({
+export const u2fDeviceChallenge = (): Action => ({
   type: types.U2F_DEVICE_CHALLENGE,
-  payload: challenge,
 })
 
 export const u2fDeviceChallengeSuccess = (): Action => ({
@@ -35,25 +35,33 @@ export const u2fDeviceRegisterError = (error: string): Action => ({
   payload: error,
 })
 
-export const registerU2FDevice = (): Function => async dispatch => {
+export const registerU2FDevice = (): Function => async (
+  dispatch: Function,
+  getState: Function,
+): Promise<void> => {
+  const token = authTokenSelector(getState())
   dispatch(addU2FDevice())
-  sleep(1000)
-  dispatch(u2fDeviceChallenge('challenge'))
-  sleep(1000)
-  dispatch(u2fDeviceChallengeSuccess())
-  // dispatch(u2fDeviceChallengeError('device error'))
-  sleep(1000)
-  dispatch(u2fDeviceRegister())
-  sleep(1000)
-  dispatch(u2fDeviceRegisterSuccess())
-  // dispatch(u2fDeviceRegisterError('server register error'))
 
-  // MOCK WORKFLOW
-  // try {
-  //   const response = await fetch('api/challenge')
-  //   const { challenge } = await response.json()
-  //   const result = await u2f.register({ challenge })
-  // } catch (err) {
-  //   dispatch(u2fDeviceChallengeError(err))
-  // }
+  const response = await deviceApi.getChallenge(token)
+  const challenge = await response.json()
+
+  dispatch(u2fDeviceChallenge())
+  const deviceChallenge = await u2f.register(challenge)
+
+  if (deviceChallenge.errorCode && deviceChallenge.errorCode > 0) {
+    dispatch(u2fDeviceChallengeError(deviceChallenge.message))
+  } else {
+    dispatch(u2fDeviceChallengeSuccess())
+    const sentChallenge = await deviceApi.verifyChallenge(token, deviceChallenge)
+    const sentChallengeJson = await sentChallenge.json()
+
+    console.log(sentChallenge)
+    console.log(sentChallengeJson)
+
+    if (sentChallenge.ok && sentChallengeJson.resp === 'success') {
+      dispatch(u2fDeviceRegisterSuccess())
+    } else {
+      dispatch(u2fDeviceRegisterError('server register error'))
+    }
+  }
 }

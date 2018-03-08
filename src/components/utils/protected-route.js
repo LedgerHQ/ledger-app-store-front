@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { authSuccessSelector } from '../../selectors/authSelectors'
+import { isLoggedInSelector } from '../../selectors/authSelectors'
 
 type Props = {
   component: Function,
@@ -16,6 +16,6 @@ const ProtectedRoute = ({ component: Component, loggedIn, ...rest }: Props): Rea
   />
 )
 
-const mapStateToProps = state => ({ loggedIn: authSuccessSelector(state) })
+const mapStateToProps = state => ({ loggedIn: isLoggedInSelector(state) })
 
 export default connect(mapStateToProps)(ProtectedRoute)

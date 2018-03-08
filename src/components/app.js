@@ -2,6 +2,8 @@
 import * as React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import Reboot from 'material-ui/Reboot'
+// $FlowFixMeot
+import { hot } from 'react-hot-loader'
 
 import LoginConnected from './routes/login'
 import Title from './common/title'
@@ -32,4 +34,4 @@ const App = (): React.Node => (
   </React.Fragment>
 )
 
-export default withRouter(App)
+export default hot(module)(withRouter(App))
