@@ -2,6 +2,7 @@
 export const LOGIN_START = 'LOGIN_START'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_U2F = 'LOGIN_U2F'
+export const LOGIN_FINISH = 'LOGIN_FINISH'
 export const LOGIN_ERROR = 'LOGIN_ERROR'
 
 // U2F LOGIN ACTIONS

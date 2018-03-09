@@ -6,12 +6,10 @@ import Reboot from 'material-ui/Reboot'
 import { hot } from 'react-hot-loader'
 
 import LoginConnected from './routes/login'
-import Title from './common/title'
 import ConnectedLayout from './common/layout'
 import ProtectedRoute from './utils/protected-route'
 import DashboardConnected from './routes/dashboard'
-
-const Index = () => <Title>React Silicon Life</Title>
+import Index from './routes/Index'
 
 const App = (): React.Node => (
   <React.Fragment>

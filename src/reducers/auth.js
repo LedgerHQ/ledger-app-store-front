@@ -36,8 +36,6 @@ const authReducer = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         success: true,
-        loading: false,
-        pending: false,
         token: action.payload,
       }
     case types.LOGIN_ERROR:
@@ -51,6 +49,12 @@ const authReducer = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         pending: true,
+      }
+    case types.LOGIN_FINISH:
+      return {
+        ...state,
+        pending: false,
+        loading: false,
       }
     default:
       return state

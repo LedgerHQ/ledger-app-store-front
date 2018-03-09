@@ -19,7 +19,7 @@ export const getChallenge = async (token: string): Promise<Object> => {
 
     return response
   } catch (err) {
-    throw err
+    return err
   }
 }
 
@@ -40,6 +40,32 @@ export const verifyChallenge = async (token: string, challenge: Object): Promise
 
     return response
   } catch (err) {
-    throw err
+    return err
+  }
+}
+
+export const finishLogin = async (
+  token: string,
+  challenge: Object,
+  username: string,
+): Promise<Object> => {
+  try {
+    const response = await fetch('http://localhost:3000', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        url: `${BASE_URL}/api/finish_auth`,
+        method: 'POST',
+        username,
+        token,
+        response: challenge,
+      }),
+    })
+
+    return response
+  } catch (err) {
+    return err
   }
 }

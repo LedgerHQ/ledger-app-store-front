@@ -4,8 +4,6 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import Button from 'material-ui/Button'
 import Tooltip from 'material-ui/Tooltip'
-import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
-import Paper from 'material-ui/Paper'
 import { withStyles } from 'material-ui/styles'
 import AddIcon from 'material-ui-icons/Add'
 
@@ -15,7 +13,6 @@ import { registerU2FDevice as registerU2FDeviceAction } from '../../actions/devi
 
 type Props = {
   classes: Object,
-  devices?: [],
   registerU2FDevice: Function,
 }
 
@@ -43,10 +40,6 @@ const styles = theme => ({
 export class Dashboard extends React.Component<Props, State> {
   props: Props
   state: State
-
-  static defaultProps = {
-    devices: [],
-  }
 
   state = {
     open: false,
@@ -88,12 +81,14 @@ export class Dashboard extends React.Component<Props, State> {
   }
 
   render(): React.Node {
-    const { classes, devices } = this.props
+    const { classes } = this.props
     const { open, success, error } = this.state
 
     return (
       <React.Fragment>
-        <Title> Dashboard </Title>
+        <div className="container">
+          <Title> Dashboard </Title>
+        </div>
         <div className="fab">
           <Tooltip title="add new device" className={classes.fab} placement="top">
             <Button variant="fab" color="secondary" onClick={this.toggleDialog(true)}>
@@ -101,25 +96,6 @@ export class Dashboard extends React.Component<Props, State> {
             </Button>
           </Tooltip>
         </div>
-        <Paper className={classes.paper}>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell numeric>Date Added</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {devices &&
-                devices.map(device => (
-                  <React.Fragment>
-                    <TableCell> {device.name} </TableCell>
-                    <TableCell> {device.dateAdded} </TableCell>
-                  </React.Fragment>
-                ))}
-            </TableBody>
-          </Table>
-        </Paper>
 
         <DeviceDialog
           error={error}
@@ -133,6 +109,11 @@ export class Dashboard extends React.Component<Props, State> {
             position: fixed;
             bottom: 80px;
             right: 80px;
+          }
+
+          .container {
+            margin-top: 10%;
+            text-align: center;
           }
         `}</style>
       </React.Fragment>

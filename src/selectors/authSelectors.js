@@ -13,6 +13,8 @@ export const authPendingSelector = createSelector(authSelector, auth => auth.pen
 
 export const authLoadingSelector = createSelector(authSelector, auth => auth.loading)
 
+export const authUsernameSelector = createSelector(authSelector, auth => auth.username)
+
 export const isLoggedInSelector = createSelector(
   authSuccessSelector,
   authPendingSelector,

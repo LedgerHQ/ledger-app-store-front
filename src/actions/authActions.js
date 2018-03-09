@@ -27,6 +27,10 @@ export const loginU2F = (challenge: Object): Action => ({
   payload: challenge,
 })
 
+export const loginFinish = (): Action => ({
+  type: types.LOGIN_FINISH,
+})
+
 /**
  * @name login
  * @description action thunk that takes care of all the login workflow
@@ -45,13 +49,16 @@ export const login = (username: string, password: string): Function => async (
     if (response.ok) {
       if (json.token) {
         dispatch(loginSuccess(json.token))
-      } else if (json.challenge) {
-        dispatch(loginU2F(json.challenge))
+        dispatch(loginFinish())
+      } else {
+        dispatch(loginU2F(json))
       }
     } else {
       dispatch(loginError(json.error))
+      dispatch(loginFinish())
     }
   } catch (err) {
     dispatch(loginError(err))
+    dispatch(loginFinish())
   }
 }

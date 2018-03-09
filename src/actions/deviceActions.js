@@ -55,9 +55,6 @@ export const registerU2FDevice = (): Function => async (
     const sentChallenge = await deviceApi.verifyChallenge(token, deviceChallenge)
     const sentChallengeJson = await sentChallenge.json()
 
-    console.log(sentChallenge)
-    console.log(sentChallengeJson)
-
     if (sentChallenge.ok && sentChallengeJson.resp === 'success') {
       dispatch(u2fDeviceRegisterSuccess())
     } else {
