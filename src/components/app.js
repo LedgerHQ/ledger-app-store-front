@@ -2,23 +2,23 @@
 import * as React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import Reboot from 'material-ui/Reboot'
+// $FlowFixMeot
+import { hot } from 'react-hot-loader'
 
-import Login from './routes/login'
-import Title from './common/title'
+import LoginConnected from './routes/login'
 import ConnectedLayout from './common/layout'
 import ProtectedRoute from './utils/protected-route'
-import Dashboard from './routes/dashboard'
-
-const Index = () => <Title>React Silicon Life</Title>
+import DashboardConnected from './routes/dashboard'
+import Index from './routes/Index'
 
 const App = (): React.Node => (
   <React.Fragment>
     <Reboot />
     <ConnectedLayout>
       <Switch>
-        <ProtectedRoute path="/dashboard" component={Dashboard} />
+        <ProtectedRoute path="/dashboard" component={DashboardConnected} />
         <Route path="/" component={Index} exact />
-        <Route path="/login" component={Login} exact />
+        <Route path="/login" component={LoginConnected} exact />
       </Switch>
     </ConnectedLayout>
 
@@ -32,4 +32,4 @@ const App = (): React.Node => (
   </React.Fragment>
 )
 
-export default withRouter(App)
+export default hot(module)(withRouter(App))

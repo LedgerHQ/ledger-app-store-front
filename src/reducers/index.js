@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
-import authReducer from './auth'
-import u2fReducer from './u2f'
+import auth from './auth'
+import u2f from './u2f'
+import device from './device'
 
 export default combineReducers({
-  auth: authReducer,
-  u2f: u2fReducer,
+  auth,
+  u2f,
+  device,
 })

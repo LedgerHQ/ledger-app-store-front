@@ -1,5 +1,7 @@
+import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CleanWebpackPlugin from 'clean-webpack-plugin'
+import DotEnv from 'dotenv-webpack'
 import path from 'path'
 
 const dist = path.join(__dirname, '..', 'dist')
@@ -19,9 +21,14 @@ export default {
       verbose: true,
     }),
     new HtmlWebpackPlugin({
-      title: 'React Silicon Life',
-      template: 'index.html',
+      title: 'Ledger App Store',
+      template: './src/index.html',
     }),
+    new webpack.DefinePlugin({
+      __DEV__: process.env.NODE_ENV !== 'production',
+    }),
+
+    new DotEnv(),
   ],
 
   module: {
