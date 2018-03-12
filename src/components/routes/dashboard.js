@@ -10,16 +10,17 @@ import AddIcon from 'material-ui-icons/Add'
 import Title from '../common/title'
 import DeviceDialog from '../common/dialog/device-dialog'
 import { registerU2FDevice as registerU2FDeviceAction } from '../../actions/deviceActions'
+import { deviceAllSuccessSelector, deviceErrorSelector } from '../../selectors/deviceSelectors'
 
 type Props = {
   classes: Object,
   registerU2FDevice: Function,
+  success: boolean,
+  error: boolean,
 }
 
 type State = {
   open: boolean,
-  success: boolean,
-  error: boolean,
 }
 
 const styles = theme => ({
@@ -43,32 +44,14 @@ export class Dashboard extends React.Component<Props, State> {
 
   state = {
     open: false,
-    success: false,
-    error: false,
   }
 
-  deviceCheck = null
-  checkLoops = 0
-
-  componentDidUpdate(prevProps: Props, { open: prevOpen, success: prevSuccess }: State) {
-    const { open, success } = this.state
+  componentDidUpdate({ success: prevSuccess }: Props, { open: prevOpen }: State) {
+    const { open } = this.state
+    const { success } = this.props
     if (!prevOpen && open && (!prevSuccess && !success)) {
       const { registerU2FDevice } = this.props
       registerU2FDevice()
-      this.deviceCheck = setTimeout(() => {
-        this.setState(
-          state => ({ ...state, success: true }),
-          () => {
-            if (this.deviceCheck) {
-              clearTimeout(this.deviceCheck)
-            }
-          },
-        )
-      }, 5000)
-    }
-
-    if (prevOpen && !open && this.deviceCheck) {
-      clearTimeout(this.deviceCheck)
     }
   }
 
@@ -76,13 +59,12 @@ export class Dashboard extends React.Component<Props, State> {
     this.setState(state => ({
       ...state,
       open: bool,
-      success: bool ? state.success : false,
     }))
   }
 
   render(): React.Node {
-    const { classes } = this.props
-    const { open, success, error } = this.state
+    const { classes, success, error } = this.props
+    const { open } = this.state
 
     return (
       <React.Fragment>
@@ -121,7 +103,10 @@ export class Dashboard extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = (state: Object): Object => ({
+  success: deviceAllSuccessSelector(state),
+  error: deviceErrorSelector(state),
+})
 
 const enhancer = compose(
   withStyles(styles),

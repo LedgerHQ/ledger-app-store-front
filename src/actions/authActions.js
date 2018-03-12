@@ -43,22 +43,16 @@ export const login = (username: string, password: string): Function => async (
   dispatch(loginStart(username))
 
   try {
-    const response = await authApi.login(username, password)
-    const json = await response.json()
+    const json = await authApi.login(username, password)
 
-    if (response.ok) {
-      if (json.token) {
-        dispatch(loginSuccess(json.token))
-        dispatch(loginFinish())
-      } else {
-        dispatch(loginU2F(json))
-      }
-    } else {
-      dispatch(loginError(json.error))
+    if (json.token) {
+      dispatch(loginSuccess(json.token))
       dispatch(loginFinish())
+    } else if (json.challenge) {
+      dispatch(loginU2F(json))
     }
   } catch (err) {
-    dispatch(loginError(err))
+    dispatch(loginError(err.error))
     dispatch(loginFinish())
   }
 }

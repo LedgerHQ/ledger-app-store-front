@@ -7,7 +7,7 @@ export default merge(webpackBaseConfig, {
   mode: 'development',
   entry: ['react-hot-loader/patch'],
 
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
 
   devServer: {
     contentBase: './dist',

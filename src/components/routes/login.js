@@ -8,12 +8,18 @@ import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 
 import Title from '../common/title'
+// import DeviceDialog from '../common/dialog/device-dialog'
 import { login as loginAction } from '../../actions/authActions'
-import { isLoggedInSelector, authErrorSelector } from '../../selectors/authSelectors'
+import {
+  isLoggedInSelector,
+  authErrorSelector,
+  authPendingSelector,
+} from '../../selectors/authSelectors'
 
 type Props = {
   login: Function,
-  error?: string,
+  authError?: string,
+  // pending: boolean,
   loggedIn: boolean,
 }
 
@@ -27,7 +33,7 @@ export class Login extends React.Component<Props, State> {
   state: State
 
   static defaultProps = {
-    error: '',
+    authError: '',
   }
 
   state = {
@@ -50,7 +56,8 @@ export class Login extends React.Component<Props, State> {
   }
 
   render() {
-    const { loggedIn, error } = this.props
+    const { loggedIn, authError } = this.props
+
     return loggedIn ? (
       <Redirect to="/dashboard" />
     ) : (
@@ -81,7 +88,7 @@ export class Login extends React.Component<Props, State> {
                   onChange={this.onChange('password')}
                   fullWidth
                 />
-                <div className="error">{error}</div>
+                <div className="error">{authError}</div>
                 <Button className="input" variant="raised" color="primary" type="submit">
                   Login
                 </Button>
@@ -112,7 +119,8 @@ export class Login extends React.Component<Props, State> {
 
 const mapStateToProps = (state: Object): Object => ({
   loggedIn: isLoggedInSelector(state),
-  error: authErrorSelector(state),
+  pending: authPendingSelector(state),
+  authError: authErrorSelector(state),
 })
 
 export default connect(mapStateToProps, { login: loginAction })(Login)

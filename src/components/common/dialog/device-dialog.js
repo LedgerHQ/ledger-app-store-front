@@ -38,7 +38,7 @@ const DeviceDialog = ({ open, classes, closeDialog, success, error }: Props): Re
     <div className="center">
       {!success && !error && <CircularProgress size={80} />}
       {success && !error && <CircularProgress size={80} variant="determinate" value={100} />}
-      {error && <CircularProgress size={80} variant="determinate" value={100} />}
+      {error && <CircularProgress size={80} variant="determinate" value={100} color="secondary" />}
     </div>
 
     <style jsx>{`

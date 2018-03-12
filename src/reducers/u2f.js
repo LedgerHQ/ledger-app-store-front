@@ -2,11 +2,10 @@
 import * as types from '../actions/actionTypes'
 
 type State = {
-  requested: boolean,
-  deviceSuccess: boolean,
-  deviceError: string,
-  serverSuccess: boolean,
-  serverError: string,
+  +requested: boolean,
+  +deviceSuccess: boolean,
+  +error: string,
+  +serverSuccess: boolean,
 }
 
 type Action = {
@@ -17,9 +16,8 @@ type Action = {
 const initialState: State = {
   requested: false,
   deviceSuccess: false,
-  deviceError: '',
+  error: '',
   serverSuccess: false,
-  serverError: '',
 }
 
 const u2fReducer = (state: State = initialState, action: Action): State => {
@@ -34,20 +32,15 @@ const u2fReducer = (state: State = initialState, action: Action): State => {
         ...state,
         deviceSuccess: true,
       }
-    case types.U2F_DEVICE_ERROR:
+    case types.U2F_ERROR:
       return {
         ...state,
-        deviceError: action.payload,
+        error: action.payload,
       }
     case types.U2F_SERVER_SUCCESS:
       return {
         ...state,
         serverSuccess: true,
-      }
-    case types.U2F_SERVER_ERROR:
-      return {
-        ...state,
-        serverError: action.payload,
       }
     case types.U2F_SEND_CHALLENGE:
     default:
