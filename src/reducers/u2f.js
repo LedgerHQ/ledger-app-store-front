@@ -3,7 +3,6 @@ import * as types from '../actions/actionTypes'
 
 type State = {
   requested: boolean,
-  challenge: string,
   deviceSuccess: boolean,
   deviceError: string,
   serverSuccess: boolean,
@@ -12,12 +11,11 @@ type State = {
 
 type Action = {
   type: string,
-  challenge?: string,
+  payload?: any,
 }
 
 const initialState: State = {
-  requested: true,
-  challenge: '',
+  requested: false,
   deviceSuccess: false,
   deviceError: '',
   serverSuccess: false,
@@ -28,10 +26,30 @@ const u2fReducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
     case types.U2F_REQUESTED:
       return {
-        ...state,
+        ...initialState,
         requested: true,
-        challenge: action.challenge,
       }
+    case types.U2F_DEVICE_SUCCESS:
+      return {
+        ...state,
+        deviceSuccess: true,
+      }
+    case types.U2F_DEVICE_ERROR:
+      return {
+        ...state,
+        deviceError: action.payload,
+      }
+    case types.U2F_SERVER_SUCCESS:
+      return {
+        ...state,
+        serverSuccess: true,
+      }
+    case types.U2F_SERVER_ERROR:
+      return {
+        ...state,
+        serverError: action.payload,
+      }
+    case types.U2F_SEND_CHALLENGE:
     default:
       return state
   }
