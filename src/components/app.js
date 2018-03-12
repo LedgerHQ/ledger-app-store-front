@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
-import Reboot from 'material-ui/Reboot'
+import CssBaseline from 'material-ui/CssBaseline'
 // $FlowFixMeot
 import { hot } from 'react-hot-loader'
 
@@ -13,7 +13,7 @@ import Index from './routes/Index'
 
 const App = (): React.Node => (
   <React.Fragment>
-    <Reboot />
+    <CssBaseline />
     <ConnectedLayout>
       <Switch>
         <ProtectedRoute path="/dashboard" component={DashboardConnected} />
