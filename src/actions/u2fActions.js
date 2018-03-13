@@ -16,7 +16,7 @@ export const u2fDeviceSuccess = (): Action => ({
 })
 
 export const u2fError = (error: string): Action => ({
-  type: types.U2FERROR,
+  type: types.U2F_ERROR,
   payload: error,
 })
 
@@ -38,22 +38,22 @@ export const u2fAuth = (challenge: Object): Function => async (
   const token = authTokenSelector(state)
   const username = authUsernameSelector(state)
 
-  const deviceResponse = await u2fApi.sign(challenge)
+  try {
+    const deviceResponse = await u2fApi.sign(challenge)
 
-  if (deviceResponse.errorCode && deviceResponse.errorCode > 0) {
-    dispatch(u2fError(deviceResponse.message))
-  } else {
-    dispatch(u2fDeviceSuccess())
-    dispatch(u2fSendChallenge())
-    try {
+    if (deviceResponse.errorCode && deviceResponse.errorCode > 0) {
+      dispatch(u2fError(deviceResponse.message))
+    } else {
+      dispatch(u2fDeviceSuccess())
+      dispatch(u2fSendChallenge())
       const json = await deviceApi.finishLogin(token, deviceResponse, username)
       if (json.token) {
         dispatch(u2fServerSuccess(json.token))
       } else {
         dispatch(u2fError(json.error))
       }
-    } catch (err) {
-      dispatch(u2fError(err))
     }
+  } catch (err) {
+    dispatch(u2fError(err.message ? err.message : err.error))
   }
 }

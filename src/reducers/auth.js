@@ -51,6 +51,7 @@ const authReducer = (state: State = initialState, action: Action): State => {
         pending: true,
       }
     case types.LOGIN_FINISH:
+    case types.LOGIN_CANCEL:
       return {
         ...state,
         pending: false,

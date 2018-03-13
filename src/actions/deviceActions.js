@@ -56,6 +56,6 @@ export const registerU2FDevice = (): Function => async (
       }
     }
   } catch (err) {
-    dispatch(u2fDeviceError(err))
+    dispatch(u2fDeviceError(err.message ? err.message : err.error))
   }
 }

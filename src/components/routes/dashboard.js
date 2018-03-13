@@ -16,7 +16,7 @@ type Props = {
   classes: Object,
   registerU2FDevice: Function,
   success: boolean,
-  error: boolean,
+  error: string,
 }
 
 type State = {
@@ -62,6 +62,18 @@ export class Dashboard extends React.Component<Props, State> {
     }))
   }
 
+  renderTitle = (): string => {
+    const { success, error } = this.props
+
+    if (success && !error) {
+      return 'Device Added'
+    } else if (error) {
+      return error
+    }
+
+    return 'Plug your device'
+  }
+
   render(): React.Node {
     const { classes, success, error } = this.props
     const { open } = this.state
@@ -84,6 +96,8 @@ export class Dashboard extends React.Component<Props, State> {
           success={success}
           open={open}
           closeDialog={this.toggleDialog(false)}
+          title="Add New Device"
+          subtitle={this.renderTitle()}
         />
 
         <style jsx>{`

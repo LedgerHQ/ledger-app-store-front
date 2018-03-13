@@ -34,13 +34,17 @@ const u2fReducer = (state: State = initialState, action: Action): State => {
       }
     case types.U2F_ERROR:
       return {
-        ...state,
+        ...initialState,
         error: action.payload,
       }
     case types.U2F_SERVER_SUCCESS:
       return {
         ...state,
         serverSuccess: true,
+      }
+    case types.u2F_CANCEL:
+      return {
+        ...initialState,
       }
     case types.U2F_SEND_CHALLENGE:
     default:

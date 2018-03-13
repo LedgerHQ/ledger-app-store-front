@@ -25,46 +25,38 @@ export const register = (
   { appId, registerRequests, registeredKeys }: Challenge,
   timeout: number = 30,
 ): Promise<Object> =>
-  new Promise((resolve: Function, reject: Function) => {
+  new Promise((resolve: Function, reject: Function) =>
     window.u2f.register(
       appId,
       registerRequests,
       registeredKeys,
       deviceChallenge => {
         if (deviceChallenge.errorCode) {
-          const error = new Error({
-            errorCode: deviceChallenge.error,
-            message: U2F_ERROR_CODES[deviceChallenge.errorCode],
-          })
-          return reject(error)
+          return reject(new Error(U2F_ERROR_CODES[deviceChallenge.errorCode]))
         }
 
         return resolve(deviceChallenge)
       },
       timeout,
-    )
-  })
+    ),
+  )
 
 export const sign = (
   { appId, challenge, registeredKeys }: Challenge,
   timeout: number = 30,
 ): Promise<Object> =>
-  new Promise((resolve: Function, reject: Function) => {
+  new Promise((resolve: Function, reject: Function) =>
     window.u2f.sign(
       appId,
       challenge,
       registeredKeys,
       deviceChallenge => {
         if (deviceChallenge.errorCode) {
-          const error = new Error({
-            errorCode: deviceChallenge.error,
-            message: U2F_ERROR_CODES[deviceChallenge.errorCode],
-          })
-          return reject(error)
+          return reject(new Error(U2F_ERROR_CODES[deviceChallenge.errorCode]))
         }
 
         return resolve(deviceChallenge)
       },
       timeout,
-    )
-  })
+    ),
+  )

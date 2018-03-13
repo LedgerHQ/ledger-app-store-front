@@ -15,27 +15,25 @@ type Store = {
 const authMiddleware = (store: Store): Function => (next: Function): Function => (
   action: Action,
 ): Function => {
+  const result = next(action)
+
   switch (action.type) {
     case types.LOGIN_U2F: {
-      const result = next(action)
       const { payload } = action
       store.dispatch(u2fAuth(payload))
       return result
     }
-    case types.U2F_DEVICE_ERROR:
-    case types.U2F_SERVER_ERROR: {
-      const result = next(action)
+    case types.U2F_ERROR: {
       store.dispatch(loginFinish())
       return result
     }
     case types.U2F_SERVER_SUCCESS: {
-      const result = next(action)
       store.dispatch(loginSuccess(action.payload))
       store.dispatch(loginFinish())
       return result
     }
     default:
-      return next(action)
+      return result
   }
 }
 
