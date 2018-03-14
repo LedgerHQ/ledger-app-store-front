@@ -39,21 +39,17 @@ export const registerU2FDevice = (): Function => async (
 
   try {
     const challenge = await deviceApi.getChallenge(token)
-
     dispatch(u2fDeviceChallenge())
+
     const deviceChallenge = await u2fApi.register(challenge)
+    dispatch(u2fDeviceChallengeSuccess())
 
-    if (deviceChallenge.errorCode && deviceChallenge.errorCode > 0) {
-      dispatch(u2fDeviceError(deviceChallenge.message))
+    const sentChallengeJson = await deviceApi.verifyChallenge(token, deviceChallenge)
+
+    if (sentChallengeJson.resp === 'success') {
+      dispatch(u2fDeviceRegisterSuccess())
     } else {
-      dispatch(u2fDeviceChallengeSuccess())
-      const sentChallengeJson = await deviceApi.verifyChallenge(token, deviceChallenge)
-
-      if (sentChallengeJson.resp === 'success') {
-        dispatch(u2fDeviceRegisterSuccess())
-      } else {
-        dispatch(u2fDeviceError('server register error'))
-      }
+      dispatch(u2fDeviceError('server register error'))
     }
   } catch (err) {
     dispatch(u2fDeviceError(err.message ? err.message : err.error))

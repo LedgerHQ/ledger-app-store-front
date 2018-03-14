@@ -40,19 +40,11 @@ export const u2fAuth = (challenge: Object): Function => async (
 
   try {
     const deviceResponse = await u2fApi.sign(challenge)
+    dispatch(u2fDeviceSuccess())
+    dispatch(u2fSendChallenge())
 
-    if (deviceResponse.errorCode && deviceResponse.errorCode > 0) {
-      dispatch(u2fError(deviceResponse.message))
-    } else {
-      dispatch(u2fDeviceSuccess())
-      dispatch(u2fSendChallenge())
-      const json = await deviceApi.finishLogin(token, deviceResponse, username)
-      if (json.token) {
-        dispatch(u2fServerSuccess(json.token))
-      } else {
-        dispatch(u2fError(json.error))
-      }
-    }
+    const json = await deviceApi.finishLogin(token, deviceResponse, username)
+    dispatch(u2fServerSuccess(json.token))
   } catch (err) {
     dispatch(u2fError(err.message ? err.message : err.error))
   }
