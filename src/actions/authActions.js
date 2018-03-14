@@ -50,6 +50,9 @@ export const login = (username: string, password: string): Function => async (
       dispatch(loginFinish())
     } else if (json.challenge) {
       dispatch(loginU2F(json))
+    } else {
+      dispatch(loginError('error when logging in'))
+      dispatch(loginFinish())
     }
   } catch (err) {
     dispatch(loginError(err.error))

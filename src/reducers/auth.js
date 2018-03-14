@@ -15,7 +15,7 @@ type Action = {
   payload?: any,
 }
 
-const initialState: State = {
+export const initialState: State = {
   username: '',
   loading: false,
   success: false,
@@ -51,7 +51,6 @@ const authReducer = (state: State = initialState, action: Action): State => {
         pending: true,
       }
     case types.LOGIN_FINISH:
-    case types.LOGIN_CANCEL:
       return {
         ...state,
         pending: false,

@@ -13,7 +13,7 @@ type Action = {
   payload?: any,
 }
 
-const initialState: State = {
+export const initialState: State = {
   pending: false,
   deviceSuccess: false,
   error: '',
@@ -45,6 +45,7 @@ const deviceReducer = (state: State = initialState, action: Action): State => {
         error: action.payload,
       }
     case types.U2F_DEVICE_CHALLENGE:
+    case types.U2F_DEVICE_REGISTER:
     default:
       return state
   }

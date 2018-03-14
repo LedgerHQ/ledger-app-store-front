@@ -13,7 +13,7 @@ type Action = {
   payload?: any,
 }
 
-const initialState: State = {
+export const initialState: State = {
   requested: false,
   deviceSuccess: false,
   error: '',
@@ -41,10 +41,6 @@ const u2fReducer = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         serverSuccess: true,
-      }
-    case types.u2F_CANCEL:
-      return {
-        ...initialState,
       }
     case types.U2F_SEND_CHALLENGE:
     default:

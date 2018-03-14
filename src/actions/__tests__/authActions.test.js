@@ -72,6 +72,21 @@ describe('auth actions', () => {
         expect(dispatched).toEqual(expected)
         done()
       })
+
+      test('when no token or challenge is returned, should dispatch the correct actions', async done => {
+        authApi.login.mockResolvedValue({})
+
+        const expected = [
+          actions.loginStart('username', 'password'),
+          actions.loginError('error when logging in'),
+          actions.loginFinish(),
+        ]
+
+        await store.dispatch(actions.login('username', 'password'))
+        const dispatched = store.getActions()
+        expect(dispatched).toEqual(expected)
+        done()
+      })
     })
 
     describe('with u2f device registered', () => {

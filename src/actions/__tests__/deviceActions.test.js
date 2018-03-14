@@ -117,6 +117,24 @@ describe('device actions', () => {
         expect(dispatched).toEqual(expected)
         done()
       })
+
+      test('[verifyChallenge]: with no response, should dispatch the correct actions', async done => {
+        deviceApi.getChallenge.mockResolvedValue({ challenge: 'challenge' })
+        deviceApi.verifyChallenge.mockResolvedValue({})
+        u2fApi.register.mockResolvedValue({ challenge: 'challenge' })
+
+        const expected = [
+          actions.addU2FDevice(),
+          actions.u2fDeviceChallenge(),
+          actions.u2fDeviceChallengeSuccess(),
+          actions.u2fDeviceError('server register error'),
+        ]
+
+        await store.dispatch(actions.registerU2FDevice())
+        const dispatched = store.getActions()
+        expect(dispatched).toEqual(expected)
+        done()
+      })
     })
   })
 })

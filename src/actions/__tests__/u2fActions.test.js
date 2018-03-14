@@ -80,7 +80,7 @@ describe('u2f actions', () => {
 
       test('[finishLogin]: should dispatch the correct actions', async done => {
         u2fApi.sign.mockResolvedValue({ challenge: 'deviceChallenge' })
-        deviceApi.finishLogin.mockRejectedValue(new Error('error'))
+        deviceApi.finishLogin.mockRejectedValue({ error: 'error' })
 
         const expected = [
           actions.u2fRequested(),
