@@ -102,7 +102,7 @@ describe('device actions', () => {
 
       test('[verifyChallenge]: should dispatch the correct actions', async done => {
         deviceApi.getChallenge.mockResolvedValue({ challenge: 'challenge' })
-        deviceApi.verifyChallenge.mockRejectedValue({ message: 'server register error' })
+        deviceApi.verifyChallenge.mockRejectedValue({ error: 'server register error' })
         u2fApi.register.mockResolvedValue({ challenge: 'challenge' })
 
         const expected = [
