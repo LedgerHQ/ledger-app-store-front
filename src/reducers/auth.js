@@ -2,12 +2,12 @@
 import * as types from '../actions/actionTypes'
 
 type State = {
-  username: string,
-  loading: boolean,
-  success: boolean,
-  pending: boolean,
-  error: string,
-  token: string,
+  +username: string,
+  +loading: boolean,
+  +success: boolean,
+  +pending: boolean,
+  +error: string,
+  +token: string,
 }
 
 type Action = {
@@ -15,7 +15,7 @@ type Action = {
   payload?: any,
 }
 
-const initialState: State = {
+export const initialState: State = {
   username: '',
   loading: false,
   success: false,

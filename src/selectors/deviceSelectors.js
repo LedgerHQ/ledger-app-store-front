@@ -5,14 +5,15 @@ export const deviceSelector = (state: Object): Object => state.device
 
 export const deviceSuccessSelector = createSelector(deviceSelector, device => device.deviceSuccess)
 
-export const deviceErrorSelector = createSelector(deviceSelector, device => device.deviceError)
+export const deviceErrorSelector = createSelector(deviceSelector, device => device.error)
 
 export const deviceRegisterSuccessSelector = createSelector(
   deviceSelector,
   device => device.registerSuccess,
 )
 
-export const deviceRegisterErrorSelector = createSelector(
-  deviceSelector,
-  device => device.registerError,
+export const deviceAllSuccessSelector = createSelector(
+  deviceSuccessSelector,
+  deviceRegisterSuccessSelector,
+  (deviceSuccess, registerSuccess) => deviceSuccess && registerSuccess,
 )

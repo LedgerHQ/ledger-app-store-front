@@ -6,20 +6,33 @@ import { Redirect } from 'react-router-dom'
 import Grid from 'material-ui/Grid'
 import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
+import Typography from 'material-ui/Typography'
 
 import Title from '../common/title'
+import DeviceDialog from '../common/dialog/device-dialog'
 import { login as loginAction } from '../../actions/authActions'
-import { isLoggedInSelector, authErrorSelector } from '../../selectors/authSelectors'
+
+import {
+  isLoggedInSelector,
+  authErrorSelector,
+  authPendingSelector,
+  authLoadingSelector,
+} from '../../selectors/authSelectors'
+import { u2fErrorSelector } from '../../selectors/u2fSelectors'
 
 type Props = {
   login: Function,
-  error?: string,
+  authError?: string,
+  u2fError?: string,
+  pending: boolean,
+  loading: boolean,
   loggedIn: boolean,
 }
 
 type State = {
   username: string,
   password: string,
+  open: boolean,
 }
 
 export class Login extends React.Component<Props, State> {
@@ -27,21 +40,38 @@ export class Login extends React.Component<Props, State> {
   state: State
 
   static defaultProps = {
-    error: '',
+    authError: '',
+    u2fError: '',
   }
 
   state = {
     username: '',
     password: '',
+    open: false,
+  }
+
+  timeout = null
+
+  componentDidUpdate(prevProps: Props) {
+    const { pending, loggedIn } = this.props
+    if (!prevProps.pending && pending && !loggedIn) {
+      if (this.timeout) this.timeout.cancel()
+      this.toggleDialog(true)()
+    }
+
+    if (prevProps.pending && !pending) {
+      this.timeout = this.toggleDialog(false)()
+    }
   }
 
   login = (evt: SyntheticEvent<HTMLFormElement>) => {
-    const { login } = this.props
-    const { username, password } = this.state
     evt.preventDefault()
-    if (username.length >= 4 && password.length >= 6) {
-      login(username, password)
-    }
+    const { login, loading } = this.props
+    const { username, password } = this.state
+
+    if (loading) return
+
+    login(username, password)
   }
 
   onChange = (field: 'username' | 'password'): Function => evt => {
@@ -49,8 +79,17 @@ export class Login extends React.Component<Props, State> {
     this.setState(state => ({ ...state, [field]: value }))
   }
 
+  toggleDialog = (bool: boolean): Function => (): void => {
+    this.setState(state => ({
+      ...state,
+      open: bool,
+    }))
+  }
+
   render() {
-    const { loggedIn, error } = this.props
+    const { loggedIn, authError, u2fError } = this.props
+    const { open } = this.state
+
     return loggedIn ? (
       <Redirect to="/dashboard" />
     ) : (
@@ -81,7 +120,9 @@ export class Login extends React.Component<Props, State> {
                   onChange={this.onChange('password')}
                   fullWidth
                 />
-                <div className="error">{error}</div>
+                <div className="error">
+                  <Typography color="secondary">{authError}</Typography>
+                </div>
                 <Button className="input" variant="raised" color="primary" type="submit">
                   Login
                 </Button>
@@ -89,6 +130,14 @@ export class Login extends React.Component<Props, State> {
             </div>
           </Grid>
         </Grid>
+
+        <DeviceDialog
+          title="Plug in your U2F device"
+          subtitle="waiting for approval..."
+          open={open}
+          success={loggedIn}
+          error={u2fError}
+        />
 
         <style jsx>{`
           .root {
@@ -104,6 +153,10 @@ export class Login extends React.Component<Props, State> {
           .root :global(.input) {
             margin: 12px 0;
           }
+
+          .error {
+            text-align: center;
+          }
         `}</style>
       </div>
     )
@@ -112,7 +165,10 @@ export class Login extends React.Component<Props, State> {
 
 const mapStateToProps = (state: Object): Object => ({
   loggedIn: isLoggedInSelector(state),
-  error: authErrorSelector(state),
+  pending: authPendingSelector(state),
+  loading: authLoadingSelector(state),
+  authError: authErrorSelector(state),
+  u2fError: u2fErrorSelector(state),
 })
 
 export default connect(mapStateToProps, { login: loginAction })(Login)

@@ -5,3 +5,4 @@
 /node_modules/
 /flow-typed/
 /.vscode/
+/coverage/

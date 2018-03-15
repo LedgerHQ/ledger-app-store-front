@@ -17,9 +17,15 @@ export const getChallenge = async (token: string): Promise<Object> => {
       }),
     })
 
-    return response
+    const json = await response.json()
+
+    if (!response.ok || json.error) {
+      throw json
+    }
+
+    return json
   } catch (err) {
-    return err
+    throw err
   }
 }
 
@@ -38,9 +44,15 @@ export const verifyChallenge = async (token: string, challenge: Object): Promise
       }),
     })
 
-    return response
+    const json = response.json()
+
+    if (!response.ok || json.error) {
+      throw json
+    }
+
+    return json
   } catch (err) {
-    return err
+    throw err
   }
 }
 
@@ -64,8 +76,14 @@ export const finishLogin = async (
       }),
     })
 
-    return response
+    const json = await response.json()
+
+    if (!response.ok || json.error) {
+      throw json
+    }
+
+    return json
   } catch (err) {
-    return err
+    throw err
   }
 }

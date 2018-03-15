@@ -5,7 +5,7 @@ const BASE_URL: string = process.env.API_URL || 'http://localhost:8000'
 
 export const login = async (username: string, password: string): Promise<Object> => {
   try {
-    const res: Promise<Object> = await fetch('http://localhost:3000', {
+    const response = await fetch('http://localhost:3000', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -17,15 +17,22 @@ export const login = async (username: string, password: string): Promise<Object>
         method: 'POST',
       }),
     })
-    return res
+
+    const json = await response.json()
+
+    if (!response.ok || json.error) {
+      throw json
+    }
+
+    return json
   } catch (err) {
-    return err
+    throw err
   }
 }
 
 export const finishLogin = async (challenge: Object, token: string): Promise<Object> => {
   try {
-    const res = await fetch(`${BASE_URL}/api/finish_auth`, {
+    const response = await fetch(`${BASE_URL}/api/finish_auth`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -33,9 +40,16 @@ export const finishLogin = async (challenge: Object, token: string): Promise<Obj
       },
       body: JSON.stringify({}),
     })
-    return res
+
+    const json = await response.json()
+
+    if (!response.ok || json.error) {
+      throw json
+    }
+
+    return json
   } catch (err) {
-    return err
+    throw err
   }
 }
 

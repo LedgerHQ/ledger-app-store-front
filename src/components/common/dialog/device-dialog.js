@@ -1,7 +1,6 @@
 // @flow
 import * as React from 'react'
-import Dialog, { DialogTitle } from 'material-ui/Dialog'
-import Typography from 'material-ui/Typography'
+import Dialog, { DialogTitle, DialogContent, DialogContentText } from 'material-ui/Dialog'
 import { CircularProgress } from 'material-ui/Progress'
 import { withStyles } from 'material-ui/styles'
 
@@ -11,35 +10,41 @@ type Props = {
   error: boolean,
   classes: Object,
   closeDialog: Function,
+  subtitle: string,
+  title: string,
 }
 
 const styles = theme => ({
-  dialog: {
-    paddingBottom: theme.spacing.unit,
+  dialogText: {
+    textAlign: 'center',
+  },
+  dialogContent: {
+    padding: theme.spacing.unit,
   },
 })
 
-const renderTitle = (success, error) => {
-  if (success && !error) {
-    return 'Device Added'
-  } else if (error) {
-    return 'Error adding device'
-  }
+const DeviceDialog = ({
+  open,
+  classes,
+  closeDialog,
+  success,
+  error,
+  subtitle,
+  title,
+}: Props): React.Node => (
+  <Dialog open={open} onClose={closeDialog}>
+    <DialogTitle className={classes.dialogText}>{title}</DialogTitle>
+    <DialogContent className={classes.dialogContent}>
+      <DialogContentText className={classes.dialogText}>{subtitle}</DialogContentText>
 
-  return 'Plug your device'
-}
-
-const DeviceDialog = ({ open, classes, closeDialog, success, error }: Props): React.Node => (
-  <Dialog className={classes.dialog} open={open} onClose={closeDialog}>
-    <DialogTitle>Add New Device</DialogTitle>
-    <Typography variant="subheading" align="center">
-      {renderTitle(success, error)}
-    </Typography>
-    <div className="center">
-      {!success && !error && <CircularProgress size={80} />}
-      {success && !error && <CircularProgress size={80} variant="determinate" value={100} />}
-      {error && <CircularProgress size={80} variant="determinate" value={100} />}
-    </div>
+      <div className="center">
+        {!success && !error && <CircularProgress size={80} />}
+        {success && !error && <CircularProgress size={80} variant="determinate" value={100} />}
+        {error && (
+          <CircularProgress size={80} variant="determinate" value={100} color="secondary" />
+        )}
+      </div>
+    </DialogContent>
 
     <style jsx>{`
       .center {
