@@ -1,10 +1,10 @@
 /* eslint import/no-named-as-default-member: 0 */
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import * as actions from '../u2fActions'
-import * as types from '../actionTypes'
-import * as deviceApi from '../../api/deviceApi'
-import * as u2fApi from '../../api/u2fApi'
+import * as actions from '../u2f-actions'
+import * as types from '../action-types'
+import * as authApi from '../../api/auth-api'
+import * as u2fApi from '../../api/u2f-api'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -46,12 +46,12 @@ describe('u2f actions', () => {
         },
       })
       u2fApi.sign = jest.fn()
-      deviceApi.finishLogin = jest.fn()
+      authApi.finishLogin = jest.fn()
     })
 
     test('on success, should dispatch the correct actions', async done => {
       u2fApi.sign.mockResolvedValue({ challenge: 'deviceChallenge' })
-      deviceApi.finishLogin.mockResolvedValue({ token: 'token' })
+      authApi.finishLogin.mockResolvedValue({ token: 'token' })
 
       const expected = [
         actions.u2fRequested(),
@@ -80,7 +80,7 @@ describe('u2f actions', () => {
 
       test('[finishLogin]: should dispatch the correct actions', async done => {
         u2fApi.sign.mockResolvedValue({ challenge: 'deviceChallenge' })
-        deviceApi.finishLogin.mockRejectedValue({ error: 'error' })
+        authApi.finishLogin.mockRejectedValue({ error: 'error' })
 
         const expected = [
           actions.u2fRequested(),

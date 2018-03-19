@@ -1,8 +1,8 @@
 // @flow
-import * as u2fApi from '../api/u2fApi'
-import * as types from './actionTypes'
-import * as deviceApi from '../api/deviceApi'
-import { authTokenSelector } from '../selectors/authSelectors'
+import * as u2fApi from '../api/u2f-api'
+import * as types from './action-types'
+import * as deviceApi from '../api/device-api'
+import { authTokenSelector } from '../selectors/auth-selectors'
 
 type Action = {
   type: string,

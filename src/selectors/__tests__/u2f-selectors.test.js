@@ -1,4 +1,4 @@
-import * as selectors from '../u2fSelectors'
+import * as selectors from '../u2f-selectors'
 
 describe('u2f selectors', () => {
   describe('u2fSelector', () => {

@@ -1,5 +1,5 @@
 // @flow
-import * as types from '../actions/actionTypes'
+import * as types from '../actions/action-types'
 
 type State = {
   +requested: boolean,

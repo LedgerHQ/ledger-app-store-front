@@ -1,8 +1,8 @@
 // @flow
-import * as u2fApi from '../api/u2fApi'
-import * as deviceApi from '../api/deviceApi'
-import * as types from './actionTypes'
-import { authTokenSelector, authUsernameSelector } from '../selectors/authSelectors'
+import * as u2fApi from '../api/u2f-api'
+import * as authApi from '../api/auth-api'
+import * as types from './action-types'
+import { authTokenSelector, authUsernameSelector } from '../selectors/auth-selectors'
 
 type Action = {
   type: string,
@@ -43,7 +43,7 @@ export const u2fAuth = (challenge: Object): Function => async (
     dispatch(u2fDeviceSuccess())
     dispatch(u2fSendChallenge())
 
-    const json = await deviceApi.finishLogin(token, deviceResponse, username)
+    const json = await authApi.finishLogin(token, deviceResponse, username)
     dispatch(u2fServerSuccess(json.token))
   } catch (err) {
     dispatch(u2fError(err.message ? err.message : err.error))

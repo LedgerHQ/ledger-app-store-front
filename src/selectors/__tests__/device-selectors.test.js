@@ -1,4 +1,4 @@
-import * as selectors from '../deviceSelectors'
+import * as selectors from '../device-selectors'
 
 describe('device selectors', () => {
   describe('deviceSelector', () => {

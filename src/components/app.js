@@ -6,7 +6,6 @@ import CssBaseline from 'material-ui/CssBaseline'
 import { hot } from 'react-hot-loader'
 
 import LoginConnected from './routes/login'
-import ConnectedLayout from './common/layout'
 import ProtectedRoute from './utils/protected-route'
 import DashboardConnected from './routes/dashboard'
 import Index from './routes/Index'
@@ -14,13 +13,11 @@ import Index from './routes/Index'
 const App = (): React.Node => (
   <React.Fragment>
     <CssBaseline />
-    <ConnectedLayout>
-      <Switch>
-        <ProtectedRoute path="/dashboard" component={DashboardConnected} />
-        <Route path="/" component={Index} exact />
-        <Route path="/login" component={LoginConnected} exact />
-      </Switch>
-    </ConnectedLayout>
+    <Switch>
+      <ProtectedRoute path="/dashboard" component={DashboardConnected} />
+      <Route path="/" component={Index} exact />
+      <Route path="/login" component={LoginConnected} exact />
+    </Switch>
 
     <style jsx global>{`
       html,

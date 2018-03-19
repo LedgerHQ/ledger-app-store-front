@@ -3,9 +3,9 @@ import 'u2f-api-polyfill'
 
 type Challenge = {
   appId: string,
-  registerRequests?: [],
+  registerRequests?: Array<Object>,
   challenge?: string,
-  registeredKeys: [],
+  registeredKeys: Array<Object>,
 }
 
 const U2F_ERROR_CODES = {
@@ -21,6 +21,12 @@ const U2F_ERROR_CODES = {
   5: 'TIMEOUT',
 }
 
+/**
+ * @name register
+ * @description verifies that the challenge returned by server is correct and signs a new challenge to send back to server
+ * @param {object} challenge challenge returned by server
+ * @param {number} timeout=30 time in seconds before the signing process fails
+ */
 export const register = (
   { appId, registerRequests, registeredKeys }: Challenge,
   timeout: number = 30,
@@ -41,6 +47,12 @@ export const register = (
     ),
   )
 
+/**
+ * @name sign
+ * @description signs a challenge for double authentication process
+ * @param {object} challenge challenge sent by server
+ * @param {number} timeout=30 time in seconds before the signing process fails
+ */
 export const sign = (
   { appId, challenge, registeredKeys }: Challenge,
   timeout: number = 30,

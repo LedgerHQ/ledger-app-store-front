@@ -1,7 +1,7 @@
 // @flow
-import * as types from '../actions/actionTypes'
-import { u2fAuth } from '../actions/u2fActions'
-import { loginFinish, loginSuccess } from '../actions/authActions'
+import * as types from '../actions/action-types'
+import { u2fAuth } from '../actions/u2f-actions'
+import { loginFinish, loginSuccess } from '../actions/auth-actions'
 
 type Action = {
   type: string,

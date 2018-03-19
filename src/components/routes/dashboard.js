@@ -2,129 +2,77 @@
 import * as React from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import Button from 'material-ui/Button'
-import Tooltip from 'material-ui/Tooltip'
-import { withStyles } from 'material-ui/styles'
-import AddIcon from 'material-ui-icons/Add'
+import { Switch, Route, Link, withRouter } from 'react-router-dom'
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
+import DeveloperModeIcon from 'material-ui-icons/DeveloperMode'
+import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile'
+import ListIcon from 'material-ui-icons/List'
 
 import Title from '../common/title'
-import DeviceDialog from '../common/dialog/device-dialog'
-import { registerU2FDevice as registerU2FDeviceAction } from '../../actions/deviceActions'
-import { deviceAllSuccessSelector, deviceErrorSelector } from '../../selectors/deviceSelectors'
+import ConnectedLayoutExtended from '../common/layout-extended'
+import AddDevice from './dashboard/add-device'
+import AddResource from './dashboard/add-resource'
+import Resources from './dashboard/resources'
+import { fetchResources as fetchResourcesAction } from '../../actions/resources-actions'
+
+const SidebarItems = (): React.Node => (
+  <List>
+    <ListItem button component={Link} to="/dashboard/add-device">
+      <ListItemIcon>
+        <DeveloperModeIcon />
+      </ListItemIcon>
+      <ListItemText primary="Add Device" />
+    </ListItem>
+    <ListItem button component={Link} to="/dashboard/add-resource">
+      <ListItemIcon>
+        <InsertDriveFileIcon />
+      </ListItemIcon>
+      <ListItemText primary="Add Resource" />
+    </ListItem>
+    <ListItem button component={Link} to="/dashboard/resources">
+      <ListItemIcon>
+        <ListIcon />
+      </ListItemIcon>
+      <ListItemText primary="Resources" />
+    </ListItem>
+  </List>
+)
 
 type Props = {
-  classes: Object,
-  registerU2FDevice: Function,
-  success: boolean,
-  error: string,
+  fetchResources: Function,
 }
 
-type State = {
-  open: boolean,
-}
-
-const styles = theme => ({
-  paper: {
-    width: '100%',
-    maxWidth: '900px',
-    margin: `${theme.spacing.unit * 3}px auto 0`,
-    overflowX: 'auto',
-  },
-  table: {
-    width: '100%',
-  },
-  fab: {
-    margin: theme.spacing.unit * 2,
-  },
-})
-
-export class Dashboard extends React.Component<Props, State> {
+class Dashboard extends React.Component<Props> {
   props: Props
-  state: State
 
-  state = {
-    open: false,
-  }
-
-  componentDidUpdate({ success: prevSuccess }: Props, { open: prevOpen }: State) {
-    const { open } = this.state
-    const { success } = this.props
-    if (!prevOpen && open && (!prevSuccess && !success)) {
-      const { registerU2FDevice } = this.props
-      registerU2FDevice()
-    }
-  }
-
-  toggleDialog = (bool: boolean): Function => (): void => {
-    this.setState(state => ({
-      ...state,
-      open: bool,
-    }))
-  }
-
-  renderTitle = (): string => {
-    const { success, error } = this.props
-
-    if (success && !error) {
-      return 'Device Added'
-    } else if (error) {
-      return error
-    }
-
-    return 'Plug your device'
+  componentDidMount() {
+    const { fetchResources } = this.props
+    fetchResources()
   }
 
   render(): React.Node {
-    const { classes, success, error } = this.props
-    const { open } = this.state
-
     return (
-      <React.Fragment>
+      <ConnectedLayoutExtended title="App Store - Dashboard" sideBarComponent={<SidebarItems />}>
         <div className="container">
           <Title> Dashboard </Title>
         </div>
-        <div className="fab">
-          <Tooltip title="add new device" className={classes.fab} placement="top">
-            <Button variant="fab" color="secondary" onClick={this.toggleDialog(true)}>
-              <AddIcon />
-            </Button>
-          </Tooltip>
-        </div>
-
-        <DeviceDialog
-          error={error}
-          success={success}
-          open={open}
-          closeDialog={this.toggleDialog(false)}
-          title="Add New Device"
-          subtitle={this.renderTitle()}
-        />
+        <Switch>
+          <Route path="/dashboard/add-device" component={AddDevice} />
+          <Route path="/dashboard/add-resource" component={AddResource} />
+          <Route path="/dashboard/resources" component={Resources} />
+        </Switch>
 
         <style jsx>{`
-          .fab {
-            position: fixed;
-            bottom: 80px;
-            right: 80px;
-          }
-
           .container {
-            margin-top: 10%;
+            margin: 100px 0;
             text-align: center;
           }
         `}</style>
-      </React.Fragment>
+      </ConnectedLayoutExtended>
     )
   }
 }
 
-const mapStateToProps = (state: Object): Object => ({
-  success: deviceAllSuccessSelector(state),
-  error: deviceErrorSelector(state),
-})
-
-const enhancer = compose(
-  withStyles(styles),
-  connect(mapStateToProps, { registerU2FDevice: registerU2FDeviceAction }),
-)
+const enhancer = compose(withRouter, connect(null, { fetchResources: fetchResourcesAction }))
 
 export default enhancer(Dashboard)

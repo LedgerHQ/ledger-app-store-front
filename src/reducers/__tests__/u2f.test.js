@@ -1,5 +1,5 @@
-import * as types from '../../actions/actionTypes'
-import * as actions from '../../actions/u2fActions'
+import * as types from '../../actions/action-types'
+import * as actions from '../../actions/u2f-actions'
 import u2fReducer, { initialState } from '../u2f'
 
 describe('u2f reducer', () => {
