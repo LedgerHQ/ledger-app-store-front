@@ -1,5 +1,5 @@
-import * as types from '../../actions/actionTypes'
-import * as actions from '../../actions/authActions'
+import * as types from '../../actions/action-types'
+import * as actions from '../../actions/auth-actions'
 import authReducer, { initialState } from '../auth'
 
 describe('auth reducer', () => {

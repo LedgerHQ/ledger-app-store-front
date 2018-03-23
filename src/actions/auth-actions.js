@@ -1,6 +1,6 @@
 // @flow
-import * as types from './actionTypes'
-import * as authApi from '../api/authApi'
+import * as types from './action-types'
+import * as authApi from '../api/auth-api'
 
 type Action = {
   type: string,

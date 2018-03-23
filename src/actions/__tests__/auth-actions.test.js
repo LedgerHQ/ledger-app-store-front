@@ -1,9 +1,9 @@
 /* eslint import/no-named-as-default-member: 0 */
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import * as actions from '../authActions'
-import * as types from '../actionTypes'
-import * as authApi from '../../api/authApi'
+import * as actions from '../auth-actions'
+import * as types from '../action-types'
+import * as authApi from '../../api/auth-api'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

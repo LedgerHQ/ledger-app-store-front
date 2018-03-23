@@ -10,14 +10,15 @@ import HomeIcon from 'material-ui-icons/Home'
 import AccountCirleIcon from 'material-ui-icons/AccountCircle'
 
 import Title from './title'
-import { authSuccessSelector } from '../../selectors/authSelectors'
+import { authSuccessSelector } from '../../selectors/auth-selectors'
 
 type Props = {
   children?: React.Node,
   loggedIn: boolean,
+  title: string,
 }
 
-export const Layout = ({ children, loggedIn }: Props): React.Node => (
+export const Layout = ({ children, loggedIn, title }: Props): React.Node => (
   <div>
     <AppBar position="static">
       <Toolbar>
@@ -25,7 +26,7 @@ export const Layout = ({ children, loggedIn }: Props): React.Node => (
           <HomeIcon />
         </IconButton>
         <Title color="inherit" className="flex">
-          App Store
+          {title}
         </Title>
         {loggedIn ? (
           <IconButton component={Link} color="inherit" to="/dashboard">
@@ -49,6 +50,7 @@ export const Layout = ({ children, loggedIn }: Props): React.Node => (
 
       .container {
         flex: 1;
+        overflow: scroll;
       }
 
       div :global(.flex) {

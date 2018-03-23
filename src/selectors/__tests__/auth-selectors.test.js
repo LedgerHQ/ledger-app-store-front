@@ -1,4 +1,4 @@
-import * as selectors from '../authSelectors'
+import * as selectors from '../auth-selectors'
 
 describe('auth selectors', () => {
   describe('authSelector', () => {
@@ -8,7 +8,7 @@ describe('auth selectors', () => {
       expect(expected).toEqual(state.auth)
     })
 
-    test('should return undefined is auth object is not in state', () => {
+    test('should return undefined if auth object is not in state', () => {
       const state = { other: { other: 'other' } }
       const expected = selectors.authSelector(state)
       expect(expected).toEqual(state.auth)

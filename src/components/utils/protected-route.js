@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { isLoggedInSelector } from '../../selectors/authSelectors'
+import { isLoggedInSelector } from '../../selectors/auth-selectors'
 
 type Props = {
   component: Function,

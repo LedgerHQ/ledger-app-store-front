@@ -1,5 +1,5 @@
-import * as types from '../../actions/actionTypes'
-import * as actions from '../../actions/deviceActions'
+import * as types from '../../actions/action-types'
+import * as actions from '../../actions/device-actions'
 import deviceReducer, { initialState } from '../device'
 
 describe('device reducer', () => {

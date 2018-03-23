@@ -1,10 +1,10 @@
 /* eslint import/no-named-as-default-member: 0 */
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import * as actions from '../deviceActions'
-import * as types from '../actionTypes'
-import * as deviceApi from '../../api/deviceApi'
-import * as u2fApi from '../../api/u2fApi'
+import * as actions from '../device-actions'
+import * as types from '../action-types'
+import * as deviceApi from '../../api/device-api'
+import * as u2fApi from '../../api/u2f-api'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

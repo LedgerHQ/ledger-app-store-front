@@ -10,15 +10,16 @@ import Typography from 'material-ui/Typography'
 
 import Title from '../common/title'
 import DeviceDialog from '../common/dialog/device-dialog'
-import { login as loginAction } from '../../actions/authActions'
+import ConnectedLayout from '../common/layout'
+import { login as loginAction } from '../../actions/auth-actions'
 
 import {
   isLoggedInSelector,
   authErrorSelector,
   authPendingSelector,
   authLoadingSelector,
-} from '../../selectors/authSelectors'
-import { u2fErrorSelector } from '../../selectors/u2fSelectors'
+} from '../../selectors/auth-selectors'
+import { u2fErrorSelector } from '../../selectors/u2f-selectors'
 
 type Props = {
   login: Function,
@@ -93,51 +94,53 @@ export class Login extends React.Component<Props, State> {
     return loggedIn ? (
       <Redirect to="/dashboard" />
     ) : (
-      <div className="root">
-        <Grid container alignItems="center" justify="center">
-          <Grid item>
-            <Title align="center" variant="headline">
-              Login
-            </Title>
-            <div>
-              <form onSubmit={this.login}>
-                <TextField
-                  id="username"
-                  label="username"
-                  type="string"
-                  className="input"
-                  value={this.state.username}
-                  onChange={this.onChange('username')}
-                  fullWidth
-                />
+      <ConnectedLayout title="App Store - Login">
+        <div className="root">
+          <Grid container alignItems="center" justify="center">
+            <Grid item>
+              <Title align="center" variant="headline">
+                Login
+              </Title>
+              <div>
+                <form onSubmit={this.login}>
+                  <TextField
+                    id="username"
+                    label="username"
+                    type="string"
+                    className="input"
+                    value={this.state.username}
+                    onChange={this.onChange('username')}
+                    fullWidth
+                  />
 
-                <TextField
-                  id="password"
-                  label="password"
-                  type="password"
-                  className="input"
-                  value={this.state.password}
-                  onChange={this.onChange('password')}
-                  fullWidth
-                />
-                <div className="error">
-                  <Typography color="secondary">{authError}</Typography>
-                </div>
-                <Button className="input" variant="raised" color="primary" type="submit">
-                  Login
-                </Button>
-              </form>
-            </div>
+                  <TextField
+                    id="password"
+                    label="password"
+                    type="password"
+                    className="input"
+                    value={this.state.password}
+                    onChange={this.onChange('password')}
+                    fullWidth
+                  />
+                  <div className="error">
+                    <Typography color="secondary">{authError}</Typography>
+                  </div>
+                  <Button className="input" variant="raised" color="primary" type="submit">
+                    Login
+                  </Button>
+                </form>
+              </div>
+            </Grid>
           </Grid>
-        </Grid>
 
-        <DeviceDialog
-          title="Plug in your U2F device"
-          subtitle="waiting for approval..."
-          open={open}
-          success={loggedIn}
-          error={u2fError}
-        />
+          <DeviceDialog
+            title="Plug in your U2F device"
+            subtitle="waiting for approval..."
+            open={open}
+            success={loggedIn}
+            error={u2fError}
+          />
+        </div>
 
         <style jsx>{`
           .root {
@@ -158,7 +161,7 @@ export class Login extends React.Component<Props, State> {
             text-align: center;
           }
         `}</style>
-      </div>
+      </ConnectedLayout>
     )
   }
 }
