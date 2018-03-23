@@ -76,13 +76,28 @@ class AppInput extends React.Component<AppInputProps, AppInputState> {
   }
 }
 
+/**
+ * TODO
+ * Change applications and appList and firmwares and
+ * add a resources props with a topLevel list to define what to load
+ */
+
+type SimpleResource = {
+  name: string,
+  label: string,
+  data: Object[],
+}
+
+type ListResource = SimpleResource & { list: string[] }
+
 type Props = {
   selectState: Object,
   onSelectChange: Function,
-  applications: Object[],
-  firmwares: Object[],
-  appList: string[],
+  // applications: Object[],
+  // firmwares: Object[],
+  // appList: string[],
   classes: Object,
+  resources: Array<ListResource>,
 }
 
 type State = {
@@ -115,7 +130,11 @@ class ForeignKeyInput extends React.Component<Props, State> {
   }
 
   renderFirmwareInput = (idx: number): React.Node => {
-    const { firmwares, onSelectChange, selectState } = this.props
+    const { resources, onSelectChange, selectState } = this.props
+
+    const firmwares: SimpleResource | typeof undefined = resources.find(
+      (resource: SimpleResource): boolean => resource.name === 'firmwares',
+    )
 
     return (
       <div key={`firmware-${idx}`}>
@@ -127,36 +146,42 @@ class ForeignKeyInput extends React.Component<Props, State> {
           onChange={onSelectChange(`required-firmware-${idx}`, true)}
           className="input"
         >
-          {firmwares.map(({ name, id }) => (
-            <MenuItem key={id} value={name}>
-              {name}
-            </MenuItem>
-          ))}
+          {firmwares &&
+            firmwares.data.map(({ name, id }) => (
+              <MenuItem key={id} value={name}>
+                {name}
+              </MenuItem>
+            ))}
         </TextField>
       </div>
     )
   }
 
   renderAppInput = (idx: number): React.Node => {
-    const { appList, onSelectChange, selectState, applications } = this.props
-    return (
+    const { onSelectChange, selectState, resources } = this.props
+
+    const applications: ListResource | typeof undefined = resources.find(
+      (resource: ListResource): boolean => resource.name === 'applications',
+    )
+
+    return applications ? (
       <AppInput
         key={`app-${idx}`}
-        appList={appList}
-        applications={applications}
+        appList={applications.list}
+        applications={applications.data}
         selectState={selectState}
         onSelectChange={onSelectChange}
         idx={idx}
       />
-    )
+    ) : null
   }
 
   renderInput = (input: InputType, idx: number): React.Node => {
-    if (input.type === 'firmware') {
+    if (input.type === 'firmwares') {
       return this.renderFirmwareInput(idx)
     }
 
-    if (input.type === 'application') {
+    if (input.type === 'applications') {
       return this.renderAppInput(idx)
     }
 
@@ -164,8 +189,9 @@ class ForeignKeyInput extends React.Component<Props, State> {
   }
 
   render(): React.Node {
-    const { classes } = this.props
+    const { classes, resources } = this.props
     const { type, fields } = this.state
+
     return (
       <React.Fragment>
         <TextField
@@ -181,8 +207,11 @@ class ForeignKeyInput extends React.Component<Props, State> {
             },
           }}
         >
-          <MenuItem value="firmware">Firmware</MenuItem>
-          <MenuItem value="application">Application</MenuItem>
+          {resources.map(({ name, label }) => (
+            <MenuItem key={name} value={name}>
+              {label}
+            </MenuItem>
+          ))}
         </TextField>
         <Button variant="fab" color="secondary" mini aria-label="add" onClick={this.addNewField}>
           <AddIcon />

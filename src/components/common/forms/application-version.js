@@ -133,9 +133,10 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
             <ForeignKeyInput
               selectState={extraState}
               onSelectChange={onSelectChange}
-              firmwares={firmwares}
-              appList={appList}
-              applications={applications}
+              resources={[
+                { name: 'firmwares', label: 'Firmwares', data: firmwares },
+                { name: 'applications', label: 'Applications', data: applications, list: appList },
+              ]}
             />
           </div>
           <div className="submit">
