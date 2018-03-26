@@ -4,7 +4,9 @@ import * as types from '../actions/action-types'
 type State = {
   +applications: Object[],
   +firmwares: Object[],
-  +active: string,
+  // +mcu: Object[],
+  // +bootloaders: Object[],
+  // +devices: Object[],
   +error: string,
 }
 
@@ -15,7 +17,6 @@ type Action = {
 
 export const initialState: State = {
   applications: [],
-  active: '',
   firmwares: [],
   error: '',
 }
@@ -27,12 +28,7 @@ const resources = (state: State = initialState, action: Action): State => {
         ...state,
         applications: action.payload,
       }
-    case types.SELECT_APPLICATION:
-      return {
-        ...state,
-        active: action.payload,
-      }
-    case types.GET_FIRMWARE_VERSIONS:
+    case types.GET_FIRMWARES:
       return {
         ...state,
         firmwares: action.payload,

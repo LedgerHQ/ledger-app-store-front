@@ -1,28 +1,26 @@
 // @flow
 import * as React from 'react'
+import { connect } from 'react-redux'
 import TextField from 'material-ui/TextField'
-import Button from 'material-ui/Button'
 import MenuItem from 'material-ui/Menu/MenuItem'
 
-import Form from '../../utils/form'
-import ForeignKeyInput from '../foreign-key-input'
+import FormForeign from '../../../utils/form-foreign/form-foreign'
+import { applicationsListSelector } from '../../../../selectors/resources-selectors'
 
 type Props = {
-  applications: Object[],
   appList: string[],
-  firmwares: Object[],
 }
 
-const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): React.Node => (
+const ApplicationVersionForm = ({ appList }: Props): React.Node => (
   <React.Fragment>
-    <Form>
-      {({ onChange, onSubmit, onSelectChange, selectState, fieldState, extraState }) => (
-        <form onSubmit={onSubmit} className="form">
+    <FormForeign>
+      {({ onChange, onSelectChange, fields }) => (
+        <div className="form">
           <TextField
             id="app"
             select
             label="application"
-            value={selectState.app || ''}
+            value={fields.app || ''}
             onChange={onSelectChange('app')}
             className="input"
           >
@@ -37,7 +35,7 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
             label="name"
             type="string"
             onChange={onChange('name')}
-            value={fieldState.name || ''}
+            value={fields.name || ''}
             className="input"
             required
           />
@@ -46,7 +44,7 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
             label="icon"
             type="string"
             onChange={onChange('icon')}
-            value={fieldState.icon || ''}
+            value={fields.icon || ''}
             className="input"
           />
           <TextField
@@ -54,7 +52,7 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
             label="notes"
             type="string"
             onChange={onChange('notes')}
-            value={fieldState.notes || ''}
+            value={fields.notes || ''}
             className="input"
           />
           <TextField
@@ -62,7 +60,7 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
             label="hash"
             type="string"
             onChange={onChange('hash')}
-            value={fieldState.hash || ''}
+            value={fields.hash || ''}
             className="input"
           />
           <TextField
@@ -70,7 +68,7 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
             label="bolos_version_min"
             type="string"
             onChange={onChange('bolos_version_min')}
-            value={fieldState.bolos_version_min || ''}
+            value={fields.bolos_version_min || ''}
             className="input"
           />
           <TextField
@@ -78,7 +76,7 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
             label="bolos_version_max"
             type="string"
             onChange={onChange('bolos_version_max')}
-            value={fieldState.bolos_version_max || ''}
+            value={fields.bolos_version_max || ''}
             className="input"
           />
           <TextField
@@ -86,7 +84,7 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
             label="perso"
             type="string"
             onChange={onChange('perso')}
-            value={fieldState.perso || ''}
+            value={fields.perso || ''}
             className="input"
           />
           <TextField
@@ -94,7 +92,7 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
             label="target_id"
             type="string"
             onChange={onChange('target_id')}
-            value={fieldState.target_id || ''}
+            value={fields.target_id || ''}
             className="input"
           />
           <TextField
@@ -102,7 +100,7 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
             label="firmware"
             type="string"
             onChange={onChange('firmware')}
-            value={fieldState.firmware || ''}
+            value={fields.firmware || ''}
             className="input"
           />
           <TextField
@@ -110,7 +108,7 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
             label="firmware_key"
             type="string"
             onChange={onChange('firmware_key')}
-            value={fieldState.firmware_key || ''}
+            value={fields.firmware_key || ''}
             className="input"
           />
           <TextField
@@ -118,7 +116,7 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
             label="delete_key"
             type="string"
             onChange={onChange('delete_key')}
-            value={fieldState.delete_key || ''}
+            value={fields.delete_key || ''}
             className="input"
           />
           <TextField
@@ -126,27 +124,12 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
             label="delete"
             type="string"
             onChange={onChange('delete')}
-            value={fieldState.delete || ''}
+            value={fields.delete || ''}
             className="input"
           />
-          <div>
-            <ForeignKeyInput
-              selectState={extraState}
-              onSelectChange={onSelectChange}
-              resources={[
-                { name: 'firmwares', label: 'Firmwares', data: firmwares },
-                { name: 'applications', label: 'Applications', data: applications, list: appList },
-              ]}
-            />
-          </div>
-          <div className="submit">
-            <Button onClick={onSubmit} size="large" variant="raised" color="secondary">
-              Submit
-            </Button>
-          </div>
-        </form>
+        </div>
       )}
-    </Form>
+    </FormForeign>
 
     <style jsx>{`
       .form :global(.input) {
@@ -155,12 +138,12 @@ const ApplicationVersionForm = ({ applications, appList, firmwares }: Props): Re
         margin-top: 12px;
         width: 50%;
       }
-
-      .form .submit {
-        padding: 12px 0;
-      }
     `}</style>
   </React.Fragment>
 )
 
-export default ApplicationVersionForm
+const mapStateToProps = (state: Object): Object => ({
+  appList: applicationsListSelector(state),
+})
+
+export default connect(mapStateToProps)(ApplicationVersionForm)

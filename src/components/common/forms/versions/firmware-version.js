@@ -3,19 +3,19 @@ import * as React from 'react'
 import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 
-import Form from '../../utils/form'
+import Form from '../../../utils/form'
 
 const FirmwareVersionForm = (): React.Node => (
   <React.Fragment>
     <Form>
-      {({ onChange, onSubmit, fieldState }) => (
+      {({ onChange, onSubmit, fields }) => (
         <form onSubmit={onSubmit} className="form">
           <TextField
             id="name"
             label="name"
             type="string"
             onChange={onChange('name')}
-            value={fieldState.name || ''}
+            value={fields.name || ''}
             className="input"
             required
           />
@@ -24,23 +24,7 @@ const FirmwareVersionForm = (): React.Node => (
             label="notes"
             type="string"
             onChange={onChange('notes')}
-            value={fieldState.notes || ''}
-            className="input"
-          />
-          <TextField
-            id="bolos_version_min"
-            label="bolos_version_min"
-            type="string"
-            onChange={onChange('bolos_version_min')}
-            value={fieldState.bolos_version_min || ''}
-            className="input"
-          />
-          <TextField
-            id="bolos_version_max"
-            label="bolos_version_max"
-            type="string"
-            onChange={onChange('bolos_version_max')}
-            value={fieldState.bolos_version_max || ''}
+            value={fields.notes || ''}
             className="input"
           />
           <TextField
@@ -48,7 +32,7 @@ const FirmwareVersionForm = (): React.Node => (
             label="final_perso"
             type="string"
             onChange={onChange('final_perso')}
-            value={fieldState.final_perso || ''}
+            value={fields.final_perso || ''}
             className="input"
           />
           <TextField
@@ -56,7 +40,7 @@ const FirmwareVersionForm = (): React.Node => (
             label="final_target_id"
             type="string"
             onChange={onChange('final_target_id')}
-            value={fieldState.final_target_id || ''}
+            value={fields.final_target_id || ''}
             className="input"
           />
           <TextField
@@ -64,7 +48,7 @@ const FirmwareVersionForm = (): React.Node => (
             label="final_firmware"
             type="string"
             onChange={onChange('final_firmware')}
-            value={fieldState.final_firmware || ''}
+            value={fields.final_firmware || ''}
             className="input"
           />
           <TextField
@@ -72,7 +56,7 @@ const FirmwareVersionForm = (): React.Node => (
             label="final_firmware_key"
             type="string"
             onChange={onChange('final_firmware_key')}
-            value={fieldState.final_firmware_key || ''}
+            value={fields.final_firmware_key || ''}
             className="input"
           />
           <TextField
@@ -80,7 +64,7 @@ const FirmwareVersionForm = (): React.Node => (
             label="final_hash"
             type="string"
             onChange={onChange('final_hash')}
-            value={fieldState.final_hash || ''}
+            value={fields.final_hash || ''}
             className="input"
           />
           <TextField
@@ -88,7 +72,7 @@ const FirmwareVersionForm = (): React.Node => (
             label="osu_perso"
             type="string"
             onChange={onChange('osu_perso')}
-            value={fieldState.osu_perso || ''}
+            value={fields.osu_perso || ''}
             className="input"
           />
           <TextField
@@ -96,7 +80,7 @@ const FirmwareVersionForm = (): React.Node => (
             label="osu_target_id"
             type="string"
             onChange={onChange('osu_target_id')}
-            value={fieldState.osu_target_id || ''}
+            value={fields.osu_target_id || ''}
             className="input"
           />
           <TextField
@@ -104,7 +88,7 @@ const FirmwareVersionForm = (): React.Node => (
             label="osu_firmware"
             type="string"
             onChange={onChange('osu_firmware')}
-            value={fieldState.osu_firmware || ''}
+            value={fields.osu_firmware || ''}
             className="input"
           />
           <TextField
@@ -112,7 +96,7 @@ const FirmwareVersionForm = (): React.Node => (
             label="osu_firmware_key"
             type="string"
             onChange={onChange('osu_firmware_key')}
-            value={fieldState.osu_firmware_key || ''}
+            value={fields.osu_firmware_key || ''}
             className="input"
           />
           <TextField
@@ -120,7 +104,7 @@ const FirmwareVersionForm = (): React.Node => (
             label="osu_hash"
             type="string"
             onChange={onChange('osu_hash')}
-            value={fieldState.osu_hash || ''}
+            value={fields.osu_hash || ''}
             className="input"
           />
           <div className="submit">

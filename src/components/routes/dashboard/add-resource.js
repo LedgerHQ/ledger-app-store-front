@@ -66,9 +66,8 @@ class AddResources extends React.Component<Props, State> {
             },
           }}
         >
-          <MenuItem value="firmware">Firmware</MenuItem>
-          <MenuItem value="application">Application</MenuItem>
-          <MenuItem value="app_version">Application Version</MenuItem>
+          <MenuItem value="toplevel">Top Level</MenuItem>
+          <MenuItem value="version">Version</MenuItem>
         </TextField>
         <div className="form">
           <FormSwitcher selected={selected} {...other} />

@@ -18,18 +18,19 @@ export const resourcesErrorSelector = createSelector(
   resources => resources.error || '',
 )
 
-export const resourcesActiveSelector = createSelector(
-  resourcesSelector,
-  resources => resources.active || '',
-)
-
 export const applicationsListSelector = createSelector(
   resourcesApplicationsSelector,
-  (applications: Object[]): string[] => applications.map(app => app.name) || [],
+  (applications: Object[]): string[] => applications.map(app => app.name),
 )
 
-export const selectedApplicationSelector = createSelector(
+/**
+ * TODO
+ * CREATE A SELECTOR FOR EACH TYPE OF RESOURCE AND ITS LIST
+ * ADD RESOURCES TO THE ALLRESOURCESELECTOR
+ */
+
+export const allResourcesSelector = createSelector(
+  resourcesFirmwaresSelector,
   resourcesApplicationsSelector,
-  resourcesActiveSelector,
-  (applications: Object[], active: string) => applications.find(app => app.name === active) || {},
+  (firmwares: Object[], applications: Object[]): Object => ({ firmwares, applications }),
 )

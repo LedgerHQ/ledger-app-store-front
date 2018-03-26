@@ -15,11 +15,7 @@
   },
   "lint-staged": {
     "*.test.js": "jest",
-    "*.js": [
-      "eslint --fix",
-      "prettier --write",
-      "git add"
-    ]
+    "*.js": ["eslint --fix", "prettier --write", "git add"]
   },
   "jest": {
     "clearMocks": true,
@@ -64,6 +60,7 @@
   "dependencies": {
     "material-ui": "^1.0.0-beta.38",
     "material-ui-icons": "^1.0.0-beta.36",
+    "ramda": "^0.25.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0",

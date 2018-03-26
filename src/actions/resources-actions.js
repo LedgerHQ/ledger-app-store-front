@@ -18,15 +18,8 @@ export const getApplications = (applications: Object[]): Action => ({
   payload: applications,
 })
 
-export const selectApplication = (application: string): Action => ({
-  type: types.SELECT_APPLICATION,
-  payload: application,
-})
-
-export const getApplicationsList = (): Action => ({ type: types.GET_APPLICATIONS_LIST })
-
-export const getFirmwareVersions = (firmwares: Object[]): Action => ({
-  type: types.GET_FIRMWARE_VERSIONS,
+export const getFirmware = (firmwares: Object[]): Action => ({
+  type: types.GET_FIRMWARES,
   payload: firmwares,
 })
 
@@ -50,7 +43,7 @@ export const fetchFirmwares = (): Function => async (
   const token = authTokenSelector(getState())
   try {
     const firmwares = await resourcesApi.getFirmwares(token)
-    dispatch(getFirmwareVersions(firmwares))
+    dispatch(getFirmware(firmwares))
   } catch (err) {
     dispatch(resourcesError(err.message ? err.message : err.error))
   }

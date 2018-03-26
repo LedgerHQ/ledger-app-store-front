@@ -10,16 +10,10 @@ describe('resources reducer', () => {
     expect(newState).toEqual(expected)
   })
 
-  test(`should reduce ${types.SELECT_APPLICATION}`, () => {
-    const expected = { ...initialState, active: 'App Active' }
-    const newState = resourcesReducer(initialState, actions.selectApplication('App Active'))
-    expect(newState).toEqual(expected)
-  })
-
-  test(`should reduce ${types.GET_FIRMWARE_VERSIONS}`, () => {
+  test(`should reduce ${types.GET_FIRMWARES}`, () => {
     const firmwares = [{ name: 'firmware1' }, { name: 'firmware2' }]
     const expected = { ...initialState, firmwares }
-    const newState = resourcesReducer(initialState, actions.getFirmwareVersions(firmwares))
+    const newState = resourcesReducer(initialState, actions.getFirmware(firmwares))
     expect(newState).toEqual(expected)
   })
 

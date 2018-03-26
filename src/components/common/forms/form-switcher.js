@@ -3,9 +3,8 @@ import * as React from 'react'
 import Paper from 'material-ui/Paper'
 import { withStyles } from 'material-ui/styles'
 
-import FirmwareVersionForm from './firmware-version'
-import ApplicationForm from './application'
-import ApplicationVersionForm from './application-version'
+import ResourcesForm from './resources'
+import VersionsForm from './versions'
 
 type Props = {
   selected: string,
@@ -21,15 +20,11 @@ const styles = (theme: Object): Object => ({
 const FormSwitcher = ({ selected, classes, ...props }: Props) => {
   let comp
   switch (selected) {
-    case 'firmware':
-      comp = <FirmwareVersionForm {...props} />
+    case 'toplevel':
+      comp = <ResourcesForm {...props} />
       break
-    case 'application':
-      comp = <ApplicationForm {...props} />
-      break
-    case 'app_version':
-      // $FlowFixMe
-      comp = <ApplicationVersionForm {...props} />
+    case 'version':
+      comp = <VersionsForm {...props} />
       break
     default:
       break

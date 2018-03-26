@@ -20,20 +20,10 @@ describe('resources actions', () => {
     expect(actions.getApplications(applications)).toEqual(expected)
   })
 
-  test('selectApplication should return the correct action', () => {
-    const expected = { type: types.SELECT_APPLICATION, payload: 'appName' }
-    expect(actions.selectApplication('appName')).toEqual(expected)
-  })
-
-  test('getApplicationsList should return the correct action', () => {
-    const expected = { type: types.GET_APPLICATIONS_LIST }
-    expect(actions.getApplicationsList()).toEqual(expected)
-  })
-
-  test('getFirmwareVersions should return the correct action', () => {
+  test('getFirmware should return the correct action', () => {
     const firmwares = [{ name: 'firm1' }, { name: 'firm2' }]
-    const expected = { type: types.GET_FIRMWARE_VERSIONS, payload: firmwares }
-    expect(actions.getFirmwareVersions(firmwares)).toEqual(expected)
+    const expected = { type: types.GET_FIRMWARES, payload: firmwares }
+    expect(actions.getFirmware(firmwares)).toEqual(expected)
   })
 
   describe('fetchApplications', () => {
@@ -103,7 +93,7 @@ describe('resources actions', () => {
       const firmwares = [{ name: 'firm1' }, { name: 'firm2' }]
       resourcesApi.getFirmwares.mockResolvedValue(firmwares)
 
-      const expected = [actions.getFirmwareVersions(firmwares)]
+      const expected = [actions.getFirmware(firmwares)]
 
       await store.dispatch(actions.fetchFirmwares())
       const dispatched = store.getActions()
@@ -157,10 +147,7 @@ describe('resources actions', () => {
       resourcesApi.getApplications.mockResolvedValue(applications)
       resourcesApi.getFirmwares.mockResolvedValue(firmwares)
 
-      const expected = [
-        actions.getApplications(applications),
-        actions.getFirmwareVersions(firmwares),
-      ]
+      const expected = [actions.getApplications(applications), actions.getFirmware(firmwares)]
 
       await store.dispatch(actions.fetchResources())
       const dispatched = store.getActions()
@@ -208,7 +195,7 @@ describe('resources actions', () => {
         resourcesApi.getApplications.mockRejectedValue(err)
         resourcesApi.getFirmwares.mockResolvedValue(firmwares)
 
-        const expected = [actions.resourcesError(err.error), actions.getFirmwareVersions(firmwares)]
+        const expected = [actions.resourcesError(err.error), actions.getFirmware(firmwares)]
 
         await store.dispatch(actions.fetchResources())
         const dispatched = store.getActions()
@@ -222,10 +209,7 @@ describe('resources actions', () => {
         resourcesApi.getApplications.mockRejectedValue(err)
         resourcesApi.getFirmwares.mockResolvedValue(firmwares)
 
-        const expected = [
-          actions.resourcesError(err.message),
-          actions.getFirmwareVersions(firmwares),
-        ]
+        const expected = [actions.resourcesError(err.message), actions.getFirmware(firmwares)]
 
         await store.dispatch(actions.fetchResources())
         const dispatched = store.getActions()
