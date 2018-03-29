@@ -2,7 +2,8 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 
 import reducers from './reducers'
-import authMiddleware from './middlewares/authMiddleware'
+import authMiddleware from './middlewares/auth-middleware'
+import resourcesMiddleware from './middlewares/resources-middleware'
 
 /* eslint-disable no-underscore-dangle */
 const composeEnhancers =
@@ -14,7 +15,7 @@ const composeEnhancers =
 /* eslint-enable no-underscore-dangle */
 
 export default initialState => {
-  const middlewares = [thunk, authMiddleware]
+  const middlewares = [thunk, authMiddleware, resourcesMiddleware]
   const enhancers = composeEnhancers(applyMiddleware(...middlewares))
 
   const store = createStore(reducers, initialState, enhancers)

@@ -4,9 +4,11 @@ import * as types from '../actions/action-types'
 type State = {
   +applications: Object[],
   +firmwares: Object[],
-  // +mcu: Object[],
-  // +bootloaders: Object[],
-  // +devices: Object[],
+  +providers: Object[],
+  +publishers: Object[],
+  +categories: Object[],
+  +devices: Object[],
+  +mcu: Object[],
   +error: string,
 }
 
@@ -18,6 +20,11 @@ type Action = {
 export const initialState: State = {
   applications: [],
   firmwares: [],
+  devices: [],
+  providers: [],
+  publishers: [],
+  categories: [],
+  mcu: [],
   error: '',
 }
 
@@ -32,6 +39,31 @@ const resources = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         firmwares: action.payload,
+      }
+    case types.GET_DEVICES:
+      return {
+        ...state,
+        devices: action.payload,
+      }
+    case types.GET_PROVIDERS:
+      return {
+        ...state,
+        providers: action.payload,
+      }
+    case types.GET_PUBLISHERS:
+      return {
+        ...state,
+        publishers: action.payload,
+      }
+    case types.GET_CATEGORIES:
+      return {
+        ...state,
+        categories: action.payload,
+      }
+    case types.GET_MCU:
+      return {
+        ...state,
+        mcu: action.payload,
       }
     case types.RESOURCES_ERROR:
       return {

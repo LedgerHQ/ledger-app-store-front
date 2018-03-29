@@ -1,7 +1,8 @@
 // @flow
 import * as React from 'react'
-import Button from 'material-ui/Button'
+import { connect } from 'react-redux'
 import TextField from 'material-ui/TextField'
+import Button from 'material-ui/Button'
 import MenuItem from 'material-ui/Menu/MenuItem'
 import Select from 'material-ui/Select'
 import Input, { InputLabel } from 'material-ui/Input'
@@ -9,42 +10,25 @@ import { FormControl } from 'material-ui/Form'
 import Checkbox from 'material-ui/Checkbox'
 
 import Form from '../../../utils/form'
+import { createResource as createResourceAction } from '../../../../actions/resources-actions'
 
 type Props = {
-  devices: Object[],
-  providers: Object[],
   createResource: Function,
+  type: string,
+  providers: Array<Object>,
 }
 
 const initFields = {
-  device: '',
+  providers: [],
   name: '',
   description: '',
-  display_name: '',
-  target_id: '',
-  providers: [],
 }
 
-const DeviceVersion = ({ devices, createResource, providers }: Props): React.Node => (
+const ResourcesForm = ({ createResource, providers, type }: Props): React.Node => (
   <React.Fragment>
-    <Form type="device_versions" initFields={initFields}>
-      {({ onChange, onSelectChange, onSubmit, fields }) => (
-        <form className="form" onSubmit={onSubmit(createResource)}>
-          <TextField
-            id="device"
-            select
-            required
-            label="device"
-            value={fields.device}
-            onChange={onSelectChange('device')}
-            className="input"
-          >
-            {devices.map(device => (
-              <MenuItem key={device.id} value={device.id}>
-                {device.name}
-              </MenuItem>
-            ))}
-          </TextField>
+    <Form initFields={initFields} type={type}>
+      {({ onChange, onSubmit, fields, onSelectChange }) => (
+        <form onSubmit={onSubmit(createResource)} className="form">
           <TextField
             id="name"
             label="name"
@@ -60,22 +44,6 @@ const DeviceVersion = ({ devices, createResource, providers }: Props): React.Nod
             type="string"
             onChange={onChange('description')}
             value={fields.description}
-            className="input"
-          />
-          <TextField
-            id="display_name"
-            label="display name"
-            type="string"
-            onChange={onChange('display_name')}
-            value={fields.display_name}
-            className="input"
-          />
-          <TextField
-            id="target_id"
-            label="target id"
-            type="string"
-            onChange={onChange('target_id')}
-            value={fields.target_id}
             className="input"
           />
           <FormControl className="input">
@@ -124,4 +92,6 @@ const DeviceVersion = ({ devices, createResource, providers }: Props): React.Nod
   </React.Fragment>
 )
 
-export default DeviceVersion
+export default connect(null, {
+  createResource: createResourceAction,
+})(ResourcesForm)
