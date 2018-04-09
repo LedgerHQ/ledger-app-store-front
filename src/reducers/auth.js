@@ -56,6 +56,10 @@ const authReducer = (state: State = initialState, action: Action): State => {
         pending: false,
         loading: false,
       }
+    case types.LOGOUT:
+      return {
+        ...initialState,
+      }
     default:
       return state
   }

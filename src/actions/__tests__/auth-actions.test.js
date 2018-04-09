@@ -34,6 +34,11 @@ describe('auth actions', () => {
     expect(actions.loginFinish()).toEqual(expected)
   })
 
+  test('logout should return the correct action', () => {
+    const expected = { type: types.LOGOUT }
+    expect(actions.logout()).toEqual(expected)
+  })
+
   describe('login', () => {
     let store
 

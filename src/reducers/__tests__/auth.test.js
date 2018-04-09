@@ -33,6 +33,13 @@ describe('auth reducer', () => {
     expect(newState).toEqual(expected)
   })
 
+  test(`should reduce ${types.LOGOUT}`, () => {
+    const expected = { ...initialState }
+    const loggedState = { ...initialState, token: 'token', success: true }
+    const newState = authReducer(loggedState, actions.logout())
+    expect(newState).toEqual(expected)
+  })
+
   test('should return state if action is not handled', () => {
     const expected = { ...initialState }
     const newState = authReducer(undefined, { type: 'SOME_OTHER_ACTION' })
