@@ -30,7 +30,7 @@ class TableCreator extends React.Component<Props> {
 
   render(): React.Node {
     const { items } = this.props
-    const first = items[0]
+    const first = items && items.length > 0 ? items[0] : {}
     return (
       <div>
         <Table>

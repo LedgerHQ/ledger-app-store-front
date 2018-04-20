@@ -4,16 +4,16 @@ import { connect } from 'react-redux'
 import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
 
-import Table from '../../common/table'
-import CollapsibleList from '../../common/list/collapsible-list'
-import {
-  resourcesApplicationsSelector,
-  resourcesFirmwaresSelector,
-} from '../../../selectors/resources-selectors'
+// import CollapsibleList from '../../common/list/collapsible-list'
+import { allResourcesSelector } from '../../../selectors/resources-selectors'
+import { fetchResources as fetchResourcesAction } from '../../../actions/resources-actions'
+import { capitalizeFirst } from '../../../utils/string'
 
 type Props = {
-  applications: Object[],
-  firmwares: Object[],
+  resources: {
+    [string]: Array<{}>,
+  },
+  fetchResources: Function,
 }
 
 type State = {}
@@ -22,31 +22,28 @@ class Resources extends React.Component<Props, State> {
   props: Props
   state: State
 
+  componentDidMount() {
+    const { fetchResources } = this.props
+    fetchResources()
+  }
+
   render(): React.Node {
-    const { applications, firmwares } = this.props
+    const { resources } = this.props
 
     return (
       <React.Fragment>
-        <section>
-          <Paper>
-            <div className="title">
-              <Typography variant="title" color="secondary">
-                Applications
-              </Typography>
-            </div>
-            <CollapsibleList items={applications} subItemsKey="app_version" />
-          </Paper>
-        </section>
-        <section>
-          <Paper>
-            <div className="title">
-              <Typography variant="title" color="secondary">
-                Firmwares Versions
-              </Typography>
-            </div>
-            <Table items={firmwares} />
-          </Paper>
-        </section>
+        {Object.keys(resources).map((key: string): React.Node => (
+          <section key={key}>
+            <Paper>
+              <div className="title">
+                <Typography variant="title" color="secondary">
+                  {capitalizeFirst(key)}
+                </Typography>
+              </div>
+              {/* <CollapsibleList items={resources[key]} subItemsKey={getVersionKey(key)} /> */}
+            </Paper>
+          </section>
+        ))}
 
         <style jsx>{`
           section {
@@ -63,8 +60,7 @@ class Resources extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: Object): Object => ({
-  applications: resourcesApplicationsSelector(state) || [],
-  firmwares: resourcesFirmwaresSelector(state) || [],
+  resources: allResourcesSelector(state),
 })
 
-export default connect(mapStateToProps)(Resources)
+export default connect(mapStateToProps, { fetchResources: fetchResourcesAction })(Resources)

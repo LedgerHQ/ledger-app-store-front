@@ -11,54 +11,57 @@ import Checkbox from 'material-ui/Checkbox'
 import Form from '../../../utils/form'
 
 type Props = {
-  applications: Object[],
-  deviceVersions: Object[],
+  firmwares: Object[],
   firmwareVersions: Object[],
+  deviceVersions: Object[],
   providers: Object[],
   createResource: Function,
 }
 
 const initFields = {
-  app: '',
+  se_firmware: '',
   name: '',
   description: '',
   display_name: '',
   notes: '',
-  hash: '',
-  perso: '',
-  icon: '',
-  firmware: '',
-  firmware_key: '',
-  delete: '',
-  delete_key: '',
+  final_perso: '',
+  final_target_id: '',
+  final_firmware: '',
+  final_firmware_key: '',
+  final_hash: '',
+  osu_perso: '',
+  osu_target_id: '',
+  osu_firmware: '',
+  osu_firmware_key: '',
+  osu_hash: '',
   device_versions: [],
-  se_firmware_versions: [],
+  previous_se_firmware_versions: [],
   providers: [],
 }
 
-const ApplicationVersion = ({
-  applications,
+const SeFirmwareVersion = ({
+  firmwares,
   firmwareVersions,
   deviceVersions,
   createResource,
   providers,
 }: Props): React.Node => (
   <React.Fragment>
-    <Form type="application_versions" initFields={initFields}>
+    <Form type="firmware_versions" initFields={initFields}>
       {({ onChange, onSelectChange, onSubmit, fields }) => (
         <form className="form" onSubmit={onSubmit(createResource)}>
           <TextField
-            id="app"
+            id="se_firmware"
             select
             required
-            label="application"
-            value={fields.app}
-            onChange={onSelectChange('app')}
+            label="se firmware"
+            value={fields.se_firmware}
+            onChange={onSelectChange('se_firmware')}
             className="input"
           >
-            {applications.map(app => (
-              <MenuItem key={app.id} value={app.id}>
-                {app.name}
+            {firmwares.map(firmware => (
+              <MenuItem key={firmware.id} value={firmware.id}>
+                {firmware.name}
               </MenuItem>
             ))}
           </TextField>
@@ -81,18 +84,10 @@ const ApplicationVersion = ({
           />
           <TextField
             id="display_name"
-            label="display name"
+            label="display_name"
             type="string"
             onChange={onChange('display_name')}
             value={fields.display_name}
-            className="input"
-          />
-          <TextField
-            id="icon"
-            label="icon"
-            type="string"
-            onChange={onChange('icon')}
-            value={fields.icon}
             className="input"
           />
           <TextField
@@ -104,51 +99,83 @@ const ApplicationVersion = ({
             className="input"
           />
           <TextField
-            id="hash"
-            label="hash"
+            id="final_perso"
+            label="final perso"
             type="string"
-            onChange={onChange('hash')}
-            value={fields.hash}
+            onChange={onChange('final_perso')}
+            value={fields.final_perso}
             className="input"
           />
           <TextField
-            id="perso"
-            label="perso"
+            id="final_target_id"
+            label="final target id"
             type="string"
-            onChange={onChange('perso')}
-            value={fields.perso}
+            onChange={onChange('final_target_id')}
+            value={fields.final_target_id}
             className="input"
           />
           <TextField
-            id="firmware"
-            label="firmware"
+            id="final_firmware"
+            label="final firmware"
             type="string"
-            onChange={onChange('firmware')}
-            value={fields.firmware}
+            onChange={onChange('final_firmware')}
+            value={fields.final_firmware}
             className="input"
           />
           <TextField
-            id="firmware_key"
-            label="firmware key"
+            id="final_firmware_key"
+            label="final firmware key"
             type="string"
-            onChange={onChange('firmware_key')}
-            value={fields.firmware_key}
+            onChange={onChange('final_firmware_key')}
+            value={fields.final_firmware_key}
             className="input"
           />
           <TextField
-            id="delete"
-            label="delete"
+            id="final_hash"
+            label="final hash"
             type="string"
-            onChange={onChange('delete')}
-            value={fields.delete}
+            onChange={onChange('final_hash')}
+            value={fields.final_hash}
             className="input"
           />
           <TextField
-            id="delete_key"
-            label="delete key"
+            id="osu_perso"
+            label="osu perso"
             type="string"
-            onChange={onChange('delete_key')}
-            value={fields.delete_key}
+            onChange={onChange('osu_perso')}
+            value={fields.osu_perso}
+            className="input"
+          />
+          <TextField
+            id="osu_target_id"
+            label="osu target id"
+            type="string"
+            onChange={onChange('osu_target_id')}
+            value={fields.osu_target_id}
+            className="input"
+          />
+          <TextField
+            id="osu_firmware"
+            label="osu firmware"
+            type="string"
+            onChange={onChange('osu_firmware')}
+            value={fields.osu_firmware}
+            className="input"
+          />
+          <TextField
+            id="osu_firmware_key"
+            label="osu firmware key"
+            type="string"
+            onChange={onChange('osu_firmware_key')}
+            value={fields.osu_firmware_key}
+            className="input"
+          />
+          <TextField
+            id="osu_hash"
+            label="osu hash"
+            type="string"
+            onChange={onChange('osu_hash')}
+            value={fields.osu_hash}
             className="input"
           />
           <FormControl className="input">
@@ -182,7 +209,7 @@ const ApplicationVersion = ({
               value={fields.device_versions}
               renderValue={selected =>
                 deviceVersions
-                  .filter(version => selected.includes(version.id))
+                  .filter(provider => selected.includes(provider.id))
                   .map(el => el.name)
                   .join(', ')
               }
@@ -196,22 +223,24 @@ const ApplicationVersion = ({
             </Select>
           </FormControl>
           <FormControl className="input">
-            <InputLabel htmlFor="se_firmware_versions">se firmwares version(s)</InputLabel>
+            <InputLabel htmlFor="previous_se_firmware_versions">se firmwares version(s)</InputLabel>
             <Select
               multiple
-              input={<Input id="se_firmware_versions" />}
-              onChange={onSelectChange('se_firmware_versions')}
-              value={fields.se_firmware_versions}
+              input={<Input id="previous_se_firmware_versions" />}
+              onChange={onSelectChange('previous_se_firmware_versions')}
+              value={fields.previous_se_firmware_versions}
               renderValue={selected =>
                 firmwareVersions
-                  .filter(version => selected.includes(version.id))
+                  .filter(provider => selected.includes(provider.id))
                   .map(el => el.name)
                   .join(', ')
               }
             >
               {firmwareVersions.map(version => (
                 <MenuItem key={version.name} value={version.id}>
-                  <Checkbox checked={fields.se_firmware_versions.indexOf(version.id) > -1} />
+                  <Checkbox
+                    checked={fields.previous_se_firmware_versions.indexOf(version.id) > -1}
+                  />
                   {`${version.topName} - ${version.name}`}
                 </MenuItem>
               ))}
@@ -241,4 +270,4 @@ const ApplicationVersion = ({
   </React.Fragment>
 )
 
-export default ApplicationVersion
+export default SeFirmwareVersion

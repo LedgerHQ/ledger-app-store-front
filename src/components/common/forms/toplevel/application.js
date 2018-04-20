@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react'
-import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
+import Button from 'material-ui/Button'
 import MenuItem from 'material-ui/Menu/MenuItem'
 import Select from 'material-ui/Select'
 import Input, { InputLabel } from 'material-ui/Input'
@@ -11,40 +11,30 @@ import Checkbox from 'material-ui/Checkbox'
 import Form from '../../../utils/form'
 
 type Props = {
-  devices: Object[],
-  providers: Object[],
   createResource: Function,
+  providers: Array<Object>,
+  categories: Array<Object>,
+  publishers: Array<Object>,
 }
 
 const initFields = {
-  device: '',
+  providers: [],
+  category: '',
+  publisher: '',
   name: '',
   description: '',
-  display_name: '',
-  target_id: '',
-  providers: [],
 }
 
-const DeviceVersion = ({ devices, createResource, providers }: Props): React.Node => (
+const ApplicationForm = ({
+  createResource,
+  providers,
+  categories,
+  publishers,
+}: Props): React.Node => (
   <React.Fragment>
-    <Form type="device_versions" initFields={initFields}>
-      {({ onChange, onSelectChange, onSubmit, fields }) => (
-        <form className="form" onSubmit={onSubmit(createResource)}>
-          <TextField
-            id="device"
-            select
-            required
-            label="device"
-            value={fields.device}
-            onChange={onSelectChange('device')}
-            className="input"
-          >
-            {devices.map(device => (
-              <MenuItem key={device.id} value={device.id}>
-                {device.name}
-              </MenuItem>
-            ))}
-          </TextField>
+    <Form initFields={initFields} type="applications">
+      {({ onChange, onSubmit, fields, onSelectChange }) => (
+        <form onSubmit={onSubmit(createResource)} className="form">
           <TextField
             id="name"
             label="name"
@@ -60,22 +50,6 @@ const DeviceVersion = ({ devices, createResource, providers }: Props): React.Nod
             type="string"
             onChange={onChange('description')}
             value={fields.description}
-            className="input"
-          />
-          <TextField
-            id="display_name"
-            label="display name"
-            type="string"
-            onChange={onChange('display_name')}
-            value={fields.display_name}
-            className="input"
-          />
-          <TextField
-            id="target_id"
-            label="target id"
-            type="string"
-            onChange={onChange('target_id')}
-            value={fields.target_id}
             className="input"
           />
           <FormControl className="input">
@@ -96,6 +70,34 @@ const DeviceVersion = ({ devices, createResource, providers }: Props): React.Nod
                 <MenuItem key={provider.name} value={provider.id}>
                   <Checkbox checked={fields.providers.indexOf(provider.id) > -1} />
                   {provider.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl className="input">
+            <InputLabel htmlFor="publisher">publisher</InputLabel>
+            <Select
+              input={<Input id="publisher" />}
+              onChange={onSelectChange('publisher')}
+              value={fields.publisher}
+            >
+              {publishers.map(publisher => (
+                <MenuItem key={publisher.name} value={publisher.id}>
+                  {publisher.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl className="input">
+            <InputLabel htmlFor="category">category</InputLabel>
+            <Select
+              input={<Input id="category" />}
+              onChange={onSelectChange('category')}
+              value={fields.category}
+            >
+              {categories.map(category => (
+                <MenuItem key={category.name} value={category.id}>
+                  {category.name}
                 </MenuItem>
               ))}
             </Select>
@@ -124,4 +126,4 @@ const DeviceVersion = ({ devices, createResource, providers }: Props): React.Nod
   </React.Fragment>
 )
 
-export default DeviceVersion
+export default ApplicationForm

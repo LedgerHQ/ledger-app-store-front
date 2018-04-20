@@ -8,6 +8,26 @@ import * as resourcesApi from '../../api/resources-api'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
+const applications = [
+  { name: 'bitcoin', id: 1, application_versions: [{ id: 1 }] },
+  { name: 'fido u2f', id: 2, application_versions: [{ id: 3 }] },
+]
+const firmwares = [
+  { name: '1.4.1', id: 28, se_firmware_versions: [{ id: 1 }] },
+  { name: '1.3.0', id: 32, se_firmware_versions: [{ id: 3 }] },
+]
+const devices = [
+  { name: 'nano blue', id: 4, device_versions: [{ id: 1 }] },
+  { name: 'nano s', id: 12, device_versions: [{ id: 3 }] },
+]
+const providers = [{ name: '1.4.1', id: 28 }, { name: '1.3.0', id: 32 }]
+const publishers = [{ name: 'ledger', id: 28 }, { name: 'amazon', id: 32 }]
+const categories = [{ name: 'gaming', id: 28 }, { name: 'finance', id: 32 }]
+const mcu = [
+  { name: 'mcu', id: 28, mcu_versions: [{ id: 1 }] },
+  { name: 'mcu2', id: 32, mcu_versions: [{ id: 3 }] },
+]
+
 describe('resources actions', () => {
   test('resourcesError should return the correct action', () => {
     const expected = { type: types.RESOURCES_ERROR, payload: 'error' }
@@ -15,116 +35,107 @@ describe('resources actions', () => {
   })
 
   test('getApplications should return the correct action', () => {
-    const applications = [{ name: 'app1' }, { name: 'app2' }]
     const expected = { type: types.GET_APPLICATIONS, payload: applications }
     expect(actions.getApplications(applications)).toEqual(expected)
   })
 
-  test('getFirmware should return the correct action', () => {
-    const firmwares = [{ name: 'firm1' }, { name: 'firm2' }]
+  test('getFirmwares should return the correct action', () => {
     const expected = { type: types.GET_FIRMWARES, payload: firmwares }
-    expect(actions.getFirmware(firmwares)).toEqual(expected)
+    expect(actions.getFirmwares(firmwares)).toEqual(expected)
   })
 
-  describe('fetchApplications', () => {
-    let store
-
-    beforeEach(() => {
-      store = mockStore({
-        auth: {
-          token: 'token',
-        },
-      })
-      resourcesApi.getApplications = jest.fn()
-    })
-
-    test('should return a list of applications', async done => {
-      const applications = [{ name: 'app1' }, { name: 'app2' }]
-      resourcesApi.getApplications.mockResolvedValue(applications)
-
-      const expected = [actions.getApplications(applications)]
-
-      await store.dispatch(actions.fetchApplications())
-      const dispatched = store.getActions()
-      expect(dispatched).toEqual(expected)
-      done()
-    })
-
-    describe('should dispatch an error', () => {
-      test('when api returns a json with error', async done => {
-        const err = { error: 'could not retrieve list of applications' }
-        resourcesApi.getApplications.mockRejectedValue(err)
-
-        const expected = [actions.resourcesError(err.error)]
-
-        await store.dispatch(actions.fetchApplications())
-        const dispatched = store.getActions()
-        expect(dispatched).toEqual(expected)
-        done()
-      })
-
-      test('when api throws an error', async done => {
-        const err = { message: 'could not retrieve list of applications' }
-        resourcesApi.getApplications.mockRejectedValue(err)
-
-        const expected = [actions.resourcesError(err.message)]
-
-        await store.dispatch(actions.fetchApplications())
-        const dispatched = store.getActions()
-        expect(dispatched).toEqual(expected)
-        done()
-      })
-    })
+  test('getDevices should return the correct action', () => {
+    const expected = { type: types.GET_DEVICES, payload: devices }
+    expect(actions.getDevices(devices)).toEqual(expected)
   })
 
-  describe('fetchFirmwares', () => {
-    let store
+  test('getProviders should return the correct action', () => {
+    const expected = { type: types.GET_PROVIDERS, payload: providers }
+    expect(actions.getProviders(providers)).toEqual(expected)
+  })
 
-    beforeEach(() => {
-      store = mockStore({
-        auth: {
-          token: 'token',
-        },
-      })
-      resourcesApi.getFirmwares = jest.fn()
+  test('getPublishers should return the correct action', () => {
+    const expected = { type: types.GET_PUBLISHERS, payload: publishers }
+    expect(actions.getPublishers(publishers)).toEqual(expected)
+  })
+
+  test('getCategories should return the correct action', () => {
+    const expected = { type: types.GET_CATEGORIES, payload: categories }
+    expect(actions.getCategories(categories)).toEqual(expected)
+  })
+
+  test('getMcu should return the correct action', () => {
+    const expected = { type: types.GET_MCU, payload: mcu }
+    expect(actions.getMcu(mcu)).toEqual(expected)
+  })
+
+  test('createResourceAction should return the correct action', () => {
+    const expected = { type: types.CREATE_RESOURCE }
+    expect(actions.createResourceAction()).toEqual(expected)
+  })
+
+  test('createResourceSuccess should return the correct action', () => {
+    const expected = { type: types.CREATE_RESOURCE_SUCCESS }
+    expect(actions.createResourceSuccess()).toEqual(expected)
+  })
+
+  test('createResourceVersionAction should return the correct action', () => {
+    const expected = { type: types.CREATE_RESOURCE_VERSION }
+    expect(actions.createResourceVersionAction()).toEqual(expected)
+  })
+
+  test('createResourceVersionSuccess should return the correct action', () => {
+    const expected = { type: types.CREATE_RESOURCE_VERSION_SUCCESS }
+    expect(actions.createResourceVersionSuccess()).toEqual(expected)
+  })
+
+  describe('typeDispatch', () => {
+    test('should return getApplications', () => {
+      const resource = []
+      const expected = { type: types.GET_APPLICATIONS, payload: resource }
+      expect(actions.typeDispatch('applications', resource)).toEqual(expected)
     })
 
-    test('should return a list of firmwares', async done => {
-      const firmwares = [{ name: 'firm1' }, { name: 'firm2' }]
-      resourcesApi.getFirmwares.mockResolvedValue(firmwares)
-
-      const expected = [actions.getFirmware(firmwares)]
-
-      await store.dispatch(actions.fetchFirmwares())
-      const dispatched = store.getActions()
-      expect(dispatched).toEqual(expected)
-      done()
+    test('should return getProviders', () => {
+      const resource = []
+      const expected = { type: types.GET_PROVIDERS, payload: resource }
+      expect(actions.typeDispatch('providers', resource)).toEqual(expected)
     })
 
-    describe('should dispatch an error', () => {
-      test('when api returns a json with error', async done => {
-        const err = { error: 'could not retrieve list of firmwares' }
-        resourcesApi.getFirmwares.mockRejectedValue(err)
+    test('should return getPublishers', () => {
+      const resource = []
+      const expected = { type: types.GET_PUBLISHERS, payload: resource }
+      expect(actions.typeDispatch('publishers', resource)).toEqual(expected)
+    })
 
-        const expected = [actions.resourcesError(err.error)]
+    test('should return getFirmwares', () => {
+      const resource = []
+      const expected = { type: types.GET_FIRMWARES, payload: resource }
+      expect(actions.typeDispatch('firmwares', resource)).toEqual(expected)
+    })
 
-        await store.dispatch(actions.fetchFirmwares())
-        const dispatched = store.getActions()
-        expect(dispatched).toEqual(expected)
-        done()
-      })
+    test('should return getDevices', () => {
+      const resource = []
+      const expected = { type: types.GET_DEVICES, payload: resource }
+      expect(actions.typeDispatch('devices', resource)).toEqual(expected)
+    })
 
-      test('when api throws an error', async done => {
-        const err = { message: 'could not retrieve list of firmwares' }
-        resourcesApi.getFirmwares.mockRejectedValue(err)
+    test('should return getCategories', () => {
+      const resource = []
+      const expected = { type: types.GET_CATEGORIES, payload: resource }
+      expect(actions.typeDispatch('categories', resource)).toEqual(expected)
+    })
 
-        const expected = [actions.resourcesError(err.message)]
+    test('should return getMcu', () => {
+      const resource = []
+      const expected = { type: types.GET_MCU, payload: resource }
+      expect(actions.typeDispatch('mcu', resource)).toEqual(expected)
+    })
 
-        await store.dispatch(actions.fetchFirmwares())
-        const dispatched = store.getActions()
-        expect(dispatched).toEqual(expected)
-        done()
-      })
+    test('should return an empty action', () => {
+      const resource = []
+      const expected = { type: '' }
+      expect(actions.typeDispatch('something', resource)).toEqual(expected)
     })
   })
 
@@ -137,17 +148,28 @@ describe('resources actions', () => {
           token: 'token',
         },
       })
-      resourcesApi.getFirmwares = jest.fn()
-      resourcesApi.getApplications = jest.fn()
+      resourcesApi.getResource = jest.fn()
     })
 
     test('should dispatch the correct actions', async done => {
-      const firmwares = [{ name: 'firm1' }, { name: 'firm2' }]
-      const applications = [{ name: 'app1' }, { name: 'app2' }]
-      resourcesApi.getApplications.mockResolvedValue(applications)
-      resourcesApi.getFirmwares.mockResolvedValue(firmwares)
+      resourcesApi.getResource
+        .mockResolvedValueOnce(firmwares)
+        .mockResolvedValueOnce(applications)
+        .mockResolvedValueOnce(devices)
+        .mockResolvedValueOnce(publishers)
+        .mockResolvedValueOnce(providers)
+        .mockResolvedValueOnce(categories)
+        .mockResolvedValueOnce(mcu)
 
-      const expected = [actions.getApplications(applications), actions.getFirmware(firmwares)]
+      const expected = [
+        actions.getFirmwares(firmwares),
+        actions.getApplications(applications),
+        actions.getDevices(devices),
+        actions.getPublishers(publishers),
+        actions.getProviders(providers),
+        actions.getCategories(categories),
+        actions.getMcu(mcu),
+      ]
 
       await store.dispatch(actions.fetchResources())
       const dispatched = store.getActions()
@@ -155,67 +177,56 @@ describe('resources actions', () => {
       done()
     })
 
-    describe('when fetchFirmwares fail', () => {
-      test("should dispatch the correct actions (with error = { error: 'error message'})", async done => {
-        const err = { error: 'could not retrieve list of firmwares' }
-        const applications = [{ name: 'app1' }, { name: 'app2' }]
-        resourcesApi.getApplications.mockResolvedValue(applications)
-        resourcesApi.getFirmwares.mockRejectedValue(err)
+    test('when a resource fails `json.error`, should dispatch the correct actions', async done => {
+      resourcesApi.getResource
+        .mockResolvedValueOnce(firmwares)
+        .mockResolvedValueOnce(applications)
+        .mockResolvedValueOnce(devices)
+        .mockResolvedValueOnce(publishers)
+        .mockResolvedValueOnce(providers)
+        .mockResolvedValueOnce(categories)
+        .mockRejectedValueOnce({ error: 'could not fetch mcu' })
 
-        const expected = [actions.getApplications(applications), actions.resourcesError(err.error)]
+      const expected = [
+        actions.getFirmwares(firmwares),
+        actions.getApplications(applications),
+        actions.getDevices(devices),
+        actions.getPublishers(publishers),
+        actions.getProviders(providers),
+        actions.getCategories(categories),
+        actions.resourcesError('could not fetch mcu'),
+      ]
 
-        await store.dispatch(actions.fetchResources())
-        const dispatched = store.getActions()
-        expect(dispatched).toEqual(expected)
-        done()
-      })
-
-      test("should dispatch the correct actions (with error = { message: 'error message'})", async done => {
-        const err = { message: 'could not retrieve list of firmwares' }
-        const applications = [{ name: 'app1' }, { name: 'app2' }]
-        resourcesApi.getApplications.mockResolvedValue(applications)
-        resourcesApi.getFirmwares.mockRejectedValue(err)
-
-        const expected = [
-          actions.getApplications(applications),
-          actions.resourcesError(err.message),
-        ]
-
-        await store.dispatch(actions.fetchResources())
-        const dispatched = store.getActions()
-        expect(dispatched).toEqual(expected)
-        done()
-      })
+      await store.dispatch(actions.fetchResources())
+      const dispatched = store.getActions()
+      expect(dispatched).toEqual(expected)
+      done()
     })
 
-    describe('when fetchApplications fail', () => {
-      test("should dispatch the correct actions (with error = { error: 'error message'})", async done => {
-        const err = { error: 'could not retrieve list of firmwares' }
-        const firmwares = [{ name: 'firm1' }, { name: 'firm2' }]
-        resourcesApi.getApplications.mockRejectedValue(err)
-        resourcesApi.getFirmwares.mockResolvedValue(firmwares)
+    test('when a resource fails `json.message`, should dispatch the correct actions', async done => {
+      resourcesApi.getResource
+        .mockResolvedValueOnce(firmwares)
+        .mockResolvedValueOnce(applications)
+        .mockResolvedValueOnce(devices)
+        .mockResolvedValueOnce(publishers)
+        .mockResolvedValueOnce(providers)
+        .mockResolvedValueOnce(categories)
+        .mockRejectedValueOnce({ message: 'could not fetch mcu' })
 
-        const expected = [actions.resourcesError(err.error), actions.getFirmware(firmwares)]
+      const expected = [
+        actions.getFirmwares(firmwares),
+        actions.getApplications(applications),
+        actions.getDevices(devices),
+        actions.getPublishers(publishers),
+        actions.getProviders(providers),
+        actions.getCategories(categories),
+        actions.resourcesError('could not fetch mcu'),
+      ]
 
-        await store.dispatch(actions.fetchResources())
-        const dispatched = store.getActions()
-        expect(dispatched).toEqual(expected)
-        done()
-      })
-
-      test("should dispatch the correct actions (with error = { message: 'error message'})", async done => {
-        const err = { message: 'could not retrieve list of firmwares' }
-        const firmwares = [{ name: 'firm1' }, { name: 'firm2' }]
-        resourcesApi.getApplications.mockRejectedValue(err)
-        resourcesApi.getFirmwares.mockResolvedValue(firmwares)
-
-        const expected = [actions.resourcesError(err.message), actions.getFirmware(firmwares)]
-
-        await store.dispatch(actions.fetchResources())
-        const dispatched = store.getActions()
-        expect(dispatched).toEqual(expected)
-        done()
-      })
+      await store.dispatch(actions.fetchResources())
+      const dispatched = store.getActions()
+      expect(dispatched).toEqual(expected)
+      done()
     })
   })
 })
