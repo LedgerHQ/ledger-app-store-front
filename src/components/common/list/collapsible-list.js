@@ -6,11 +6,11 @@ import Collapse from 'material-ui/transitions/Collapse'
 import ExpandLess from 'material-ui-icons/ExpandLess'
 import ExpandMore from 'material-ui-icons/ExpandMore'
 
-import Table from '../table'
+// import Table from '../table'
 
 type Props = {
   items: Object[],
-  subItemsKey: string,
+  // subItemsKey: string,
   title?: string,
 }
 type State = {
@@ -38,7 +38,7 @@ class CollapsibleList extends React.Component<Props, State> {
   }
 
   render() {
-    const { items, subItemsKey, title } = this.props
+    const { items, /* subItemsKey, */ title } = this.props
     return (
       <List
         component="nav"
@@ -51,9 +51,7 @@ class CollapsibleList extends React.Component<Props, State> {
               {this.state.selected === idx ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={this.state.selected === idx} timeout="auto" unmountOnExit>
-              <div>
-                <Table items={item[subItemsKey]} />
-              </div>
+              <div>{/* <Table items={item[subItemsKey]} /> */}</div>
             </Collapse>
           </React.Fragment>
         ))}

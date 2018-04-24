@@ -26,6 +26,7 @@ export const login = async (username: string, password: string): Promise<Object>
     const json = await response.json()
 
     if (!response.ok || json.error) {
+      json.status = response.status
       throw json
     }
 
@@ -48,19 +49,13 @@ export const finishLogin = async (
   username: string,
 ): Promise<Object> => {
   try {
-    const response = await fetchWithToken(token)(`${BASE_URL}/api/finish_auth`, {
+    const json = await fetchWithToken(token)(`${BASE_URL}/api/finish_auth`, {
       method: 'POST',
       body: JSON.stringify({
         username,
         response: challenge,
       }),
     })
-
-    const json = await response.json()
-
-    if (!response.ok || json.error) {
-      throw json
-    }
 
     return json
   } catch (err) {

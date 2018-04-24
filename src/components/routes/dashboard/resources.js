@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
 
-// import CollapsibleList from '../../common/list/collapsible-list'
+import CollapsibleList from '../../common/list/collapsible-list'
 import { allResourcesSelector } from '../../../selectors/resources-selectors'
 import { fetchResources as fetchResourcesAction } from '../../../actions/resources-actions'
 import { capitalizeFirst } from '../../../utils/string'
@@ -32,18 +32,20 @@ class Resources extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        {Object.keys(resources).map((key: string): React.Node => (
-          <section key={key}>
-            <Paper>
-              <div className="title">
-                <Typography variant="title" color="secondary">
-                  {capitalizeFirst(key)}
-                </Typography>
-              </div>
-              {/* <CollapsibleList items={resources[key]} subItemsKey={getVersionKey(key)} /> */}
-            </Paper>
-          </section>
-        ))}
+        {Object.keys(resources)
+          .sort()
+          .map((key: string): React.Node => (
+            <section key={key}>
+              <Paper>
+                <div className="title">
+                  <Typography variant="title" color="secondary">
+                    {capitalizeFirst(key)}
+                  </Typography>
+                </div>
+                <CollapsibleList items={resources[key]} subItemsKey="" />
+              </Paper>
+            </section>
+          ))}
 
         <style jsx>{`
           section {

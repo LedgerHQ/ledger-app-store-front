@@ -10,15 +10,9 @@ const BASE_URL = process.env.API_URL || 'http://localhost:8000'
  */
 export const getChallenge = async (token: string): Promise<Object> => {
   try {
-    const response = await fetchWithToken(token)(`${BASE_URL}/api/key_registration`, {
+    const json = await fetchWithToken(token)(`${BASE_URL}/api/key_registration`, {
       method: 'GET',
     })
-
-    const json = await response.json()
-
-    if (!response.ok || json.error) {
-      throw json
-    }
 
     return json
   } catch (err) {
@@ -34,18 +28,12 @@ export const getChallenge = async (token: string): Promise<Object> => {
  */
 export const verifyChallenge = async (token: string, challenge: Object): Promise<Object> => {
   try {
-    const response = await fetchWithToken(token)(`${BASE_URL}/api/key_registration`, {
+    const json = await fetchWithToken(token)(`${BASE_URL}/api/key_registration`, {
       method: 'POST',
       body: JSON.stringify({
         response: challenge,
       }),
     })
-
-    const json = response.json()
-
-    if (!response.ok || json.error) {
-      throw json
-    }
 
     return json
   } catch (err) {

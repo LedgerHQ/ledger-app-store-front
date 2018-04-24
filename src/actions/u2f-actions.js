@@ -15,9 +15,10 @@ export const u2fDeviceSuccess = (): Action => ({
   type: types.U2F_DEVICE_SUCCESS,
 })
 
-export const u2fError = (error: string): Action => ({
+export const u2fError = (error: string, status?: number): Action => ({
   type: types.U2F_ERROR,
   payload: error,
+  status,
 })
 
 export const u2fSendChallenge = (): Action => ({

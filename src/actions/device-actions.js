@@ -3,6 +3,7 @@ import * as u2fApi from '../api/u2f-api'
 import * as types from './action-types'
 import * as deviceApi from '../api/device-api'
 import { authTokenSelector } from '../selectors/auth-selectors'
+import { getErrorFromJson } from '../utils/errors'
 
 type Action = {
   type: string,
@@ -19,9 +20,10 @@ export const u2fDeviceChallengeSuccess = (): Action => ({
   type: types.U2F_DEVICE_CHALLENGE_SUCCESS,
 })
 
-export const u2fDeviceError = (error: string): Action => ({
+export const u2fDeviceError = (error: string, status?: number): Action => ({
   type: types.U2F_DEVICE_ERROR,
   payload: error,
+  status,
 })
 
 export const u2fDeviceRegister = (): Action => ({ type: types.U2F_DEVICE_REGISTER })
@@ -52,6 +54,7 @@ export const registerU2FDevice = (): Function => async (
       dispatch(u2fDeviceError('server register error'))
     }
   } catch (err) {
-    dispatch(u2fDeviceError(err.message ? err.message : err.error))
+    const error = getErrorFromJson(err)
+    dispatch(u2fDeviceError(error, err.status))
   }
 }

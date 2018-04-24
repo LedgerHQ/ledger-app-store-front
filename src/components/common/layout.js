@@ -7,18 +7,21 @@ import Toolbar from 'material-ui/Toolbar/Toolbar'
 import Button from 'material-ui/Button'
 import IconButton from 'material-ui/IconButton'
 import HomeIcon from 'material-ui-icons/Home'
+import PowerIcon from 'material-ui-icons/PowerSettingsNew'
 import AccountCirleIcon from 'material-ui-icons/AccountCircle'
 
 import Title from './title'
 import { authSuccessSelector } from '../../selectors/auth-selectors'
+import { logout as logoutAction } from '../../actions/auth-actions'
 
 type Props = {
   children?: React.Node,
   loggedIn: boolean,
   title: string,
+  logout: Function,
 }
 
-export const Layout = ({ children, loggedIn, title }: Props): React.Node => (
+export const Layout = ({ children, loggedIn, title, logout }: Props): React.Node => (
   <div>
     <AppBar position="static">
       <Toolbar>
@@ -29,9 +32,14 @@ export const Layout = ({ children, loggedIn, title }: Props): React.Node => (
           {title}
         </Title>
         {loggedIn ? (
-          <IconButton component={Link} color="inherit" to="/dashboard">
-            <AccountCirleIcon />
-          </IconButton>
+          <React.Fragment>
+            <IconButton component={Link} color="inherit" to="/dashboard">
+              <AccountCirleIcon />
+            </IconButton>
+            <IconButton color="inherit" onClick={logout}>
+              <PowerIcon />
+            </IconButton>
+          </React.Fragment>
         ) : (
           <Button component={Link} color="inherit" to="/login">
             Login
@@ -68,4 +76,4 @@ const mapStateToProps = state => ({
   loggedIn: authSuccessSelector(state),
 })
 
-export default connect(mapStateToProps)(Layout)
+export default connect(mapStateToProps, { logout: logoutAction })(Layout)

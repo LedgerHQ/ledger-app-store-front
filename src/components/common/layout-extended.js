@@ -8,6 +8,7 @@ import Toolbar from 'material-ui/Toolbar/Toolbar'
 import Button from 'material-ui/Button'
 import IconButton from 'material-ui/IconButton'
 import HomeIcon from 'material-ui-icons/Home'
+import PowerIcon from 'material-ui-icons/PowerSettingsNew'
 import AccountCirleIcon from 'material-ui-icons/AccountCircle'
 import Drawer from 'material-ui/Drawer'
 import Divider from 'material-ui/Divider'
@@ -15,6 +16,7 @@ import { withStyles } from 'material-ui/styles'
 
 import Title from './title'
 import { authSuccessSelector } from '../../selectors/auth-selectors'
+import { logout as logoutAction } from '../../actions/auth-actions'
 
 type Props = {
   children?: React.Node,
@@ -22,6 +24,7 @@ type Props = {
   classes: Object,
   title: string,
   sideBarComponent?: React.Node,
+  logout: Function,
 }
 
 const drawerWidth = 240
@@ -60,6 +63,7 @@ export const LayoutExtended = ({
   classes,
   title,
   sideBarComponent,
+  logout,
 }: Props): React.Node => (
   <div className={classes.frame}>
     <AppBar position="absolute" className={classes.appBar}>
@@ -71,9 +75,14 @@ export const LayoutExtended = ({
           {title}
         </Title>
         {loggedIn ? (
-          <IconButton component={Link} color="inherit" to="/dashboard">
-            <AccountCirleIcon />
-          </IconButton>
+          <React.Fragment>
+            <IconButton component={Link} color="inherit" to="/dashboard">
+              <AccountCirleIcon />
+            </IconButton>
+            <IconButton color="inherit" onClick={logout}>
+              <PowerIcon />
+            </IconButton>
+          </React.Fragment>
         ) : (
           <Button component={Link} color="inherit" to="/login">
             Login
@@ -105,6 +114,6 @@ const mapStateToProps = state => ({
   loggedIn: authSuccessSelector(state),
 })
 
-const enhancer = compose(withStyles(styles), connect(mapStateToProps))
+const enhancer = compose(withStyles(styles), connect(mapStateToProps, { logout: logoutAction }))
 
 export default enhancer(LayoutExtended)
