@@ -7,6 +7,7 @@ type Action = {
   type: string,
   payload: any,
 }
+
 type Store = {
   dispatch: Function,
   getState: Function,

@@ -2,15 +2,17 @@
 import * as types from './action-types'
 import * as resourcesApi from '../api/resources-api'
 import { authTokenSelector } from '../selectors/auth-selectors'
+import { getErrorFromJson } from '../utils/errors'
 
 type Action = {
   type: string,
   payload?: any,
 }
 
-export const resourcesError = (error: string): Action => ({
+export const resourcesError = (error: string, status?: number): Action => ({
   type: types.RESOURCES_ERROR,
   payload: error,
+  status,
 })
 
 export const getApplications = (applications: Object[]): Action => ({
@@ -78,7 +80,8 @@ export const fetchResource = (type: string): Function => async (
     const resource = await resourcesApi.getResource(token, type)
     dispatch(typeDispatch(type, resource))
   } catch (err) {
-    dispatch(resourcesError(err.message ? err.message : err.error))
+    const error = getErrorFromJson(err)
+    dispatch(resourcesError(error, err.status))
   }
 }
 
@@ -112,10 +115,10 @@ export const createResource = (type: string, fields: Object): Function => async 
   dispatch(createResourceAction())
   const token = authTokenSelector(getState())
   try {
-    const res = await resourcesApi.createResource(token, type, fields)
-    console.log(res)
+    await resourcesApi.createResource(token, type, fields)
     dispatch(createResourceSuccess(type))
   } catch (err) {
-    dispatch(resourcesError(err.message ? err.message : err.error))
+    const error = getErrorFromJson(err)
+    dispatch(resourcesError(error, err.status))
   }
 }

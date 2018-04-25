@@ -11,14 +11,9 @@ const BASE_URL = process.env.API_URL || 'http://localhost:8000'
  */
 export const getResource = async (token: string, type: string): Promise<Object[]> => {
   try {
-    const response = await fetchWithToken(token)(`${BASE_URL}/api/${type}`, {
+    const json = await fetchWithToken(token)(`${BASE_URL}/api/${type}`, {
       method: 'GET',
     })
-    const json = await response.json()
-
-    if (!response.ok || json.error) {
-      throw json
-    }
 
     return json
   } catch (err) {
@@ -39,17 +34,12 @@ export const createResource = async (
   fields: Object,
 ): Promise<mixed> => {
   try {
-    const response = await fetchWithToken(token)(`${BASE_URL}/api/${type}`, {
+    const json = await fetchWithToken(token)(`${BASE_URL}/api/${type}`, {
       method: 'POST',
       body: JSON.stringify({
         ...fields,
       }),
     })
-    const json = await response.json()
-
-    if (!response.ok || json.error) {
-      throw json
-    }
 
     return json
   } catch (err) {

@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage'
 import reducers from './reducers'
 import authMiddleware from './middlewares/auth-middleware'
 import resourcesMiddleware from './middlewares/resources-middleware'
+import errorMiddleware from './middlewares/error-middleware'
 
 const persistConfig = {
   key: 'root',
@@ -23,7 +24,7 @@ const composeEnhancers =
 /* eslint-enable no-underscore-dangle */
 
 export default initialState => {
-  const middlewares = [thunk, authMiddleware, resourcesMiddleware]
+  const middlewares = [thunk, authMiddleware, resourcesMiddleware, errorMiddleware]
   const enhancers = composeEnhancers(applyMiddleware(...middlewares))
 
   const persistedReducers = persistReducer(persistConfig, reducers)
