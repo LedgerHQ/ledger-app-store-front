@@ -27,6 +27,19 @@ class Resources extends React.Component<Props, State> {
     fetchResources()
   }
 
+  getSubItemKey = (key: string): string => {
+    switch (true) {
+      case key === 'firmwares':
+        return 'se_firmware_versions'
+
+      case key.endsWith('s'):
+        return `${key.substring(0, key.length - 1)}_versions`
+
+      default:
+        return `${key}_versions`
+    }
+  }
+
   render(): React.Node {
     const { resources } = this.props
 
@@ -42,7 +55,15 @@ class Resources extends React.Component<Props, State> {
                     {capitalizeFirst(key)}
                   </Typography>
                 </div>
-                <CollapsibleList items={resources[key]} subItemsKey="" />
+                {key === 'publishers' || key === 'providers' || key === 'categories' ? (
+                  <CollapsibleList type={key} items={resources[key]} />
+                ) : (
+                  <CollapsibleList
+                    type={key}
+                    items={resources[key]}
+                    subItemsKey={this.getSubItemKey(key)}
+                  />
+                )}
               </Paper>
             </section>
           ))}
