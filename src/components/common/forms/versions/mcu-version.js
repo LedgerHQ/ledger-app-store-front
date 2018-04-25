@@ -15,16 +15,9 @@ type Props = {
   deviceVersions: Object[],
   firmwareVersions: Object[],
   providers: Object[],
+  initFields?: Object,
+  method: 'POST' | 'DELETE' | 'PUT',
   createResource: Function,
-}
-
-const initFields = {
-  mcu: '',
-  name: '',
-  description: '',
-  device_versions: [],
-  se_firmware_versions: [],
-  providers: [],
 }
 
 const ApplicationVersion = ({
@@ -33,9 +26,11 @@ const ApplicationVersion = ({
   deviceVersions,
   createResource,
   providers,
+  initFields,
+  method,
 }: Props): React.Node => (
   <React.Fragment>
-    <Form type="mcu_versions" initFields={initFields}>
+    <Form type="mcu_versions" initFields={initFields || {}} method={method}>
       {({ onChange, onSelectChange, onSubmit, fields }) => (
         <form className="form" onSubmit={onSubmit(createResource)}>
           <TextField
@@ -159,5 +154,16 @@ const ApplicationVersion = ({
     `}</style>
   </React.Fragment>
 )
+
+ApplicationVersion.defaultProps = {
+  initFields: {
+    mcu: '',
+    name: '',
+    description: '',
+    device_versions: [],
+    se_firmware_versions: [],
+    providers: [],
+  },
+}
 
 export default ApplicationVersion

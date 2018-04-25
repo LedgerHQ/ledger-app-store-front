@@ -94,6 +94,7 @@ export class Login extends React.Component<Props, State> {
     return loggedIn ? (
       <Redirect to="/dashboard" />
     ) : (
+      // $FlowFixMe
       <ConnectedLayout title="App Store - Login">
         <div className="root">
           <Grid container alignItems="center" justify="center">

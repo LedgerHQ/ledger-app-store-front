@@ -98,25 +98,59 @@ export const createResourceSuccess = (type: string): Action => ({
   type: types.CREATE_RESOURCE_SUCCESS,
   payload: type,
 })
-export const createResourceVersionAction = (): Action => ({ type: types.CREATE_RESOURCE_VERSION })
-export const createResourceVersionSuccess = (): Action => ({
-  type: types.CREATE_RESOURCE_VERSION_SUCCESS,
+export const deleteResourceAction = (): Action => ({ type: types.DELETE_RESOURCE })
+export const deleteResourceSuccess = (type: string): Action => ({
+  type: types.DELETE_RESOURCE_SUCCESS,
+  payload: type,
 })
 
-/**
- * TODO
- * TEST THIS WHEN SHAPE OF RESPONSE IS KNOWN
- */
+export const updateResourceAction = (): Action => ({ type: types.UPDATE_RESOURCE })
+export const updateResourceSuccess = (type: string): Action => ({
+  type: types.UPDATE_RESOURCE_SUCCESS,
+  payload: type,
+})
 
-export const createResource = (type: string, fields: Object): Function => async (
-  dispatch: Function,
-  getState: Function,
-): Promise<void> => {
+export const createResource = (
+  type: string,
+  fields: Object,
+  method: string = 'POST',
+): Function => async (dispatch: Function, getState: Function): Promise<void> => {
   dispatch(createResourceAction())
   const token = authTokenSelector(getState())
   try {
-    await resourcesApi.createResource(token, type, fields)
+    await resourcesApi.createResource(token, type, fields, method)
     dispatch(createResourceSuccess(type))
+  } catch (err) {
+    const error = getErrorFromJson(err)
+    dispatch(resourcesError(error, err.status))
+  }
+}
+
+export const updateResource = (
+  type: string,
+  fields: Object,
+  method: string = 'PUT',
+): Function => async (dispatch: Function, getState: Function): Promise<void> => {
+  dispatch(updateResourceAction())
+  const token = authTokenSelector(getState())
+  try {
+    await resourcesApi.updateResource(token, type, fields, method)
+    dispatch(updateResourceSuccess(type))
+  } catch (err) {
+    const error = getErrorFromJson(err)
+    dispatch(resourcesError(error, err.status))
+  }
+}
+
+export const deleteResource = (type: string, pk: string): Function => async (
+  dispatch: Function,
+  getState: Function,
+): Promise<void> => {
+  dispatch(deleteResourceAction())
+  const token = authTokenSelector(getState())
+  try {
+    await resourcesApi.deleteResource(token, type, pk)
+    dispatch(deleteResourceSuccess(type))
   } catch (err) {
     const error = getErrorFromJson(err)
     dispatch(resourcesError(error, err.status))

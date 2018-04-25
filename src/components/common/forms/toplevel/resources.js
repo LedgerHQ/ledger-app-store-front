@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react'
-import { connect } from 'react-redux'
 import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 import MenuItem from 'material-ui/Menu/MenuItem'
@@ -10,23 +9,24 @@ import { FormControl } from 'material-ui/Form'
 import Checkbox from 'material-ui/Checkbox'
 
 import Form from '../../../utils/form'
-import { createResource as createResourceAction } from '../../../../actions/resources-actions'
 
 type Props = {
   createResource: Function,
   type: string,
+  initFields?: Object,
+  method: 'POST' | 'DELETE' | 'PUT',
   providers: Array<Object>,
 }
 
-const initFields = {
-  providers: [],
-  name: '',
-  description: '',
-}
-
-const ResourcesForm = ({ createResource, providers, type }: Props): React.Node => (
+const ResourcesForm = ({
+  createResource,
+  providers,
+  type,
+  initFields,
+  method,
+}: Props): React.Node => (
   <React.Fragment>
-    <Form initFields={initFields} type={type}>
+    <Form initFields={initFields || {}} type={type} method={method}>
       {({ onChange, onSubmit, fields, onSelectChange }) => (
         <form onSubmit={onSubmit(createResource)} className="form">
           <TextField
@@ -92,6 +92,12 @@ const ResourcesForm = ({ createResource, providers, type }: Props): React.Node =
   </React.Fragment>
 )
 
-export default connect(null, {
-  createResource: createResourceAction,
-})(ResourcesForm)
+ResourcesForm.defaultProps = {
+  initFields: {
+    providers: [],
+    name: '',
+    description: '',
+  },
+}
+
+export default ResourcesForm

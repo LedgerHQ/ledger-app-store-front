@@ -15,25 +15,9 @@ type Props = {
   deviceVersions: Object[],
   firmwareVersions: Object[],
   providers: Object[],
+  initFields?: Object,
+  method: 'POST' | 'DELETE' | 'PUT',
   createResource: Function,
-}
-
-const initFields = {
-  app: '',
-  name: '',
-  description: '',
-  display_name: '',
-  notes: '',
-  hash: '',
-  perso: '',
-  icon: '',
-  firmware: '',
-  firmware_key: '',
-  delete: '',
-  delete_key: '',
-  device_versions: [],
-  se_firmware_versions: [],
-  providers: [],
 }
 
 const ApplicationVersion = ({
@@ -42,9 +26,11 @@ const ApplicationVersion = ({
   deviceVersions,
   createResource,
   providers,
+  method,
+  initFields,
 }: Props): React.Node => (
   <React.Fragment>
-    <Form type="application_versions" initFields={initFields}>
+    <Form type="application_versions" initFields={initFields || {}} method={method}>
       {({ onChange, onSelectChange, onSubmit, fields }) => (
         <form className="form" onSubmit={onSubmit(createResource)}>
           <TextField
@@ -240,5 +226,25 @@ const ApplicationVersion = ({
     `}</style>
   </React.Fragment>
 )
+
+ApplicationVersion.defaultProps = {
+  initFields: {
+    app: '',
+    name: '',
+    description: '',
+    display_name: '',
+    notes: '',
+    hash: '',
+    perso: '',
+    icon: '',
+    firmware: '',
+    firmware_key: '',
+    delete: '',
+    delete_key: '',
+    device_versions: [],
+    se_firmware_versions: [],
+    providers: [],
+  },
+}
 
 export default ApplicationVersion

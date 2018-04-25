@@ -15,28 +15,9 @@ type Props = {
   firmwareVersions: Object[],
   deviceVersions: Object[],
   providers: Object[],
+  initFields?: Object,
+  method: 'POST' | 'DELETE' | 'PUT',
   createResource: Function,
-}
-
-const initFields = {
-  se_firmware: '',
-  name: '',
-  description: '',
-  display_name: '',
-  notes: '',
-  final_perso: '',
-  final_target_id: '',
-  final_firmware: '',
-  final_firmware_key: '',
-  final_hash: '',
-  osu_perso: '',
-  osu_target_id: '',
-  osu_firmware: '',
-  osu_firmware_key: '',
-  osu_hash: '',
-  device_versions: [],
-  previous_se_firmware_versions: [],
-  providers: [],
 }
 
 const SeFirmwareVersion = ({
@@ -45,9 +26,11 @@ const SeFirmwareVersion = ({
   deviceVersions,
   createResource,
   providers,
+  initFields,
+  method,
 }: Props): React.Node => (
   <React.Fragment>
-    <Form type="firmware_versions" initFields={initFields}>
+    <Form type="firmware_versions" initFields={initFields || {}} method={method}>
       {({ onChange, onSelectChange, onSubmit, fields }) => (
         <form className="form" onSubmit={onSubmit(createResource)}>
           <TextField
@@ -269,5 +252,28 @@ const SeFirmwareVersion = ({
     `}</style>
   </React.Fragment>
 )
+
+SeFirmwareVersion.defaultProps = {
+  initFields: {
+    se_firmware: '',
+    name: '',
+    description: '',
+    display_name: '',
+    notes: '',
+    final_perso: '',
+    final_target_id: '',
+    final_firmware: '',
+    final_firmware_key: '',
+    final_hash: '',
+    osu_perso: '',
+    osu_target_id: '',
+    osu_firmware: '',
+    osu_firmware_key: '',
+    osu_hash: '',
+    device_versions: [],
+    previous_se_firmware_versions: [],
+    providers: [],
+  },
+}
 
 export default SeFirmwareVersion

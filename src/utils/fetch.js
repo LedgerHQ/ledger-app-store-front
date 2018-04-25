@@ -27,6 +27,11 @@ const fetchWithToken = (token: string): Function => async (
         ...options.headers,
       },
     })
+
+    if (response.status === 204) {
+      return {}
+    }
+
     const json = await response.json()
 
     if (!response.ok || json.error) {

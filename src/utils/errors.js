@@ -11,7 +11,7 @@ type Action = {
   status?: number,
 }
 
-const INVALID_TOKEN = 'Invalid token.'
+export const INVALID_TOKEN = 'Invalid token.'
 
 /**
  * @name getErrorFromJson
