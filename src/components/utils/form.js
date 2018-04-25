@@ -4,22 +4,28 @@ import * as React from 'react'
 
 type Props = {
   children: Function,
+  initFields: Object,
+  type?: string,
 }
 
 type State = {
   fields: Object,
-  selects: Object,
-  extras: Object,
 }
 
 class Form extends React.Component<Props, State> {
   props: Props
   state: State
 
-  state = {
-    fields: {},
-    selects: {},
-    extras: {},
+  static defaultProps = {
+    type: '',
+  }
+
+  constructor(props: Props) {
+    super(props)
+
+    this.state = {
+      fields: props.initFields,
+    }
   }
 
   onChange = (field: string): Function => (evt: SyntheticEvent<HTMLInputElement>): void => {
@@ -31,33 +37,39 @@ class Form extends React.Component<Props, State> {
     }))
   }
 
-  onSelectChange = (field: string, extra: boolean = false): Function => (evt): void => {
-    const key = extra ? 'extras' : 'selects'
+  onSelectChange = (field: string): Function => (evt: Object): void => {
+    const { value } = evt.target
     this.setState(state => ({
       ...state,
-      [key]: { ...state[key], [field]: evt.target.value },
+      fields: { ...state.fields, [field]: value },
     }))
   }
 
-  onSubmit = (evt: SyntheticEvent<HTMLButtonElement | HTMLFormElement>): void => {
+  onSubmit = (callback: Function): Function => (
+    evt: SyntheticEvent<HTMLButtonElement | HTMLFormElement>,
+  ): void => {
     evt.preventDefault()
-    const { fields, selects, extras } = this.state
+    const { fields } = this.state
+    const { type } = this.props
 
-    console.log({ ...fields, ...selects, ...extras })
-    setTimeout(this.reset, 2000) // MOCK FOR TESTS
+    console.log(fields)
+
+    callback(type, fields)
+    this.reset() // MOCK FOR TESTS
   }
 
-  reset = (): void => this.setState(state => ({ ...state, fields: {}, selects: {} }))
+  reset = (): void => {
+    const { initFields } = this.props
+    this.setState(state => ({ ...state, fields: initFields || {} }))
+  }
 
   render(): React.Node {
-    const { selects, fields, extras } = this.state
+    const { fields } = this.state
     return this.props.children({
       onChange: this.onChange,
       onSubmit: this.onSubmit,
       onSelectChange: this.onSelectChange,
-      selectState: selects,
-      fieldState: fields,
-      extraState: extras,
+      fields,
     })
   }
 }

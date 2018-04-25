@@ -1,5 +1,6 @@
 // @flow
 import fetch from 'unfetch'
+import fetchWithToken from '../utils/fetch'
 
 const BASE_URL: string = process.env.API_URL || 'http://localhost:8000'
 
@@ -11,7 +12,7 @@ const BASE_URL: string = process.env.API_URL || 'http://localhost:8000'
  */
 export const login = async (username: string, password: string): Promise<Object> => {
   try {
-    const response = await fetch('http://localhost:3000', {
+    const response = await fetch(`${BASE_URL}/api/auth`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -19,8 +20,6 @@ export const login = async (username: string, password: string): Promise<Object>
       body: JSON.stringify({
         username,
         password,
-        url: `${BASE_URL}/api/auth`,
-        method: 'POST',
       }),
     })
 
@@ -49,16 +48,10 @@ export const finishLogin = async (
   username: string,
 ): Promise<Object> => {
   try {
-    const response = await fetch('http://localhost:3000', {
+    const response = await fetchWithToken(token)(`${BASE_URL}/api/finish_auth`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
-        url: `${BASE_URL}/api/finish_auth`,
-        method: 'POST',
         username,
-        token,
         response: challenge,
       }),
     })

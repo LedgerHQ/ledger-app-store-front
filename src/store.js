@@ -1,8 +1,17 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
 import reducers from './reducers'
-import authMiddleware from './middlewares/authMiddleware'
+import authMiddleware from './middlewares/auth-middleware'
+import resourcesMiddleware from './middlewares/resources-middleware'
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['auth'],
+}
 
 /* eslint-disable no-underscore-dangle */
 const composeEnhancers =
@@ -14,17 +23,20 @@ const composeEnhancers =
 /* eslint-enable no-underscore-dangle */
 
 export default initialState => {
-  const middlewares = [thunk, authMiddleware]
+  const middlewares = [thunk, authMiddleware, resourcesMiddleware]
   const enhancers = composeEnhancers(applyMiddleware(...middlewares))
 
-  const store = createStore(reducers, initialState, enhancers)
+  const persistedReducers = persistReducer(persistConfig, reducers)
+  const store = createStore(persistedReducers, initialState, enhancers)
+
+  const persistor = persistStore(store)
 
   if (module.hot) {
     module.hot.accept('./reducers', () => {
       const nextRootReducer = require('./reducers/index').default
-      store.replaceReducer(nextRootReducer)
+      store.replaceReducer(persistReducer(persistConfig, nextRootReducer))
     })
   }
 
-  return store
+  return { store, persistor }
 }

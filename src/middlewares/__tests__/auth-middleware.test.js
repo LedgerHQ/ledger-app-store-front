@@ -2,7 +2,7 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import * as types from '../../actions/action-types'
-import authMiddleware from '../authMiddleware'
+import authMiddleware from '../auth-middleware'
 
 const middlewares = [thunk, authMiddleware]
 const mockStore = configureMockStore(middlewares)

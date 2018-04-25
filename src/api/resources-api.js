@@ -1,30 +1,50 @@
 // @flow
-import fetch from 'unfetch'
+import fetchWithToken from '../utils/fetch'
 
 const BASE_URL = process.env.API_URL || 'http://localhost:8000'
 
-const fetchWithProxy = async (url: string, token: string, options?: Object): Promise<Object> => {
+/**
+ * @name getResource
+ * @description fetch the requested `type` of resource
+ * @param {string} token json token for identified user
+ * @param {string} type type of resource to fetch
+ */
+export const getResource = async (token: string, type: string): Promise<Object[]> => {
   try {
-    return fetch('http://localhost:3000', {
+    const response = await fetchWithToken(token)(`${BASE_URL}/api/${type}`, {
+      method: 'GET',
+    })
+    const json = await response.json()
+
+    if (!response.ok || json.error) {
+      throw json
+    }
+
+    return json
+  } catch (err) {
+    throw err
+  }
+}
+
+/**
+ * @name createResource
+ * @description create a given `type` for resource
+ * @param {string} token json token for identified user
+ * @param {string} type type of resource to create
+ * @param {object} fields form fields to send for the creation of the resource
+ */
+export const createResource = async (
+  token: string,
+  type: string,
+  fields: Object,
+): Promise<mixed> => {
+  try {
+    const response = await fetchWithToken(token)(`${BASE_URL}/api/${type}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
-        url: `${BASE_URL}${url}`,
-        method: 'GET',
-        token,
-        ...options,
+        ...fields,
       }),
     })
-  } catch (err) {
-    throw err
-  }
-}
-
-export const getFirmwares = async (token: string): Promise<Object[]> => {
-  try {
-    const response = await fetchWithProxy('/api/firmwares', token)
     const json = await response.json()
 
     if (!response.ok || json.error) {
@@ -32,50 +52,6 @@ export const getFirmwares = async (token: string): Promise<Object[]> => {
     }
 
     return json
-  } catch (err) {
-    throw err
-  }
-}
-
-export const getApplications = async (token: string): Promise<Object[]> => {
-  try {
-    const response = await fetchWithProxy('/api/application_versions', token)
-    const json = await response.json()
-
-    if (!response.ok || json.error) {
-      throw json
-    }
-
-    return json
-  } catch (err) {
-    throw err
-  }
-}
-
-export const getAvailableApplications = async (token: string): Promise<any> => {
-  try {
-    const json = await getApplications(token)
-    const apps = json.map(app => app.name)
-    return apps
-  } catch (err) {
-    throw err
-  }
-}
-
-export const getApplicationVersions = async (
-  token: string,
-  application: string,
-): Promise<Object> => {
-  try {
-    const response = await fetchWithProxy('/api/application_versions', token)
-    const json = await response.json()
-
-    if (!response.ok || json.error) {
-      throw json
-    }
-
-    const apps = json.filter(app => app.name === application)
-    return apps
   } catch (err) {
     throw err
   }

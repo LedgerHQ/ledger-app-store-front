@@ -31,6 +31,10 @@ export const loginFinish = (): Action => ({
   type: types.LOGIN_FINISH,
 })
 
+export const logout = (): Action => ({
+  type: types.LOGOUT,
+})
+
 /**
  * @name login
  * @description action thunk that takes care of all the login workflow
