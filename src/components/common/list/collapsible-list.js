@@ -6,12 +6,13 @@ import Collapse from 'material-ui/transitions/Collapse'
 import ExpandLess from 'material-ui-icons/ExpandLess'
 import ExpandMore from 'material-ui-icons/ExpandMore'
 
-// import Table from '../table'
+import Table from '../table'
 
 type Props = {
   items: Object[],
-  // subItemsKey: string,
+  subItemsKey?: string,
   title?: string,
+  type: string,
 }
 type State = {
   selected: number,
@@ -23,6 +24,7 @@ class CollapsibleList extends React.Component<Props, State> {
 
   static defaultProps = {
     title: '',
+    subItemsKey: '',
   }
 
   state = {
@@ -38,7 +40,12 @@ class CollapsibleList extends React.Component<Props, State> {
   }
 
   render() {
-    const { items, /* subItemsKey, */ title } = this.props
+    const { items, subItemsKey, type, title } = this.props
+
+    if (type === 'firmwares') {
+      console.log(items)
+    }
+
     return (
       <List
         component="nav"
@@ -46,13 +53,23 @@ class CollapsibleList extends React.Component<Props, State> {
       >
         {items.map((item, idx) => (
           <React.Fragment key={item.name}>
-            <ListItem button onClick={this.toggleCollapse(idx)}>
-              <ListItemText primary={item.name} />
-              {this.state.selected === idx ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={this.state.selected === idx} timeout="auto" unmountOnExit>
-              <div>{/* <Table items={item[subItemsKey]} /> */}</div>
-            </Collapse>
+            {subItemsKey ? (
+              <React.Fragment>
+                <ListItem button onClick={this.toggleCollapse(idx)}>
+                  <ListItemText primary={item.name} />
+                  {this.state.selected === idx ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={this.state.selected === idx} timeout="auto" unmountOnExit>
+                  <div>
+                    <Table items={item[subItemsKey]} />
+                  </div>
+                </Collapse>
+              </React.Fragment>
+            ) : (
+              <ListItem>
+                <ListItemText primary={item.name} />
+              </ListItem>
+            )}
           </React.Fragment>
         ))}
       </List>
