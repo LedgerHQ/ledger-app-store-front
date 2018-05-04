@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import CssBaseline from 'material-ui/CssBaseline'
-// $FlowFixMeot
+// $FlowFixMe
 import { hot } from 'react-hot-loader'
 
 import LoginConnected from './routes/login'

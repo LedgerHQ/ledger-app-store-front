@@ -25,7 +25,9 @@ type Props = {
   firmwareVersions: Object[],
   mcu: Object[],
   mcuVersions: Object[],
+  method?: 'POST' | 'DELETE' | 'PUT',
   createResource: Function,
+  initFields?: Object,
 }
 
 const styles = (theme: Object): Object => ({
@@ -63,6 +65,10 @@ const FormSwitcher = ({ selected, classes, ...props }: Props) => {
   }
 
   return !!comp && <Paper className={classes.paper}>{comp}</Paper>
+}
+
+FormSwitcher.defaultProps = {
+  method: 'POST',
 }
 
 export default withStyles(styles)(FormSwitcher)

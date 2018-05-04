@@ -6,7 +6,11 @@ import Typography from 'material-ui/Typography'
 
 import CollapsibleList from '../../common/list/collapsible-list'
 import { allResourcesSelector } from '../../../selectors/resources-selectors'
-import { fetchResources as fetchResourcesAction } from '../../../actions/resources-actions'
+import {
+  fetchResources as fetchResourcesAction,
+  deleteResource as deleteResourceAction,
+  updateResource as updateResourceAction,
+} from '../../../actions/resources-actions'
 import { capitalizeFirst } from '../../../utils/string'
 
 type Props = {
@@ -14,6 +18,8 @@ type Props = {
     [string]: Array<{}>,
   },
   fetchResources: Function,
+  deleteResource: Function,
+  updateResource: Function,
 }
 
 type State = {}
@@ -41,7 +47,7 @@ class Resources extends React.Component<Props, State> {
   }
 
   render(): React.Node {
-    const { resources } = this.props
+    const { resources, deleteResource, updateResource } = this.props
 
     return (
       <React.Fragment>
@@ -56,12 +62,19 @@ class Resources extends React.Component<Props, State> {
                   </Typography>
                 </div>
                 {key === 'publishers' || key === 'providers' || key === 'categories' ? (
-                  <CollapsibleList type={key} items={resources[key]} />
+                  <CollapsibleList
+                    type={key}
+                    items={resources[key]}
+                    deleteResource={deleteResource}
+                    updateResource={updateResource}
+                  />
                 ) : (
                   <CollapsibleList
                     type={key}
                     items={resources[key]}
                     subItemsKey={this.getSubItemKey(key)}
+                    deleteResource={deleteResource}
+                    updateResource={updateResource}
                   />
                 )}
               </Paper>
@@ -86,4 +99,8 @@ const mapStateToProps = (state: Object): Object => ({
   resources: allResourcesSelector(state),
 })
 
-export default connect(mapStateToProps, { fetchResources: fetchResourcesAction })(Resources)
+export default connect(mapStateToProps, {
+  fetchResources: fetchResourcesAction,
+  deleteResource: deleteResourceAction,
+  updateResource: updateResourceAction,
+})(Resources)

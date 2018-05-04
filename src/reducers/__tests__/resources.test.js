@@ -71,6 +71,32 @@ describe('resources reducer', () => {
     expect(newState).toEqual(expected)
   })
 
+  test(`should reduce ${types.CREATE_RESOURCE_SUCCESS}`, () => {
+    const expected = { ...initialState, success: true }
+    const newState = resourcesReducer(initialState, actions.createResourceSuccess())
+    expect(newState).toEqual(expected)
+  })
+
+  test(`should reduce ${types.DELETE_RESOURCE_SUCCESS}`, () => {
+    const expected = { ...initialState, success: true }
+    const newState = resourcesReducer(initialState, actions.deleteResourceSuccess())
+    expect(newState).toEqual(expected)
+  })
+
+  test(`should reduce ${types.CREATE_RESOURCE}`, () => {
+    const state = { ...initialState, success: true }
+    const expected = { ...initialState, success: false }
+    const newState = resourcesReducer(state, actions.createResourceAction())
+    expect(newState).toEqual(expected)
+  })
+
+  test(`should reduce ${types.DELETE_RESOURCE}`, () => {
+    const state = { ...initialState, success: true }
+    const expected = { ...initialState, success: false }
+    const newState = resourcesReducer(state, actions.deleteResourceAction())
+    expect(newState).toEqual(expected)
+  })
+
   test('should return state if action is not handled', () => {
     const expected = { ...initialState }
     const newState = resourcesReducer(undefined, { type: 'SOME_OTHER_ACTION' })

@@ -10,7 +10,7 @@ import Title from '../common/title'
 import ConnectedLayoutExtended from '../common/layout-extended'
 import AddDevice from './dashboard/add-device'
 import AddResource from './dashboard/add-resource'
-import Resources from './dashboard/resources'
+import Resources from './dashboard/list-resources'
 
 const Dashboard = (): React.Node => {
   const SidebarItems = (): React.Node => (
@@ -27,7 +27,7 @@ const Dashboard = (): React.Node => {
         </ListItemIcon>
         <ListItemText primary="Add Resource" />
       </ListItem>
-      <ListItem button component={Link} to="/dashboard/resources">
+      <ListItem button component={Link} to="/dashboard/list-resources">
         <ListItemIcon>
           <ListIcon />
         </ListItemIcon>
@@ -44,7 +44,7 @@ const Dashboard = (): React.Node => {
       <Switch>
         <Route path="/dashboard/add-device" component={AddDevice} />
         <Route path="/dashboard/add-resource" component={AddResource} />
-        <Route path="/dashboard/resources" component={Resources} />
+        <Route path="/dashboard/list-resources" component={Resources} />
       </Switch>
 
       <style jsx>{`

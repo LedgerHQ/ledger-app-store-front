@@ -43,6 +43,50 @@ describe('resources middleware', () => {
     })
   })
 
+  describe(`should listen to ${
+    types.DELETE_RESOURCE_SUCCESS
+  } and dispatch the correct action`, () => {
+    test('with a top level resource type', async done => {
+      resourcesActions.fetchResource.mockReturnValue(resourcesActions.getFirmwares({}))
+      const expected = { type: types.GET_FIRMWARES, payload: {} }
+      await store.dispatch({ type: types.DELETE_RESOURCE_SUCCESS, payload: 'firmwares' })
+      const [, dispatched] = store.getActions()
+      expect(dispatched).toEqual(expected)
+      done()
+    })
+
+    test('with a version resource type', async done => {
+      resourcesActions.fetchResource.mockReturnValue(resourcesActions.getFirmwares({}))
+      const expected = { type: types.GET_FIRMWARES, payload: {} }
+      await store.dispatch({ type: types.DELETE_RESOURCE_SUCCESS, payload: 'firmware_versions' })
+      const [, dispatched] = store.getActions()
+      expect(dispatched).toEqual(expected)
+      done()
+    })
+  })
+
+  describe(`should listen to ${
+    types.UPDATE_RESOURCE_SUCCESS
+  } and dispatch the correct action`, () => {
+    test('with a top level resource type', async done => {
+      resourcesActions.fetchResource.mockReturnValue(resourcesActions.getFirmwares({}))
+      const expected = { type: types.GET_FIRMWARES, payload: {} }
+      await store.dispatch({ type: types.UPDATE_RESOURCE_SUCCESS, payload: 'firmwares' })
+      const [, dispatched] = store.getActions()
+      expect(dispatched).toEqual(expected)
+      done()
+    })
+
+    test('with a version resource type', async done => {
+      resourcesActions.fetchResource.mockReturnValue(resourcesActions.getFirmwares({}))
+      const expected = { type: types.GET_FIRMWARES, payload: {} }
+      await store.dispatch({ type: types.UPDATE_RESOURCE_SUCCESS, payload: 'firmware_versions' })
+      const [, dispatched] = store.getActions()
+      expect(dispatched).toEqual(expected)
+      done()
+    })
+  })
+
   test(`should not dispatch any other action otherwise`, async done => {
     const action = { type: 'SOME_ACTION' }
     const expected = [action]

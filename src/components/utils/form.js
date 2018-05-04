@@ -5,6 +5,7 @@ import * as React from 'react'
 type Props = {
   children: Function,
   initFields: Object,
+  method: 'POST' | 'DELETE' | 'PUT',
   type?: string,
 }
 
@@ -50,11 +51,11 @@ class Form extends React.Component<Props, State> {
   ): void => {
     evt.preventDefault()
     const { fields } = this.state
-    const { type } = this.props
+    const { type, method } = this.props
 
     console.log(fields)
 
-    callback(type, fields)
+    callback(type, fields, method)
     this.reset() // MOCK FOR TESTS
   }
 

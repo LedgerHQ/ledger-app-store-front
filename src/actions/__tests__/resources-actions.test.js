@@ -75,18 +75,31 @@ describe('resources actions', () => {
   })
 
   test('createResourceSuccess should return the correct action', () => {
-    const expected = { type: types.CREATE_RESOURCE_SUCCESS }
-    expect(actions.createResourceSuccess()).toEqual(expected)
+    const type = 'applications'
+    const expected = { type: types.CREATE_RESOURCE_SUCCESS, payload: type }
+    expect(actions.createResourceSuccess(type)).toEqual(expected)
   })
 
-  test('createResourceVersionAction should return the correct action', () => {
-    const expected = { type: types.CREATE_RESOURCE_VERSION }
-    expect(actions.createResourceVersionAction()).toEqual(expected)
+  test('deleteResourceAction should return the correct action', () => {
+    const expected = { type: types.DELETE_RESOURCE }
+    expect(actions.deleteResourceAction()).toEqual(expected)
   })
 
-  test('createResourceVersionSuccess should return the correct action', () => {
-    const expected = { type: types.CREATE_RESOURCE_VERSION_SUCCESS }
-    expect(actions.createResourceVersionSuccess()).toEqual(expected)
+  test('deleteResourceSuccess should return the correct action', () => {
+    const type = 'applications'
+    const expected = { type: types.DELETE_RESOURCE_SUCCESS, payload: type }
+    expect(actions.deleteResourceSuccess(type)).toEqual(expected)
+  })
+
+  test('updateResourceAction should return the correct action', () => {
+    const expected = { type: types.UPDATE_RESOURCE }
+    expect(actions.updateResourceAction()).toEqual(expected)
+  })
+
+  test('updateResourceSuccess should return the correct action', () => {
+    const type = 'applications'
+    const expected = { type: types.UPDATE_RESOURCE_SUCCESS, payload: type }
+    expect(actions.updateResourceSuccess(type)).toEqual(expected)
   })
 
   describe('typeDispatch', () => {
@@ -139,7 +152,7 @@ describe('resources actions', () => {
     })
   })
 
-  describe('fetchResources', () => {
+  describe('thunk actions resources', () => {
     let store
 
     beforeEach(() => {
@@ -149,84 +162,185 @@ describe('resources actions', () => {
         },
       })
       resourcesApi.getResource = jest.fn()
+      resourcesApi.createResource = jest.fn()
+      resourcesApi.updateResource = jest.fn()
+      resourcesApi.deleteResource = jest.fn()
     })
 
-    test('should dispatch the correct actions', async done => {
-      resourcesApi.getResource
-        .mockResolvedValueOnce(firmwares)
-        .mockResolvedValueOnce(applications)
-        .mockResolvedValueOnce(devices)
-        .mockResolvedValueOnce(publishers)
-        .mockResolvedValueOnce(providers)
-        .mockResolvedValueOnce(categories)
-        .mockResolvedValueOnce(mcu)
+    describe('fetchResources', () => {
+      test('should dispatch the correct actions', async done => {
+        resourcesApi.getResource
+          .mockResolvedValueOnce(firmwares)
+          .mockResolvedValueOnce(applications)
+          .mockResolvedValueOnce(devices)
+          .mockResolvedValueOnce(publishers)
+          .mockResolvedValueOnce(providers)
+          .mockResolvedValueOnce(categories)
+          .mockResolvedValueOnce(mcu)
 
-      const expected = [
-        actions.getFirmwares(firmwares),
-        actions.getApplications(applications),
-        actions.getDevices(devices),
-        actions.getPublishers(publishers),
-        actions.getProviders(providers),
-        actions.getCategories(categories),
-        actions.getMcu(mcu),
-      ]
+        const expected = [
+          actions.getFirmwares(firmwares),
+          actions.getApplications(applications),
+          actions.getDevices(devices),
+          actions.getPublishers(publishers),
+          actions.getProviders(providers),
+          actions.getCategories(categories),
+          actions.getMcu(mcu),
+        ]
 
-      await store.dispatch(actions.fetchResources())
-      const dispatched = store.getActions()
-      expect(dispatched).toEqual(expected)
-      done()
+        await store.dispatch(actions.fetchResources())
+        const dispatched = store.getActions()
+        expect(dispatched).toEqual(expected)
+        done()
+      })
+
+      test('when a resource fails `json.error`, should dispatch the correct actions', async done => {
+        resourcesApi.getResource
+          .mockResolvedValueOnce(firmwares)
+          .mockResolvedValueOnce(applications)
+          .mockResolvedValueOnce(devices)
+          .mockResolvedValueOnce(publishers)
+          .mockResolvedValueOnce(providers)
+          .mockResolvedValueOnce(categories)
+          .mockRejectedValueOnce({ error: 'could not fetch mcu' })
+
+        const expected = [
+          actions.getFirmwares(firmwares),
+          actions.getApplications(applications),
+          actions.getDevices(devices),
+          actions.getPublishers(publishers),
+          actions.getProviders(providers),
+          actions.getCategories(categories),
+          actions.resourcesError('could not fetch mcu'),
+        ]
+
+        await store.dispatch(actions.fetchResources())
+        const dispatched = store.getActions()
+        expect(dispatched).toEqual(expected)
+        done()
+      })
+
+      test('when a resource fails `json.message`, should dispatch the correct actions', async done => {
+        resourcesApi.getResource
+          .mockResolvedValueOnce(firmwares)
+          .mockResolvedValueOnce(applications)
+          .mockResolvedValueOnce(devices)
+          .mockResolvedValueOnce(publishers)
+          .mockResolvedValueOnce(providers)
+          .mockResolvedValueOnce(categories)
+          .mockRejectedValueOnce({ message: 'could not fetch mcu' })
+
+        const expected = [
+          actions.getFirmwares(firmwares),
+          actions.getApplications(applications),
+          actions.getDevices(devices),
+          actions.getPublishers(publishers),
+          actions.getProviders(providers),
+          actions.getCategories(categories),
+          actions.resourcesError('could not fetch mcu'),
+        ]
+
+        await store.dispatch(actions.fetchResources())
+        const dispatched = store.getActions()
+        expect(dispatched).toEqual(expected)
+        done()
+      })
     })
 
-    test('when a resource fails `json.error`, should dispatch the correct actions', async done => {
-      resourcesApi.getResource
-        .mockResolvedValueOnce(firmwares)
-        .mockResolvedValueOnce(applications)
-        .mockResolvedValueOnce(devices)
-        .mockResolvedValueOnce(publishers)
-        .mockResolvedValueOnce(providers)
-        .mockResolvedValueOnce(categories)
-        .mockRejectedValueOnce({ error: 'could not fetch mcu' })
+    describe('createResource', () => {
+      test('on success, should create a resource and dispatch the correct actions', async done => {
+        const type = 'applications'
+        const fields = { name: 'bitcoin', version: 2, firmwares: [2, 45] }
+        resourcesApi.createResource.mockResolvedValue({ id: 1, ...fields })
 
-      const expected = [
-        actions.getFirmwares(firmwares),
-        actions.getApplications(applications),
-        actions.getDevices(devices),
-        actions.getPublishers(publishers),
-        actions.getProviders(providers),
-        actions.getCategories(categories),
-        actions.resourcesError('could not fetch mcu'),
-      ]
+        const expected = [actions.createResourceAction(), actions.createResourceSuccess(type)]
 
-      await store.dispatch(actions.fetchResources())
-      const dispatched = store.getActions()
-      expect(dispatched).toEqual(expected)
-      done()
+        await store.dispatch(actions.createResource(type, fields))
+        const dispatched = store.getActions()
+        expect(dispatched).toEqual(expected)
+        done()
+      })
+
+      test('on error, should not create a resource and dispatch the correct actions', async done => {
+        const type = 'applications'
+        const fields = { name: 'bitcoin', version: 2, firmwares: [2, 45] }
+        const response = { error: 'invalid fields', status: 400 }
+        resourcesApi.createResource.mockRejectedValue({ id: 1, ...response })
+
+        const expected = [
+          actions.createResourceAction(),
+          actions.resourcesError(response.error, response.status),
+        ]
+
+        await store.dispatch(actions.createResource(type, fields))
+        const dispatched = store.getActions()
+        expect(dispatched).toEqual(expected)
+        done()
+      })
     })
 
-    test('when a resource fails `json.message`, should dispatch the correct actions', async done => {
-      resourcesApi.getResource
-        .mockResolvedValueOnce(firmwares)
-        .mockResolvedValueOnce(applications)
-        .mockResolvedValueOnce(devices)
-        .mockResolvedValueOnce(publishers)
-        .mockResolvedValueOnce(providers)
-        .mockResolvedValueOnce(categories)
-        .mockRejectedValueOnce({ message: 'could not fetch mcu' })
+    describe('updateResource', () => {
+      test('on success, should update a resource and dispatch the correct actions', async done => {
+        const type = 'applications'
+        const fields = { name: 'bitcoin', version: 2, firmwares: [2, 45] }
+        resourcesApi.updateResource.mockResolvedValue({ id: 1, ...fields })
 
-      const expected = [
-        actions.getFirmwares(firmwares),
-        actions.getApplications(applications),
-        actions.getDevices(devices),
-        actions.getPublishers(publishers),
-        actions.getProviders(providers),
-        actions.getCategories(categories),
-        actions.resourcesError('could not fetch mcu'),
-      ]
+        const expected = [actions.updateResourceAction(), actions.updateResourceSuccess(type)]
 
-      await store.dispatch(actions.fetchResources())
-      const dispatched = store.getActions()
-      expect(dispatched).toEqual(expected)
-      done()
+        await store.dispatch(actions.updateResource(type, fields))
+        const dispatched = store.getActions()
+        expect(dispatched).toEqual(expected)
+        done()
+      })
+
+      test('on error, should not update a resource and dispatch the correct actions', async done => {
+        const type = 'applications'
+        const fields = { name: 'bitcoin', version: 2, firmwares: [2, 45] }
+        const response = { error: 'invalid fields', status: 400 }
+        resourcesApi.updateResource.mockRejectedValue({ id: 1, ...response })
+
+        const expected = [
+          actions.updateResourceAction(),
+          actions.resourcesError(response.error, response.status),
+        ]
+
+        await store.dispatch(actions.updateResource(type, fields))
+        const dispatched = store.getActions()
+        expect(dispatched).toEqual(expected)
+        done()
+      })
+    })
+
+    describe('deleteResource', () => {
+      test('on success, should delete a resource and dispatch the correct actions', async done => {
+        const type = 'applications'
+        const pk = 2
+        resourcesApi.deleteResource.mockResolvedValue({ detail: 'success' })
+
+        const expected = [actions.deleteResourceAction(), actions.deleteResourceSuccess(type)]
+
+        await store.dispatch(actions.deleteResource(type, pk))
+        const dispatched = store.getActions()
+        expect(dispatched).toEqual(expected)
+        done()
+      })
+
+      test('on error, should not delete a resource and dispatch the correct actions', async done => {
+        const type = 'applications'
+        const pk = 2
+        const response = { error: 'resource does not exists' }
+        resourcesApi.deleteResource.mockRejectedValue(response)
+
+        const expected = [
+          actions.deleteResourceAction(),
+          actions.resourcesError(response.error, response.status),
+        ]
+
+        await store.dispatch(actions.deleteResource(type, pk))
+        const dispatched = store.getActions()
+        expect(dispatched).toEqual(expected)
+        done()
+      })
     })
   })
 })

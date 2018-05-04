@@ -15,14 +15,8 @@ type Props = {
   providers: Array<Object>,
   categories: Array<Object>,
   publishers: Array<Object>,
-}
-
-const initFields = {
-  providers: [],
-  category: '',
-  publisher: '',
-  name: '',
-  description: '',
+  initFields?: Object,
+  method: 'POST' | 'DELETE' | 'PUT',
 }
 
 const ApplicationForm = ({
@@ -30,9 +24,11 @@ const ApplicationForm = ({
   providers,
   categories,
   publishers,
+  initFields,
+  method,
 }: Props): React.Node => (
   <React.Fragment>
-    <Form initFields={initFields} type="applications">
+    <Form initFields={initFields || {}} type="applications" method={method}>
       {({ onChange, onSubmit, fields, onSelectChange }) => (
         <form onSubmit={onSubmit(createResource)} className="form">
           <TextField
@@ -125,5 +121,15 @@ const ApplicationForm = ({
     `}</style>
   </React.Fragment>
 )
+
+ApplicationForm.defaultProps = {
+  initFields: {
+    providers: [],
+    category: '',
+    publisher: '',
+    name: '',
+    description: '',
+  },
+}
 
 export default ApplicationForm

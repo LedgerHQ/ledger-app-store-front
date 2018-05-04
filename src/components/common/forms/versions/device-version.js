@@ -13,21 +13,20 @@ import Form from '../../../utils/form'
 type Props = {
   devices: Object[],
   providers: Object[],
+  initFields?: Object,
+  method: 'POST' | 'DELETE' | 'PUT',
   createResource: Function,
 }
 
-const initFields = {
-  device: '',
-  name: '',
-  description: '',
-  display_name: '',
-  target_id: '',
-  providers: [],
-}
-
-const DeviceVersion = ({ devices, createResource, providers }: Props): React.Node => (
+const DeviceVersion = ({
+  devices,
+  createResource,
+  providers,
+  initFields,
+  method,
+}: Props): React.Node => (
   <React.Fragment>
-    <Form type="device_versions" initFields={initFields}>
+    <Form type="device_versions" initFields={initFields || {}} method={method}>
       {({ onChange, onSelectChange, onSubmit, fields }) => (
         <form className="form" onSubmit={onSubmit(createResource)}>
           <TextField
@@ -123,5 +122,16 @@ const DeviceVersion = ({ devices, createResource, providers }: Props): React.Nod
     `}</style>
   </React.Fragment>
 )
+
+DeviceVersion.defaultProps = {
+  initFields: {
+    device: '',
+    name: '',
+    description: '',
+    display_name: '',
+    target_id: '',
+    providers: [],
+  },
+}
 
 export default DeviceVersion

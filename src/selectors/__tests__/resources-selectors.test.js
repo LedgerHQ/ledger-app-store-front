@@ -292,4 +292,36 @@ describe('resources selectors', () => {
       expect(result).toEqual(expected)
     })
   })
+
+  describe('allResourcesAndVersionsSelector', () => {
+    test('should return an object with all available ressources and versions', () => {
+      const state = {
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+        },
+        other: { other: 'other' },
+      }
+      const result = selectors.allResourcesAndVersionsSelector(state)
+      const expected = {
+        applications,
+        applicationVersions: getVersions('application_versions', applications),
+        firmwares,
+        firmwareVersions: getVersions('se_firmware_versions', firmwares),
+        devices,
+        deviceVersions: getVersions('device_versions', devices),
+        mcu,
+        mcuVersions: getVersions('mcu_versions', mcu),
+        categories,
+        publishers,
+        providers,
+      }
+      expect(result).toEqual(expected)
+    })
+  })
 })
