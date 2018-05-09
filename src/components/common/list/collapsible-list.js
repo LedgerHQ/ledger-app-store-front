@@ -13,6 +13,8 @@ import Edit from 'material-ui-icons/ModeEdit'
 import Table from '../table'
 import DeleteDialog from '../dialog/delete-dialog'
 import EditDialogConnected from '../dialog/edit-dialog'
+import SuccessSnack from '../snackbar/success-snack'
+import ErrorSnack from '../snackbar/error-snack'
 
 type Props = {
   items: Object[],
@@ -28,6 +30,7 @@ type State = {
   editDialog: boolean,
   resource?: Object,
   type: string,
+  mode: 'edit' | 'delete' | '',
 }
 
 class CollapsibleList extends React.Component<Props, State> {
@@ -45,6 +48,7 @@ class CollapsibleList extends React.Component<Props, State> {
     editDialog: false,
     resource: undefined,
     type: '',
+    mode: '',
   }
 
   toggleCollapse = (idx: number): Function => (evt: SyntheticEvent<HTMLButtonElement>): void => {
@@ -61,6 +65,7 @@ class CollapsibleList extends React.Component<Props, State> {
       [modal]: true,
       resource: item,
       type,
+      mode: modal === 'editDialog' ? 'edit' : 'delete',
     }))
 
   closeModal = (): void =>
@@ -79,6 +84,35 @@ class CollapsibleList extends React.Component<Props, State> {
     deleteResource(type, id)
     this.closeModal()
   }
+
+  getSuccesMode = (): string => {
+    const { mode } = this.state
+
+    switch (mode) {
+      case 'edit':
+        return 'updated'
+      case 'delete':
+        return 'deleted'
+      default:
+        return ''
+    }
+  }
+
+  getErrorMode = (): string => {
+    const { mode } = this.state
+
+    switch (mode) {
+      case 'edit':
+        return 'updating'
+      case 'delete':
+        return 'deleting'
+      default:
+        return ''
+    }
+  }
+
+  getSubItemType = (key: string): string =>
+    key === 'se_firmware_versions' ? 'firmware_versions' : key
 
   render() {
     const { items, subItemsKey, type, title, updateResource } = this.props
@@ -111,8 +145,14 @@ class CollapsibleList extends React.Component<Props, State> {
                     <div>
                       <Table
                         items={item[subItemsKey]}
-                        openEditModal={this.openModal(subItemsKey, 'editDialog')}
-                        openDeleteModal={this.openModal(subItemsKey, 'deleteDialog')}
+                        openEditModal={this.openModal(
+                          this.getSubItemType(subItemsKey),
+                          'editDialog',
+                        )}
+                        openDeleteModal={this.openModal(
+                          this.getSubItemType(subItemsKey),
+                          'deleteDialog',
+                        )}
                       />
                     </div>
                   </Collapse>
@@ -131,6 +171,7 @@ class CollapsibleList extends React.Component<Props, State> {
             </React.Fragment>
           ))}
         </List>
+
         <DeleteDialog
           open={this.state.deleteDialog}
           closeAction={this.closeModal}
@@ -138,6 +179,7 @@ class CollapsibleList extends React.Component<Props, State> {
           resource={this.state.resource}
           type={this.state.type}
         />
+
         <EditDialogConnected
           open={this.state.editDialog}
           closeAction={this.closeModal}
@@ -145,6 +187,9 @@ class CollapsibleList extends React.Component<Props, State> {
           resource={this.state.resource}
           type={this.state.type}
         />
+
+        <SuccessSnack mode={this.getSuccesMode()} />
+        <ErrorSnack mode={this.getErrorMode()} />
       </React.Fragment>
     )
   }

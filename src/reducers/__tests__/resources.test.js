@@ -71,29 +71,45 @@ describe('resources reducer', () => {
     expect(newState).toEqual(expected)
   })
 
+  test(`should reduce ${types.CREATE_RESOURCE}`, () => {
+    const type = 'applications'
+    const state = { ...initialState, success: true }
+    const expected = { ...initialState, success: false, type }
+    const newState = resourcesReducer(state, actions.createResourceAction(type))
+    expect(newState).toEqual(expected)
+  })
+
   test(`should reduce ${types.CREATE_RESOURCE_SUCCESS}`, () => {
     const expected = { ...initialState, success: true }
     const newState = resourcesReducer(initialState, actions.createResourceSuccess())
     expect(newState).toEqual(expected)
   })
 
-  test(`should reduce ${types.DELETE_RESOURCE_SUCCESS}`, () => {
-    const expected = { ...initialState, success: true }
-    const newState = resourcesReducer(initialState, actions.deleteResourceSuccess())
+  test(`should reduce ${types.UPDATE_RESOURCE}`, () => {
+    const type = 'applications'
+    const state = { ...initialState, success: true }
+    const expected = { ...initialState, success: false, type }
+    const newState = resourcesReducer(state, actions.updateResourceAction(type))
     expect(newState).toEqual(expected)
   })
 
-  test(`should reduce ${types.CREATE_RESOURCE}`, () => {
-    const state = { ...initialState, success: true }
-    const expected = { ...initialState, success: false }
-    const newState = resourcesReducer(state, actions.createResourceAction())
+  test(`should reduce ${types.UPDATE_RESOURCE_SUCCESS}`, () => {
+    const expected = { ...initialState, success: true }
+    const newState = resourcesReducer(initialState, actions.updateResourceSuccess())
     expect(newState).toEqual(expected)
   })
 
   test(`should reduce ${types.DELETE_RESOURCE}`, () => {
+    const type = 'applications'
     const state = { ...initialState, success: true }
-    const expected = { ...initialState, success: false }
-    const newState = resourcesReducer(state, actions.deleteResourceAction())
+    const expected = { ...initialState, success: false, type }
+    const newState = resourcesReducer(state, actions.deleteResourceAction(type))
+    expect(newState).toEqual(expected)
+  })
+
+  test(`should reduce ${types.DELETE_RESOURCE_SUCCESS}`, () => {
+    const expected = { ...initialState, success: true }
+    const newState = resourcesReducer(initialState, actions.deleteResourceSuccess())
     expect(newState).toEqual(expected)
   })
 

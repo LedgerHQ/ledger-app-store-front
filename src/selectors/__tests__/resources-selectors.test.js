@@ -265,6 +265,34 @@ describe('resources selectors', () => {
     })
   })
 
+  describe('resourcesSuccessSelector', () => {
+    test('should return resources.success object from state', () => {
+      const state = { resources: { success: true }, other: { other: 'other' } }
+      const result = selectors.resourcesSuccessSelector(state)
+      expect(result).toEqual(state.resources.success)
+    })
+
+    test('should return false if resources object is not in state', () => {
+      const state = { other: { other: 'other' } }
+      const result = selectors.resourcesSuccessSelector(state)
+      expect(result).toEqual(false)
+    })
+  })
+
+  describe('resourcesTypeSelector', () => {
+    test('should return resources.type object from state', () => {
+      const state = { resources: { type: 'applications' }, other: { other: 'other' } }
+      const result = selectors.resourcesTypeSelector(state)
+      expect(result).toEqual(state.resources.type)
+    })
+
+    test('should return an empty string if resources object is not in state', () => {
+      const state = { other: { other: 'other' } }
+      const result = selectors.resourcesTypeSelector(state)
+      expect(result).toEqual('')
+    })
+  })
+
   describe('allResourcesSelector', () => {
     test('should return an object with all available ressources', () => {
       const state = {

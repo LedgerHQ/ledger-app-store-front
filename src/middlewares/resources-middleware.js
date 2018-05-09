@@ -20,7 +20,7 @@ const resourcesMiddleware = (store: Store): Function => (next: Function): Functi
   switch (action.type) {
     case types.CREATE_RESOURCE_SUCCESS:
     case types.DELETE_RESOURCE_SUCCESS:
-    case types.UPDATE_RESOURCE_SUCCESS:
+    case types.UPDATE_RESOURCE_SUCCESS: {
       if (action.payload.endsWith('versions')) {
         const type = getTopLevelFromVersion(action.payload)
         store.dispatch(fetchResource(type))
@@ -28,6 +28,7 @@ const resourcesMiddleware = (store: Store): Function => (next: Function): Functi
         store.dispatch(fetchResource(action.payload))
       }
       return result
+    }
     default:
       return result
   }

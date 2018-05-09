@@ -18,12 +18,15 @@ import {
   resourcesDeviceVersionsSelector,
   resourcesMcuSelector,
   resourcesMcuVersionsSelector,
+  resourcesSuccessSelector,
 } from '../../../selectors/resources-selectors'
 import {
   fetchResources as fetchResourcesAction,
   createResource as createResourceAction,
 } from '../../../actions/resources-actions'
 import FormSwitcher from '../../common/forms/form-switcher'
+import SuccessSnack from '../../common/snackbar/success-snack'
+import ErrorSnack from '../../common/snackbar/error-snack'
 
 type Props = {
   applications: Object[],
@@ -39,6 +42,7 @@ type Props = {
   mcuVersions: Object[],
   classes: Object,
   fetchResources: Function,
+  success: boolean,
 }
 
 type State = {
@@ -115,6 +119,9 @@ class AddResources extends React.Component<Props, State> {
           <FormSwitcher selected={selected} {...others} />
         </div>
 
+        <SuccessSnack mode="created" />
+        <ErrorSnack mode="creating" />
+
         <style jsx>{`
           .form {
             margin: 20px 0;
@@ -137,6 +144,7 @@ const mapStateToProps = state => ({
   categories: resourcesCategoriesSelector(state),
   mcu: resourcesMcuSelector(state),
   mcu_versions: resourcesMcuVersionsSelector(state),
+  success: resourcesSuccessSelector(state),
 })
 
 const enhancer = compose(

@@ -93,20 +93,30 @@ export const fetchResources = (): Function => async (dispatch: Function): Promis
   )
 }
 
-export const createResourceAction = (): Action => ({ type: types.CREATE_RESOURCE })
 export const createResourceSuccess = (type: string): Action => ({
   type: types.CREATE_RESOURCE_SUCCESS,
   payload: type,
 })
-export const deleteResourceAction = (): Action => ({ type: types.DELETE_RESOURCE })
+export const createResourceAction = (type: string): Action => ({
+  type: types.CREATE_RESOURCE,
+  payload: type,
+})
+
 export const deleteResourceSuccess = (type: string): Action => ({
   type: types.DELETE_RESOURCE_SUCCESS,
   payload: type,
 })
+export const deleteResourceAction = (type: string): Action => ({
+  type: types.DELETE_RESOURCE,
+  payload: type,
+})
 
-export const updateResourceAction = (): Action => ({ type: types.UPDATE_RESOURCE })
 export const updateResourceSuccess = (type: string): Action => ({
   type: types.UPDATE_RESOURCE_SUCCESS,
+  payload: type,
+})
+export const updateResourceAction = (type: string): Action => ({
+  type: types.UPDATE_RESOURCE,
   payload: type,
 })
 
@@ -115,7 +125,7 @@ export const createResource = (
   fields: Object,
   method: string = 'POST',
 ): Function => async (dispatch: Function, getState: Function): Promise<void> => {
-  dispatch(createResourceAction())
+  dispatch(createResourceAction(type))
   const token = authTokenSelector(getState())
   try {
     await resourcesApi.createResource(token, type, fields, method)
@@ -131,7 +141,7 @@ export const updateResource = (
   fields: Object,
   method: string = 'PUT',
 ): Function => async (dispatch: Function, getState: Function): Promise<void> => {
-  dispatch(updateResourceAction())
+  dispatch(updateResourceAction(type))
   const token = authTokenSelector(getState())
   try {
     await resourcesApi.updateResource(token, type, fields, method)
@@ -146,7 +156,7 @@ export const deleteResource = (type: string, pk: string): Function => async (
   dispatch: Function,
   getState: Function,
 ): Promise<void> => {
-  dispatch(deleteResourceAction())
+  dispatch(deleteResourceAction(type))
   const token = authTokenSelector(getState())
   try {
     await resourcesApi.deleteResource(token, type, pk)

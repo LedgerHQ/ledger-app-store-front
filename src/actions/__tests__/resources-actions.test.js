@@ -253,7 +253,7 @@ describe('resources actions', () => {
         const fields = { name: 'bitcoin', version: 2, firmwares: [2, 45] }
         resourcesApi.createResource.mockResolvedValue({ id: 1, ...fields })
 
-        const expected = [actions.createResourceAction(), actions.createResourceSuccess(type)]
+        const expected = [actions.createResourceAction(type), actions.createResourceSuccess(type)]
 
         await store.dispatch(actions.createResource(type, fields))
         const dispatched = store.getActions()
@@ -268,7 +268,7 @@ describe('resources actions', () => {
         resourcesApi.createResource.mockRejectedValue({ id: 1, ...response })
 
         const expected = [
-          actions.createResourceAction(),
+          actions.createResourceAction(type),
           actions.resourcesError(response.error, response.status),
         ]
 
@@ -285,7 +285,7 @@ describe('resources actions', () => {
         const fields = { name: 'bitcoin', version: 2, firmwares: [2, 45] }
         resourcesApi.updateResource.mockResolvedValue({ id: 1, ...fields })
 
-        const expected = [actions.updateResourceAction(), actions.updateResourceSuccess(type)]
+        const expected = [actions.updateResourceAction(type), actions.updateResourceSuccess(type)]
 
         await store.dispatch(actions.updateResource(type, fields))
         const dispatched = store.getActions()
@@ -300,7 +300,7 @@ describe('resources actions', () => {
         resourcesApi.updateResource.mockRejectedValue({ id: 1, ...response })
 
         const expected = [
-          actions.updateResourceAction(),
+          actions.updateResourceAction(type),
           actions.resourcesError(response.error, response.status),
         ]
 
@@ -317,7 +317,7 @@ describe('resources actions', () => {
         const pk = 2
         resourcesApi.deleteResource.mockResolvedValue({ detail: 'success' })
 
-        const expected = [actions.deleteResourceAction(), actions.deleteResourceSuccess(type)]
+        const expected = [actions.deleteResourceAction(type), actions.deleteResourceSuccess(type)]
 
         await store.dispatch(actions.deleteResource(type, pk))
         const dispatched = store.getActions()
@@ -332,7 +332,7 @@ describe('resources actions', () => {
         resourcesApi.deleteResource.mockRejectedValue(response)
 
         const expected = [
-          actions.deleteResourceAction(),
+          actions.deleteResourceAction(type),
           actions.resourcesError(response.error, response.status),
         ]
 
