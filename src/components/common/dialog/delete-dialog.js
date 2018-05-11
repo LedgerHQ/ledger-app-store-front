@@ -26,7 +26,7 @@ type Props = {
 const Transition = props => <Slide direction="up" {...props} />
 
 const DeleteDialog = ({ open, closeAction, resource, type, deleteAction }: Props): React.Node => (
-  <Dialog open={open} transition={Transition} onClose={closeAction}>
+  <Dialog open={open} TransitionComponent={Transition} onClose={closeAction}>
     <DialogTitle>DELETE {resource && resource.name && capitalize(resource.name)}</DialogTitle>
     <DialogContent>
       <DialogContentText>

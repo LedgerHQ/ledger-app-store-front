@@ -62,6 +62,16 @@ export const resourcesErrorSelector = createSelector(
   resources => resources.error || '',
 )
 
+export const resourcesSuccessSelector = createSelector(
+  resourcesSelector,
+  resources => resources.success || false,
+)
+
+export const resourcesTypeSelector = createSelector(
+  resourcesSelector,
+  resources => resources.type || '',
+)
+
 export const allResourcesSelector = createSelector(
   resourcesFirmwaresSelector,
   resourcesApplicationsSelector,

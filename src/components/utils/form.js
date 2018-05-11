@@ -7,6 +7,7 @@ type Props = {
   initFields: Object,
   method: 'POST' | 'DELETE' | 'PUT',
   type?: string,
+  success: boolean,
 }
 
 type State = {
@@ -26,6 +27,14 @@ class Form extends React.Component<Props, State> {
 
     this.state = {
       fields: props.initFields,
+    }
+  }
+
+  componentDidUpdate({ success: prevSuccess }: Props) {
+    const { success } = this.props
+
+    if (!prevSuccess && success) {
+      this.reset()
     }
   }
 
@@ -53,10 +62,7 @@ class Form extends React.Component<Props, State> {
     const { fields } = this.state
     const { type, method } = this.props
 
-    console.log(fields)
-
     callback(type, fields, method)
-    this.reset() // MOCK FOR TESTS
   }
 
   reset = (): void => {

@@ -37,7 +37,7 @@ export const EditDialog = ({
     setTimeout(closeAction, 300)
   }
   return (
-    <Dialog open={open} transition={Transition} onClose={closeAction}>
+    <Dialog open={open} TransitionComponent={Transition} onClose={closeAction}>
       <DialogTitle>EDIT {resource && resource.name && capitalize(resource.name)}</DialogTitle>
       <DialogContent>
         <FormSwitcher

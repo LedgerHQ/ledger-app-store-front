@@ -28,6 +28,7 @@ type Props = {
   method?: 'POST' | 'DELETE' | 'PUT',
   createResource: Function,
   initFields?: Object,
+  success: boolean,
 }
 
 const styles = (theme: Object): Object => ({
