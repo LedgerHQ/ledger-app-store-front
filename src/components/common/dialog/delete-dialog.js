@@ -1,13 +1,12 @@
 // @flow
 import * as React from 'react'
-import Button from 'material-ui/Button'
-import Slide from 'material-ui/transitions/Slide'
-import Dialog, {
-  DialogTitle,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-} from 'material-ui/Dialog'
+import Button from '@material-ui/core/Button'
+import Slide from '@material-ui/core/Slide'
+import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
 
 import { capitalize } from '../../../utils/string'
 

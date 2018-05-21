@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import Typography from 'material-ui/Typography'
+import Typography from '@material-ui/core/Typography'
+
 import Title from '../common/title'
 import ConnectedLayout from '../common/layout'
 import { isLoggedInSelector } from '../../selectors/auth-selectors'

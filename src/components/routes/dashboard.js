@@ -1,7 +1,10 @@
 // @flow
 import * as React from 'react'
 import { Switch, Route, Link, withRouter } from 'react-router-dom'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 import DeveloperModeIcon from 'material-ui-icons/DeveloperMode'
 import InsertDriveFileIcon from 'material-ui-icons/InsertDriveFile'
 import ListIcon from 'material-ui-icons/List'

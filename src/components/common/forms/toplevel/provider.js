@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react'
-import TextField from 'material-ui/TextField'
-import Button from 'material-ui/Button'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 
 import Form from '../../../utils/form'
 import { cleanMerge } from '../../../../utils/merge'
@@ -40,7 +40,9 @@ const ProviderForm = ({ createResource, initFields, method, success }: Props): R
               type="string"
               onChange={onChange('description')}
               value={fields.description}
-              className="input"
+              className="input full"
+              multiline
+              rowsMax="4"
             />
             <div className="submit">
               <Button type="submit" size="large" variant="raised" color="secondary">
@@ -57,6 +59,10 @@ const ProviderForm = ({ createResource, initFields, method, success }: Props): R
           padding-right: 8px;
           margin-top: 12px;
           width: 50%;
+        }
+
+        .form :global(.full) {
+          width: 100%;
         }
 
         .form .submit {
