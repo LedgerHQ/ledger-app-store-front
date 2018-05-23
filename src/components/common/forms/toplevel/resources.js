@@ -1,12 +1,13 @@
 // @flow
 import * as React from 'react'
-import TextField from 'material-ui/TextField'
-import Button from 'material-ui/Button'
-import MenuItem from 'material-ui/Menu/MenuItem'
-import Select from 'material-ui/Select'
-import Input, { InputLabel } from 'material-ui/Input'
-import { FormControl } from 'material-ui/Form'
-import Checkbox from 'material-ui/Checkbox'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+import FormControl from '@material-ui/core/FormControl'
+import Checkbox from '@material-ui/core/Checkbox'
 
 import Form from '../../../utils/form'
 import { cleanMerge } from '../../../../utils/merge'
@@ -55,7 +56,8 @@ const ResourcesForm = ({
               type="string"
               onChange={onChange('description')}
               value={fields.description}
-              className="input"
+              className="input full"
+              multiline
             />
             <FormControl className="input">
               <InputLabel htmlFor="provider">provider(s)</InputLabel>
@@ -94,6 +96,10 @@ const ResourcesForm = ({
           padding-right: 8px;
           margin-top: 12px;
           width: 50%;
+        }
+
+        .form :global(.full) {
+          width: 100%;
         }
 
         .form .submit {

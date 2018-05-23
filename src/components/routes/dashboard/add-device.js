@@ -3,10 +3,10 @@
 import * as React from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import Button from 'material-ui/Button'
-import Tooltip from 'material-ui/Tooltip'
+import Button from '@material-ui/core/Button'
+import Tooltip from '@material-ui/core/Tooltip'
 import AddIcon from 'material-ui-icons/Add'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 
 import WithToggle from '../../utils/with-toggle'
 import DeviceDialog from '../../common/dialog/device-dialog'

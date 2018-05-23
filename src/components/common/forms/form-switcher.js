@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react'
-import Paper from 'material-ui/Paper'
-import { withStyles } from 'material-ui/styles'
+import Paper from '@material-ui/core/Paper'
+import { withStyles } from '@material-ui/core/styles'
 
 import ResourcesForm from './toplevel/resources'
 import ApplicationForm from './toplevel/application'

@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
-import CssBaseline from 'material-ui/CssBaseline'
+import CssBaseline from '@material-ui/core/CssBaseline'
 // $FlowFixMe
 import { hot } from 'react-hot-loader'
 
@@ -23,6 +23,10 @@ const App = (): React.Node => (
       html,
       body,
       #app {
+        height: 100%;
+      }
+
+      .MuiInput-inputType-152 {
         height: 100%;
       }
     `}</style>

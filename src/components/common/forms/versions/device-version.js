@@ -1,12 +1,13 @@
 // @flow
 import * as React from 'react'
-import Button from 'material-ui/Button'
-import TextField from 'material-ui/TextField'
-import MenuItem from 'material-ui/Menu/MenuItem'
-import Select from 'material-ui/Select'
-import Input, { InputLabel } from 'material-ui/Input'
-import { FormControl } from 'material-ui/Form'
-import Checkbox from 'material-ui/Checkbox'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+import FormControl from '@material-ui/core/FormControl'
+import Checkbox from '@material-ui/core/Checkbox'
 
 import Form from '../../../utils/form'
 import { cleanMerge } from '../../../../utils/merge'
@@ -73,7 +74,8 @@ const DeviceVersion = ({
               type="string"
               onChange={onChange('description')}
               value={fields.description}
-              className="input"
+              className="input full"
+              multiline
             />
             <TextField
               id="display_name"
@@ -128,6 +130,10 @@ const DeviceVersion = ({
           padding-right: 8px;
           margin-top: 12px;
           width: 50%;
+        }
+
+        .form :global(.full) {
+          width: 100%;
         }
 
         .form .submit {

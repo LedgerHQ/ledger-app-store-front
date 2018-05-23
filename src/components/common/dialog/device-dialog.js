@@ -1,8 +1,8 @@
 // @flow
 import * as React from 'react'
-import Dialog, { DialogTitle, DialogContent, DialogContentText } from 'material-ui/Dialog'
-import { CircularProgress } from 'material-ui/Progress'
-import { withStyles } from 'material-ui/styles'
+import Dialog, { DialogTitle, DialogContent, DialogContentText } from '@material-ui/core/Dialog'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { withStyles } from '@material-ui/core/styles'
 
 type Props = {
   open: boolean,
