@@ -81,15 +81,6 @@ const ApplicationVersion = ({
               required
             />
             <TextField
-              id="description"
-              label="description"
-              type="string"
-              onChange={onChange('description')}
-              value={fields.description}
-              className="input full"
-              multiline
-            />
-            <TextField
               id="notes"
               label="notes"
               type="string"
@@ -228,6 +219,15 @@ const ApplicationVersion = ({
                 ))}
               </Select>
             </FormControl>
+            <TextField
+              id="description"
+              label="description"
+              type="string"
+              onChange={onChange('description')}
+              value={fields.description}
+              className="input full"
+              multiline
+            />
             <div className="submit">
               <Button type="submit" size="large" variant="raised" color="secondary">
                 Submit

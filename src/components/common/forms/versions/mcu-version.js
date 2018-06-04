@@ -27,6 +27,7 @@ const baseFields = {
   mcu: '',
   name: '',
   description: '',
+  from_bootloader_version: '',
   device_versions: [],
   se_firmware_versions: [],
   providers: [],
@@ -73,13 +74,13 @@ const ApplicationVersion = ({
               required
             />
             <TextField
-              id="description"
-              label="description"
+              id="from_bootloader_version"
+              label="from_bootloader_version"
               type="string"
-              onChange={onChange('description')}
-              value={fields.description}
-              className="input full"
-              multiline
+              onChange={onChange('from_bootloader_version')}
+              value={fields.from_bootloader_version}
+              className="input"
+              required
             />
             <FormControl className="input">
               <InputLabel htmlFor="provider"> provider(s) </InputLabel>
@@ -147,6 +148,15 @@ const ApplicationVersion = ({
                 ))}
               </Select>
             </FormControl>
+            <TextField
+              id="description"
+              label="description"
+              type="string"
+              onChange={onChange('description')}
+              value={fields.description}
+              className="input full"
+              multiline
+            />
             <div className="submit">
               <Button type="submit" size="large" variant="raised" color="secondary">
                 Submit
