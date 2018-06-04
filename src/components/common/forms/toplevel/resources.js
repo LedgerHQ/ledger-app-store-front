@@ -50,15 +50,6 @@ const ResourcesForm = ({
               className="input"
               required
             />
-            <TextField
-              id="description"
-              label="description"
-              type="string"
-              onChange={onChange('description')}
-              value={fields.description}
-              className="input full"
-              multiline
-            />
             <FormControl className="input">
               <InputLabel htmlFor="provider">provider(s)</InputLabel>
               <Select
@@ -81,6 +72,15 @@ const ResourcesForm = ({
                 ))}
               </Select>
             </FormControl>
+            <TextField
+              id="description"
+              label="description"
+              type="string"
+              onChange={onChange('description')}
+              value={fields.description}
+              className="input full"
+              multiline
+            />
             <div className="submit">
               <Button type="submit" size="large" variant="raised" color="secondary">
                 Submit
