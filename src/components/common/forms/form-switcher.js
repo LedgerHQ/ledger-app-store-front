@@ -7,9 +7,10 @@ import ResourcesForm from './toplevel/resources'
 import ApplicationForm from './toplevel/application'
 import ProviderForm from './toplevel/provider'
 import ApplicationVersionForm from './versions/application-version'
-import SeFirmwareVersionForm from './versions/sefirmware-version'
+import FinalFirmwareVersionForm from './versions/firmware-final-version'
 import McuVersionForm from './versions/mcu-version'
 import DeviceVersionForm from './versions/device-version'
+import FirmwareOSUVersion from './versions/firmware-osu-version'
 
 type Props = {
   selected: string,
@@ -22,7 +23,7 @@ type Props = {
   devices: Object[],
   deviceVersions: Object[],
   firmwares: Object[],
-  firmwareVersions: Object[],
+  finalFirmwareVersions: Object[],
   mcu: Object[],
   mcuVersions: Object[],
   method?: 'POST' | 'DELETE' | 'PUT',
@@ -49,8 +50,11 @@ const FormSwitcher = ({ selected, classes, ...props }: Props) => {
     case 'mcu_versions':
       comp = <McuVersionForm {...props} />
       break
-    case 'firmware_versions':
-      comp = <SeFirmwareVersionForm {...props} />
+    case 'firmware_final_versions':
+      comp = <FinalFirmwareVersionForm {...props} />
+      break
+    case 'firmware_osu_versions':
+      comp = <FirmwareOSUVersion {...props} />
       break
     case 'providers':
       comp = <ProviderForm {...props} />

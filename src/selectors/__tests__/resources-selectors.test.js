@@ -7,8 +7,8 @@ describe('resources selectors', () => {
     { name: 'fido u2f', id: 2, application_versions: [{ id: 3 }] },
   ]
   const firmwares = [
-    { name: '1.4.1', id: 28, se_firmware_versions: [{ id: 1 }] },
-    { name: '1.3.0', id: 32, se_firmware_versions: [{ id: 3 }] },
+    { name: '1.4.1', id: 28, se_firmware_final_versions: [{ id: 1 }] },
+    { name: '1.3.0', id: 32, se_firmware_final_versions: [{ id: 3 }] },
   ]
   const devices = [
     { name: 'nano blue', id: 4, device_versions: [{ id: 1 }] },
@@ -103,23 +103,23 @@ describe('resources selectors', () => {
     })
   })
 
-  describe('resourcesFirmwareVersionsSelector', () => {
+  describe('resourcesFinalFirmwareVersionsSelector', () => {
     test('should return all versions found in state.firmwares object from state', () => {
       const state = {
         resources: { applications, firmwares, devices, mcu, categories, publishers, providers },
         other: { other: 'other' },
       }
-      const expected = getVersions('se_firmware_versions', firmwares)
-      const result = selectors.resourcesFirmwareVersionsSelector(state)
+      const expected = getVersions('se_firmware_final_versions', firmwares)
+      const result = selectors.resourcesFinalFirmwareVersionsSelector(state)
       expect(result).toEqual(expected)
     })
 
-    test('should return an empty array if no se_firmware_versions found in state', () => {
+    test('should return an empty array if no se_firmware_final_versions found in state', () => {
       const state = {
         resources: { applications, firmwares: [], devices, mcu, categories, publishers, providers },
         other: { other: 'other' },
       }
-      const result = selectors.resourcesFirmwareVersionsSelector(state)
+      const result = selectors.resourcesFinalFirmwareVersionsSelector(state)
       expect(result).toEqual([])
     })
   })
@@ -340,7 +340,7 @@ describe('resources selectors', () => {
         applications,
         applicationVersions: getVersions('application_versions', applications),
         firmwares,
-        firmwareVersions: getVersions('se_firmware_versions', firmwares),
+        firmwareVersions: getVersions('se_firmware_final_versions', firmwares),
         devices,
         deviceVersions: getVersions('device_versions', devices),
         mcu,

@@ -13,9 +13,8 @@ import Form from '../../../utils/form'
 import { cleanMerge } from '../../../../utils/merge'
 
 type Props = {
-  mcu: Object[],
-  deviceVersions: Object[],
   finalFirmwareVersions: Object[],
+  deviceVersions: Object[],
   providers: Object[],
   initFields: Object,
   method: 'POST' | 'DELETE' | 'PUT',
@@ -24,17 +23,21 @@ type Props = {
 }
 
 const baseFields = {
-  mcu: '',
   name: '',
   description: '',
-  from_bootloader_version: '',
+  display_name: '',
+  notes: '',
+  perso: '',
+  firmware: '',
+  firmware_key: '',
+  hash: '',
+  next_se_firmware_final_version: '',
+  previous_se_firmware_final_versions: [],
   device_versions: [],
-  se_firmware_final_versions: [],
   providers: [],
 }
 
-const ApplicationVersion = ({
-  mcu,
+const FirmwareOSUVersion = ({
   finalFirmwareVersions,
   deviceVersions,
   createResource,
@@ -46,21 +49,21 @@ const ApplicationVersion = ({
   const init = cleanMerge(baseFields, initFields)
   return (
     <React.Fragment>
-      <Form type="mcu_versions" initFields={init} method={method} success={success}>
+      <Form type="firmware_osu_versions" initFields={init} method={method} success={success}>
         {({ onChange, onSelectChange, onSubmit, fields }) => (
           <form className="form" onSubmit={onSubmit(createResource)}>
             <TextField
-              id="mcu"
+              id="next_se_firmware_final_version"
               select
               required
-              label="mcu"
-              value={fields.mcu}
-              onChange={onSelectChange('mcu')}
+              label="next se firmware final version"
+              value={fields.next_se_firmware_final_version}
+              onChange={onSelectChange('next_se_firmware_final_version')}
               className="input"
             >
-              {mcu.map(mc => (
-                <MenuItem key={mc.id} value={mc.id}>
-                  {mc.name}
+              {finalFirmwareVersions.map(firmware => (
+                <MenuItem key={firmware.id} value={firmware.id}>
+                  {firmware.name}
                 </MenuItem>
               ))}
             </TextField>
@@ -74,16 +77,79 @@ const ApplicationVersion = ({
               required
             />
             <TextField
-              id="from_bootloader_version"
-              label="from_bootloader_version"
+              id="notes"
+              label="notes"
               type="string"
-              onChange={onChange('from_bootloader_version')}
-              value={fields.from_bootloader_version}
+              onChange={onChange('notes')}
+              value={fields.notes}
+              className="input full"
+              multiline
+            />
+            <TextField
+              id="display_name"
+              label="display name"
+              type="string"
+              onChange={onChange('display_name')}
+              value={fields.display_name}
               className="input"
-              required
+            />
+            <TextField
+              id="perso"
+              label="perso"
+              type="string"
+              onChange={onChange('perso')}
+              value={fields.perso}
+              className="input"
+            />
+            <TextField
+              id="firmware"
+              label="firmware"
+              type="string"
+              onChange={onChange('firmware')}
+              value={fields.firmware}
+              className="input"
+            />
+            <TextField
+              id="firmware_key"
+              label="firmware key"
+              type="string"
+              onChange={onChange('firmware_key')}
+              value={fields.firmware_key}
+              className="input"
+            />
+            <TextField
+              id="hash"
+              label="hash"
+              type="string"
+              onChange={onChange('hash')}
+              value={fields.hash}
+              className="input"
             />
             <FormControl className="input">
-              <InputLabel htmlFor="provider"> provider(s) </InputLabel>
+              <InputLabel htmlFor="previous_se_firmware_final_versions">
+                Previous SE Firmware Final Versions
+              </InputLabel>
+              <Select
+                multiple
+                input={<Input id="previous_se_firmware_final_versions" />}
+                onChange={onSelectChange('previous_se_firmware_final_versions')}
+                value={fields.previous_se_firmware_final_versions}
+                renderValue={selected =>
+                  finalFirmwareVersions
+                    .filter(firmware => selected.includes(firmware.id))
+                    .map(el => el.name)
+                    .join(', ')
+                }
+              >
+                {finalFirmwareVersions.map(firmware => (
+                  <MenuItem key={firmware.id} value={firmware.id}>
+                    {firmware.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl className="input">
+              <InputLabel htmlFor="provider">provider(s)</InputLabel>
               <Select
                 multiple
                 input={<Input id="provider" />}
@@ -98,14 +164,14 @@ const ApplicationVersion = ({
               >
                 {providers.map(provider => (
                   <MenuItem key={provider.name} value={provider.id}>
-                    <Checkbox checked={fields.providers.indexOf(provider.id) > -1} />{' '}
+                    <Checkbox checked={fields.providers.indexOf(provider.id) > -1} />
                     {provider.name}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
             <FormControl className="input">
-              <InputLabel htmlFor="device_versions"> device version(s) </InputLabel>
+              <InputLabel htmlFor="device_versions">device version(s)</InputLabel>
               <Select
                 multiple
                 input={<Input id="device_versions" />}
@@ -113,7 +179,7 @@ const ApplicationVersion = ({
                 value={fields.device_versions}
                 renderValue={selected =>
                   deviceVersions
-                    .filter(version => selected.includes(version.id))
+                    .filter(provider => selected.includes(provider.id))
                     .map(el => el.name)
                     .join(', ')
                 }
@@ -121,33 +187,6 @@ const ApplicationVersion = ({
                 {deviceVersions.map(version => (
                   <MenuItem key={version.name} value={version.id}>
                     <Checkbox checked={fields.device_versions.indexOf(version.id) > -1} />
-                    {`${version.topName} - ${version.name}`}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl className="input">
-              <InputLabel htmlFor="se_firmware_final_versions">
-                {' '}
-                se firmwares version(s){' '}
-              </InputLabel>
-              <Select
-                multiple
-                input={<Input id="se_firmware_final_versions" />}
-                onChange={onSelectChange('se_firmware_final_versions')}
-                value={fields.se_firmware_final_versions}
-                renderValue={selected =>
-                  finalFirmwareVersions
-                    .filter(version => selected.includes(version.id))
-                    .map(el => el.name)
-                    .join(', ')
-                }
-              >
-                {finalFirmwareVersions.map(version => (
-                  <MenuItem key={version.name} value={version.id}>
-                    <Checkbox
-                      checked={fields.se_firmware_final_versions.indexOf(version.id) > -1}
-                    />
                     {`${version.topName} - ${version.name}`}
                   </MenuItem>
                 ))}
@@ -191,4 +230,4 @@ const ApplicationVersion = ({
   )
 }
 
-export default ApplicationVersion
+export default FirmwareOSUVersion

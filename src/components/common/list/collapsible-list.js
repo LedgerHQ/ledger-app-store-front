@@ -115,7 +115,7 @@ class CollapsibleList extends React.Component<Props, State> {
   }
 
   getSubItemType = (key: string): string =>
-    key === 'se_firmware_versions' ? 'firmware_versions' : key
+    key === 'se_firmware_final_versions' ? 'firmware_final_versions' : key
 
   render() {
     const { items, subItemsKey, type, title, updateResource } = this.props

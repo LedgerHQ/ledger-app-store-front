@@ -36,7 +36,7 @@ class Resources extends React.Component<Props, State> {
   getSubItemKey = (key: string): string => {
     switch (true) {
       case key === 'firmwares':
-        return 'se_firmware_versions'
+        return 'se_firmware_final_versions'
 
       case key.endsWith('s'):
         return `${key.substring(0, key.length - 1)}_versions`

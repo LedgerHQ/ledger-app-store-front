@@ -36,7 +36,10 @@ describe('resources middleware', () => {
     test('with a version resource type', async done => {
       resourcesActions.fetchResource.mockReturnValue(resourcesActions.getFirmwares({}))
       const expected = { type: types.GET_FIRMWARES, payload: {} }
-      await store.dispatch({ type: types.CREATE_RESOURCE_SUCCESS, payload: 'firmware_versions' })
+      await store.dispatch({
+        type: types.CREATE_RESOURCE_SUCCESS,
+        payload: 'firmware_final_versions',
+      })
       const [, dispatched] = store.getActions()
       expect(dispatched).toEqual(expected)
       done()
@@ -58,7 +61,10 @@ describe('resources middleware', () => {
     test('with a version resource type', async done => {
       resourcesActions.fetchResource.mockReturnValue(resourcesActions.getFirmwares({}))
       const expected = { type: types.GET_FIRMWARES, payload: {} }
-      await store.dispatch({ type: types.DELETE_RESOURCE_SUCCESS, payload: 'firmware_versions' })
+      await store.dispatch({
+        type: types.DELETE_RESOURCE_SUCCESS,
+        payload: 'firmware_final_versions',
+      })
       const [, dispatched] = store.getActions()
       expect(dispatched).toEqual(expected)
       done()
@@ -80,7 +86,10 @@ describe('resources middleware', () => {
     test('with a version resource type', async done => {
       resourcesActions.fetchResource.mockReturnValue(resourcesActions.getFirmwares({}))
       const expected = { type: types.GET_FIRMWARES, payload: {} }
-      await store.dispatch({ type: types.UPDATE_RESOURCE_SUCCESS, payload: 'firmware_versions' })
+      await store.dispatch({
+        type: types.UPDATE_RESOURCE_SUCCESS,
+        payload: 'firmware_final_versions',
+      })
       const [, dispatched] = store.getActions()
       expect(dispatched).toEqual(expected)
       done()

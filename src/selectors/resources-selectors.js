@@ -19,9 +19,14 @@ export const resourcesFirmwaresSelector = createSelector(
   resources => resources.firmwares || [],
 )
 
-export const resourcesFirmwareVersionsSelector = createSelector(
+export const resourcesFinalFirmwareVersionsSelector = createSelector(
   resourcesFirmwaresSelector,
-  firmwares => getVersions('se_firmware_versions', firmwares),
+  firmwares => getVersions('se_firmware_final_versions', firmwares),
+)
+
+export const resourcesOSUFirmwareVersionsSelector = createSelector(
+  resourcesFinalFirmwareVersionsSelector,
+  finalFirmwares => getVersions('osu_versions', finalFirmwares),
 )
 
 export const resourcesDevicesSelector = createSelector(
@@ -101,7 +106,8 @@ export const allResourcesSelector = createSelector(
 
 export const allResourcesAndVersionsSelector = createSelector(
   resourcesFirmwaresSelector,
-  resourcesFirmwareVersionsSelector,
+  resourcesFinalFirmwareVersionsSelector,
+  resourcesOSUFirmwareVersionsSelector,
   resourcesApplicationsSelector,
   resourcesApplicationVersionsSelector,
   resourcesDevicesSelector,
@@ -114,6 +120,7 @@ export const allResourcesAndVersionsSelector = createSelector(
   (
     firmwares: Object[],
     firmwareVersions: Object[],
+    OSUfirmwareVersions: Object[],
     applications: Object[],
     applicationVersions: Object[],
     devices: Object[],
@@ -126,6 +133,7 @@ export const allResourcesAndVersionsSelector = createSelector(
   ): Object => ({
     firmwares,
     firmwareVersions,
+    OSUfirmwareVersions,
     applications,
     applicationVersions,
     devices,

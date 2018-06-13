@@ -4,7 +4,8 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
-import Input, { InputLabel } from '@material-ui/core/Input'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Checkbox from '@material-ui/core/Checkbox'
 
@@ -14,7 +15,7 @@ import { cleanMerge } from '../../../../utils/merge'
 type Props = {
   applications: Object[],
   deviceVersions: Object[],
-  firmwareVersions: Object[],
+  finalFirmwareVersions: Object[],
   providers: Object[],
   initFields: Object,
   method: 'POST' | 'DELETE' | 'PUT',
@@ -34,15 +35,16 @@ const baseFields = {
   firmware: '',
   firmware_key: '',
   delete: '',
+  version: '',
   delete_key: '',
   device_versions: [],
-  se_firmware_versions: [],
+  se_firmware_final_versions: [],
   providers: [],
 }
 
 const ApplicationVersion = ({
   applications,
-  firmwareVersions,
+  finalFirmwareVersions,
   deviceVersions,
   createResource,
   providers,
@@ -79,6 +81,14 @@ const ApplicationVersion = ({
               value={fields.name}
               className="input"
               required
+            />
+            <TextField
+              id="version"
+              label="version"
+              type="string"
+              onChange={onChange('version')}
+              value={fields.version}
+              className="input"
             />
             <TextField
               id="notes"
@@ -198,22 +208,24 @@ const ApplicationVersion = ({
               </Select>
             </FormControl>
             <FormControl className="input">
-              <InputLabel htmlFor="se_firmware_versions">se firmwares version(s)</InputLabel>
+              <InputLabel htmlFor="se_firmware_final_versions">se firmwares version(s)</InputLabel>
               <Select
                 multiple
-                input={<Input id="se_firmware_versions" />}
-                onChange={onSelectChange('se_firmware_versions')}
-                value={fields.se_firmware_versions}
+                input={<Input id="se_firmware_final_versions" />}
+                onChange={onSelectChange('se_firmware_final_versions')}
+                value={fields.se_firmware_final_versions}
                 renderValue={selected =>
-                  firmwareVersions
+                  finalFirmwareVersions
                     .filter(version => selected.includes(version.id))
                     .map(el => el.name)
                     .join(', ')
                 }
               >
-                {firmwareVersions.map(version => (
+                {finalFirmwareVersions.map(version => (
                   <MenuItem key={version.name} value={version.id}>
-                    <Checkbox checked={fields.se_firmware_versions.indexOf(version.id) > -1} />
+                    <Checkbox
+                      checked={fields.se_firmware_final_versions.indexOf(version.id) > -1}
+                    />
                     {`${version.topName} - ${version.name}`}
                   </MenuItem>
                 ))}

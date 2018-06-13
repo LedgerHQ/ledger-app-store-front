@@ -14,11 +14,12 @@ import {
   resourcesPublishersSelector,
   resourcesCategoriesSelector,
   resourcesApplicationVersionsSelector,
-  resourcesFirmwareVersionsSelector,
+  resourcesFinalFirmwareVersionsSelector,
   resourcesDeviceVersionsSelector,
   resourcesMcuSelector,
   resourcesMcuVersionsSelector,
   resourcesSuccessSelector,
+  resourcesOSUFirmwareVersionsSelector,
 } from '../../../selectors/resources-selectors'
 import {
   fetchResources as fetchResourcesAction,
@@ -32,7 +33,8 @@ type Props = {
   applications: Object[],
   applicationVersions: Object[],
   firmwares: Object[],
-  firmwareVersions: Object[],
+  finalFirmwareVersions: Object[],
+  OSUFirmwareVersions: Object[],
   devices: Object[],
   deviceVersions: Object[],
   publishers: Object[],
@@ -102,7 +104,11 @@ class AddResources extends React.Component<Props, State> {
           <MenuItem value="firmwares">Se Firmware</MenuItem>
           {others.firmwares &&
             others.firmwares.length && (
-              <MenuItem value="firmware_versions">Se Firmware Versions</MenuItem>
+              <MenuItem value="firmware_final_versions">Firmware Final Versions</MenuItem>
+            )}
+          {others.finalFirmwareVersions &&
+            others.finalFirmwareVersions.length && (
+              <MenuItem value="firmware_osu_versions">Firmware OSU Versions</MenuItem>
             )}
           <MenuItem value="applications">Application</MenuItem>
           {others.applications &&
@@ -136,7 +142,8 @@ const mapStateToProps = state => ({
   applications: resourcesApplicationsSelector(state),
   applicationVersions: resourcesApplicationVersionsSelector(state),
   firmwares: resourcesFirmwaresSelector(state),
-  firmwareVersions: resourcesFirmwareVersionsSelector(state),
+  finalFirmwareVersions: resourcesFinalFirmwareVersionsSelector(state),
+  OSUFirmwareVersions: resourcesOSUFirmwareVersionsSelector(state),
   devices: resourcesDevicesSelector(state),
   deviceVersions: resourcesDeviceVersionsSelector(state),
   providers: resourcesProvidersSelector(state),
