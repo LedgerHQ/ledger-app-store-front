@@ -5,7 +5,10 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
 import CollapsibleList from '../../common/list/collapsible-list'
-import { allResourcesSelector } from '../../../selectors/resources-selectors'
+import {
+  allResourcesSelector,
+  resourcesFinalFirmwareVersionsSelector,
+} from '../../../selectors/resources-selectors'
 import {
   fetchResources as fetchResourcesAction,
   deleteResource as deleteResourceAction,
@@ -17,6 +20,7 @@ type Props = {
   resources: {
     [string]: Array<{}>,
   },
+  final: Array<{ [string]: any }>,
   fetchResources: Function,
   deleteResource: Function,
   updateResource: Function,
@@ -47,8 +51,7 @@ class Resources extends React.Component<Props, State> {
   }
 
   render(): React.Node {
-    const { resources, deleteResource, updateResource } = this.props
-
+    const { resources, deleteResource, updateResource, final } = this.props
     return (
       <React.Fragment>
         {Object.keys(resources)
@@ -80,6 +83,22 @@ class Resources extends React.Component<Props, State> {
               </Paper>
             </section>
           ))}
+        <section>
+          <Paper>
+            <div className="title">
+              <Typography variant="title" color="secondary">
+                Firmware OSU
+              </Typography>
+            </div>
+            <CollapsibleList
+              type="firmware_final_versions"
+              items={final}
+              subItemsKey="osu_versions"
+              deleteResource={deleteResource}
+              updateResource={updateResource}
+            />
+          </Paper>
+        </section>
 
         <style jsx>{`
           section {
@@ -97,6 +116,7 @@ class Resources extends React.Component<Props, State> {
 
 const mapStateToProps = (state: Object): Object => ({
   resources: allResourcesSelector(state),
+  final: resourcesFinalFirmwareVersionsSelector(state),
 })
 
 export default connect(mapStateToProps, {

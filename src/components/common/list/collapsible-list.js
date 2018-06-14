@@ -62,7 +62,7 @@ class CollapsibleList extends React.Component<Props, State> {
     }))
   }
 
-  openModal = (type: string, modal: string): Function => (item: Object): Function => (): void =>
+  openModal = (type: string, modal: string): Function => (item: Object): Function => (): void => {
     this.setState(state => ({
       ...state,
       [modal]: true,
@@ -70,6 +70,7 @@ class CollapsibleList extends React.Component<Props, State> {
       type,
       mode: modal === 'editDialog' ? 'edit' : 'delete',
     }))
+  }
 
   closeModal = (): void =>
     this.setState(state => ({
@@ -114,8 +115,18 @@ class CollapsibleList extends React.Component<Props, State> {
     }
   }
 
-  getSubItemType = (key: string): string =>
-    key === 'se_firmware_final_versions' ? 'firmware_final_versions' : key
+  getSubItemType = (key: string): string => {
+    switch (key) {
+      case 'se_firmware_final_versions':
+        return 'firmware_final_versions'
+
+      case 'osu_versions':
+        return 'firmware_osu_versions'
+
+      default:
+        return key
+    }
+  }
 
   render() {
     const { items, subItemsKey, type, title, updateResource } = this.props

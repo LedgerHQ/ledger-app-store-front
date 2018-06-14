@@ -119,7 +119,7 @@ export const allResourcesAndVersionsSelector = createSelector(
   resourcesMcuVersionsSelector,
   (
     firmwares: Object[],
-    firmwareVersions: Object[],
+    finalFirmwareVersions: Object[],
     OSUfirmwareVersions: Object[],
     applications: Object[],
     applicationVersions: Object[],
@@ -132,7 +132,7 @@ export const allResourcesAndVersionsSelector = createSelector(
     mcuVersions: Object[],
   ): Object => ({
     firmwares,
-    firmwareVersions,
+    finalFirmwareVersions,
     OSUfirmwareVersions,
     applications,
     applicationVersions,

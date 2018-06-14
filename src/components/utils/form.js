@@ -70,7 +70,6 @@ class Form extends React.Component<Props, State> {
     evt.preventDefault()
     const { fields } = this.state
     const { type, method } = this.props
-    console.log(fields)
     callback(type, fields, method)
   }
 

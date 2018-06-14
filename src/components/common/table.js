@@ -50,7 +50,16 @@ class TableCreator extends React.Component<Props> {
           </IconButton>
         </TableCell>
 
-        {Object.keys(item).map(key => <TableCell key={key}>{item[key]}</TableCell>)}
+        {Object.keys(item).map(
+          key =>
+            Array.isArray(item[key]) ? (
+              <TableCell key={key}>
+                {item[key].map((el, i, arr) => (i === arr.length - 1 ? el.id : `${el.id}, `))}
+              </TableCell>
+            ) : (
+              <TableCell key={key}>{item[key]}</TableCell>
+            ),
+        )}
       </TableRow>
     ))
 
