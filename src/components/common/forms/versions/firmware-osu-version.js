@@ -55,7 +55,6 @@ const FirmwareOSUVersion = ({
             <TextField
               id="next_se_firmware_final_version"
               select
-              required
               label="next se firmware final version"
               value={fields.next_se_firmware_final_version}
               onChange={onSelectChange('next_se_firmware_final_version')}

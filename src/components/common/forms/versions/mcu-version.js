@@ -80,7 +80,6 @@ const ApplicationVersion = ({
               onChange={onChange('from_bootloader_version')}
               value={fields.from_bootloader_version}
               className="input"
-              required
             />
             <FormControl className="input">
               <InputLabel htmlFor="provider"> provider(s) </InputLabel>
