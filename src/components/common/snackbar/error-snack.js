@@ -22,9 +22,6 @@ type State = {
 }
 
 class ErrorSnack extends React.Component<Props, State> {
-  props: Props
-  state: State
-
   state = {
     open: false,
     type: '',

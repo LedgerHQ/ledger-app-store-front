@@ -2,8 +2,17 @@
 /* globals SyntheticEvent */
 import * as React from 'react'
 
+type ChidrenArgs = {
+  onChange: (field: string) => (e: SyntheticEvent<HTMLInputElement>) => void,
+  onSubmit: (
+    callback: Function,
+  ) => (evt: SyntheticEvent<HTMLButtonElement | HTMLFormElement>) => void,
+  onSelectChange: (field: string) => (e: Object) => void,
+  fields: *,
+}
+
 type Props = {
-  children: Function,
+  children: (args: ChidrenArgs) => React.Node,
   initFields: Object,
   method: 'POST' | 'DELETE' | 'PUT',
   type?: string,
@@ -15,9 +24,6 @@ type State = {
 }
 
 class Form extends React.Component<Props, State> {
-  props: Props
-  state: State
-
   static defaultProps = {
     type: '',
   }
@@ -55,13 +61,12 @@ class Form extends React.Component<Props, State> {
     }))
   }
 
-  onSubmit = (callback: Function): Function => (
+  onSubmit = (callback: Function) => (
     evt: SyntheticEvent<HTMLButtonElement | HTMLFormElement>,
   ): void => {
     evt.preventDefault()
     const { fields } = this.state
     const { type, method } = this.props
-
     callback(type, fields, method)
   }
 

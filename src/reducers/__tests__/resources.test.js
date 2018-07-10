@@ -7,8 +7,8 @@ const applications = [
   { name: 'fido u2f', id: 2, application_versions: [{ id: 3 }] },
 ]
 const firmwares = [
-  { name: '1.4.1', id: 28, se_firmware_versions: [{ id: 1 }] },
-  { name: '1.3.0', id: 32, se_firmware_versions: [{ id: 3 }] },
+  { name: '1.4.1', id: 28, se_firmware_final_versions: [{ id: 1 }] },
+  { name: '1.3.0', id: 32, se_firmware_final_versions: [{ id: 3 }] },
 ]
 const devices = [
   { name: 'nano blue', id: 4, device_versions: [{ id: 1 }] },

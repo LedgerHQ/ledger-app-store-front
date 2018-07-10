@@ -40,11 +40,11 @@ const baseFields = {
   osu_firmware_key: '',
   osu_hash: '',
   device_versions: [],
-  previous_se_firmware_versions: [],
+  previous_se_firmware_final_versions: [],
   providers: [],
 }
 
-const SeFirmwareVersion = ({
+const FinalFirmwareVersion = ({
   firmwares,
   firmwareVersions,
   deviceVersions,
@@ -57,7 +57,7 @@ const SeFirmwareVersion = ({
   const init = cleanMerge(baseFields, initFields)
   return (
     <React.Fragment>
-      <Form type="firmware_versions" initFields={init} method={method} success={success}>
+      <Form type="firmware_final_versions" initFields={init} method={method} success={success}>
         {({ onChange, onSelectChange, onSubmit, fields }) => (
           <form className="form" onSubmit={onSubmit(createResource)}>
             <TextField
@@ -226,14 +226,14 @@ const SeFirmwareVersion = ({
               </Select>
             </FormControl>
             <FormControl className="input">
-              <InputLabel htmlFor="previous_se_firmware_versions">
+              <InputLabel htmlFor="previous_se_firmware_final_versions">
                 se firmwares version(s)
               </InputLabel>
               <Select
                 multiple
-                input={<Input id="previous_se_firmware_versions" />}
-                onChange={onSelectChange('previous_se_firmware_versions')}
-                value={fields.previous_se_firmware_versions}
+                input={<Input id="previous_se_firmware_final_versions" />}
+                onChange={onSelectChange('previous_se_firmware_final_versions')}
+                value={fields.previous_se_firmware_final_versions}
                 renderValue={selected =>
                   firmwareVersions
                     .filter(provider => selected.includes(provider.id))
@@ -244,7 +244,7 @@ const SeFirmwareVersion = ({
                 {firmwareVersions.map(version => (
                   <MenuItem key={version.name} value={version.id}>
                     <Checkbox
-                      checked={fields.previous_se_firmware_versions.indexOf(version.id) > -1}
+                      checked={fields.previous_se_firmware_final_versions.indexOf(version.id) > -1}
                     />
                     {`${version.topName} - ${version.name}`}
                   </MenuItem>
@@ -289,4 +289,4 @@ const SeFirmwareVersion = ({
   )
 }
 
-export default SeFirmwareVersion
+export default FinalFirmwareVersion
