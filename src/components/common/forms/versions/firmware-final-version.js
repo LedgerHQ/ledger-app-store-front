@@ -92,6 +92,7 @@ const FirmwareFinalVersion = ({
               onChange={onChange('version')}
               value={fields.version}
               className="input"
+              required
             />
             <TextField
               id="display_name"

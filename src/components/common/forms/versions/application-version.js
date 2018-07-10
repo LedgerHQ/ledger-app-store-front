@@ -89,6 +89,7 @@ const ApplicationVersion = ({
               onChange={onChange('version')}
               value={fields.version}
               className="input"
+              required
             />
             <TextField
               id="notes"
