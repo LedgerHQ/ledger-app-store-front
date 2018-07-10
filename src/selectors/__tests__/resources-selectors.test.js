@@ -7,8 +7,8 @@ describe('resources selectors', () => {
     { name: 'fido u2f', id: 2, application_versions: [{ id: 3 }] },
   ]
   const firmwares = [
-    { name: '1.4.1', id: 28, se_firmware_final_versions: [{ id: 1 }] },
-    { name: '1.3.0', id: 32, se_firmware_final_versions: [{ id: 3 }] },
+    { name: '1.4.1', id: 28, se_firmware_final_versions: [{ id: 1, osu_version: [2, 5, 7] }] },
+    { name: '1.3.0', id: 32, se_firmware_final_versions: [{ id: 3, osu_version: [1, 4, 8] }] },
   ]
   const devices = [
     { name: 'nano blue', id: 4, device_versions: [{ id: 1 }] },
@@ -335,12 +335,15 @@ describe('resources selectors', () => {
         },
         other: { other: 'other' },
       }
+      const finalFirmwareVersions = getVersions('se_firmware_final_versions', firmwares)
+      const OSUfirmwareVersions = getVersions('osu_versions', finalFirmwareVersions)
       const result = selectors.allResourcesAndVersionsSelector(state)
       const expected = {
         applications,
         applicationVersions: getVersions('application_versions', applications),
         firmwares,
-        firmwareVersions: getVersions('se_firmware_final_versions', firmwares),
+        OSUfirmwareVersions,
+        finalFirmwareVersions,
         devices,
         deviceVersions: getVersions('device_versions', devices),
         mcu,

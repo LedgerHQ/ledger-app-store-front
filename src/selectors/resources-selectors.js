@@ -26,7 +26,7 @@ export const resourcesFinalFirmwareVersionsSelector = createSelector(
 
 export const resourcesOSUFirmwareVersionsSelector = createSelector(
   resourcesFinalFirmwareVersionsSelector,
-  finalFirmwares => getVersions('osu_versions', finalFirmwares),
+  OSUfirmwares => getVersions('osu_versions', OSUfirmwares),
 )
 
 export const resourcesDevicesSelector = createSelector(

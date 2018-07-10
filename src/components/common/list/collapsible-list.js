@@ -128,10 +128,6 @@ class CollapsibleList extends React.Component<Props, State> {
   render() {
     const { items, subItemsKey, type, title, updateResource } = this.props
 
-    if (type === 'applications') {
-      console.log(items)
-    }
-
     return (
       <React.Fragment>
         <List
