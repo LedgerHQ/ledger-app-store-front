@@ -1,8 +1,10 @@
 // @flow
 import * as React from 'react'
 import { connect } from 'react-redux'
+import isEmpty from 'ramda/src/isEmpty'
 import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
 
 import CollapsibleList from '../../common/list/collapsible-list'
 import {
@@ -14,7 +16,6 @@ import {
   deleteResource as deleteResourceAction,
   updateResource as updateResourceAction,
 } from '../../../actions/resources-actions'
-import { capitalizeFirst } from '../../../utils/string'
 
 type Props = {
   resources: {
@@ -26,13 +27,36 @@ type Props = {
   updateResource: Function,
 }
 
-type State = {}
+type State = {
+  tab: number,
+  resourcesName: string[],
+}
+
+const FIRMWARE_OSU = 'firmwares osu'
 
 class Resources extends React.Component<Props, State> {
+  state = {
+    tab: -1,
+    resourcesName: [],
+  }
+
   componentDidMount() {
     const { fetchResources } = this.props
     fetchResources()
   }
+
+  componentDidUpdate() {
+    const { resources } = this.props
+    if (!isEmpty(resources) && this.state.resourcesName.length === 0) {
+      const names = Object.keys(resources)
+      names.push(FIRMWARE_OSU)
+      names.sort()
+      this.setUpNames(names)
+    }
+  }
+
+  handleChange = (evt: *, tab: number) => this.setState({ tab })
+  setUpNames = (resourcesName: string[]) => this.setState({ resourcesName, tab: 0 })
 
   getSubItemKey = (key: string): string => {
     switch (true) {
@@ -47,67 +71,68 @@ class Resources extends React.Component<Props, State> {
     }
   }
 
-  render(): React.Node {
+  renderTabContent = () => {
+    const { tab, resourcesName } = this.state
     const { resources, deleteResource, updateResource, final } = this.props
+
+    if (tab === -1) {
+      return null
+    }
+
+    const current = resourcesName[tab]
+
+    if (current === FIRMWARE_OSU) {
+      return (
+        <CollapsibleList
+          type="firmware_final_versions"
+          items={final}
+          subItemsKey="osu_versions"
+          deleteResource={deleteResource}
+          updateResource={updateResource}
+        />
+      )
+    }
+
+    if (current === 'publishers' || current === 'providers' || current === 'categories') {
+      return (
+        <CollapsibleList
+          type={current}
+          items={resources[current]}
+          deleteResource={deleteResource}
+          updateResource={updateResource}
+        />
+      )
+    }
+
+    return (
+      <CollapsibleList
+        type={current}
+        items={resources[current]}
+        subItemsKey={this.getSubItemKey(current)}
+        deleteResource={deleteResource}
+        updateResource={updateResource}
+      />
+    )
+  }
+
+  render(): React.Node {
+    const { tab, resourcesName } = this.state
+
     return (
       <React.Fragment>
-        {Object.keys(resources)
-          .sort()
-          .map(
-            (key: string): React.Node => (
-              <section key={key}>
-                <Paper>
-                  <div className="title">
-                    <Typography variant="title" color="secondary">
-                      {capitalizeFirst(key)}
-                    </Typography>
-                  </div>
-                  {key === 'publishers' || key === 'providers' || key === 'categories' ? (
-                    <CollapsibleList
-                      type={key}
-                      items={resources[key]}
-                      deleteResource={deleteResource}
-                      updateResource={updateResource}
-                    />
-                  ) : (
-                    <CollapsibleList
-                      type={key}
-                      items={resources[key]}
-                      subItemsKey={this.getSubItemKey(key)}
-                      deleteResource={deleteResource}
-                      updateResource={updateResource}
-                    />
-                  )}
-                </Paper>
-              </section>
-            ),
-          )}
-        <section>
-          <Paper>
-            <div className="title">
-              <Typography variant="title" color="secondary">
-                Firmware OSU
-              </Typography>
-            </div>
-            <CollapsibleList
-              type="firmware_final_versions"
-              items={final}
-              subItemsKey="osu_versions"
-              deleteResource={deleteResource}
-              updateResource={updateResource}
-            />
-          </Paper>
-        </section>
-
-        <style jsx>{`
-          section {
-            margin: 20px 0;
-          }
-
-          .title {
-            padding: 10px 12px;
-          }
-        `}</style>
+        <Paper>
+          <Tabs
+            value={tab}
+            onChange={this.handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            scrollable
+            scrollButtons="auto"
+          >
+            {resourcesName.map((name: string): React.Node => <Tab key={name} label={name} />)}
+          </Tabs>
+        </Paper>
+        <Paper style={{ padding: 8 * 3, margin: '20px 0' }}>{this.renderTabContent()}</Paper>
       </React.Fragment>
     )
   }
