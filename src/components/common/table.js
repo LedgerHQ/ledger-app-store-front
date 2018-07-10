@@ -11,6 +11,11 @@ import IconButton from '@material-ui/core/IconButton'
 import Delete from 'material-ui-icons/Delete'
 import Edit from 'material-ui-icons/ModeEdit'
 
+const isObject = (value: *): boolean =>
+  value && typeof value === 'object' && value.constructor === Object
+
+const formatArrayValues = (value: *) => (isObject(value) ? value.id : value)
+
 type Props = {
   items: Object[],
   openEditModal: Function,
@@ -52,7 +57,10 @@ class TableCreator extends React.Component<Props> {
           key =>
             Array.isArray(item[key]) ? (
               <TableCell key={key}>
-                {item[key].map((el, i, arr) => (i === arr.length - 1 ? el.id : `${el.id}, `))}
+                {item[key].map(
+                  (el, i, arr) =>
+                    i === arr.length - 1 ? formatArrayValues(el) : `${formatArrayValues(el)}, `,
+                )}
               </TableCell>
             ) : (
               <TableCell key={key}>{item[key]}</TableCell>
