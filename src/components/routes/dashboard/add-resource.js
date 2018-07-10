@@ -63,9 +63,6 @@ const styles = (theme: Object): Object => ({
 })
 
 class AddResources extends React.Component<Props, State> {
-  props: Props
-  state: State
-
   state = {
     selected: '',
   }
@@ -156,10 +153,13 @@ const mapStateToProps = state => ({
 
 const enhancer = compose(
   withStyles(styles),
-  connect(mapStateToProps, {
-    fetchResources: fetchResourcesAction,
-    createResource: createResourceAction,
-  }),
+  connect(
+    mapStateToProps,
+    {
+      fetchResources: fetchResourcesAction,
+      createResource: createResourceAction,
+    },
+  ),
 )
 
 export default enhancer(AddResources)

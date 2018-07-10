@@ -26,8 +26,6 @@ const CustomTableCell = withStyles(theme => ({
 }))(TableCell)
 
 class TableCreator extends React.Component<Props> {
-  props: Props
-
   renderTableHeader = (item: Object): React.Node => (
     <React.Fragment>
       <CustomTableCell>delete</CustomTableCell>

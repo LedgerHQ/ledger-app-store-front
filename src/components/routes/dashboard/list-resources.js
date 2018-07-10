@@ -29,9 +29,6 @@ type Props = {
 type State = {}
 
 class Resources extends React.Component<Props, State> {
-  props: Props
-  state: State
-
   componentDidMount() {
     const { fetchResources } = this.props
     fetchResources()
@@ -56,33 +53,35 @@ class Resources extends React.Component<Props, State> {
       <React.Fragment>
         {Object.keys(resources)
           .sort()
-          .map((key: string): React.Node => (
-            <section key={key}>
-              <Paper>
-                <div className="title">
-                  <Typography variant="title" color="secondary">
-                    {capitalizeFirst(key)}
-                  </Typography>
-                </div>
-                {key === 'publishers' || key === 'providers' || key === 'categories' ? (
-                  <CollapsibleList
-                    type={key}
-                    items={resources[key]}
-                    deleteResource={deleteResource}
-                    updateResource={updateResource}
-                  />
-                ) : (
-                  <CollapsibleList
-                    type={key}
-                    items={resources[key]}
-                    subItemsKey={this.getSubItemKey(key)}
-                    deleteResource={deleteResource}
-                    updateResource={updateResource}
-                  />
-                )}
-              </Paper>
-            </section>
-          ))}
+          .map(
+            (key: string): React.Node => (
+              <section key={key}>
+                <Paper>
+                  <div className="title">
+                    <Typography variant="title" color="secondary">
+                      {capitalizeFirst(key)}
+                    </Typography>
+                  </div>
+                  {key === 'publishers' || key === 'providers' || key === 'categories' ? (
+                    <CollapsibleList
+                      type={key}
+                      items={resources[key]}
+                      deleteResource={deleteResource}
+                      updateResource={updateResource}
+                    />
+                  ) : (
+                    <CollapsibleList
+                      type={key}
+                      items={resources[key]}
+                      subItemsKey={this.getSubItemKey(key)}
+                      deleteResource={deleteResource}
+                      updateResource={updateResource}
+                    />
+                  )}
+                </Paper>
+              </section>
+            ),
+          )}
         <section>
           <Paper>
             <div className="title">
@@ -119,8 +118,11 @@ const mapStateToProps = (state: Object): Object => ({
   final: resourcesFinalFirmwareVersionsSelector(state),
 })
 
-export default connect(mapStateToProps, {
-  fetchResources: fetchResourcesAction,
-  deleteResource: deleteResourceAction,
-  updateResource: updateResourceAction,
-})(Resources)
+export default connect(
+  mapStateToProps,
+  {
+    fetchResources: fetchResourcesAction,
+    deleteResource: deleteResourceAction,
+    updateResource: updateResourceAction,
+  },
+)(Resources)

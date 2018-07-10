@@ -22,9 +22,6 @@ type State = {
 }
 
 class SuccessSnack extends React.Component<Props, State> {
-  props: Props
-  state: State
-
   state = {
     open: false,
     type: '',

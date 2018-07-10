@@ -27,8 +27,6 @@ const styles = theme => ({
 })
 
 class AddDevice extends React.Component<Props> {
-  props: Props
-
   renderTitle = (): string => {
     const { success, error } = this.props
 
@@ -96,7 +94,10 @@ const mapStateToProps = (state: Object): Object => ({
 
 const enhancer = compose(
   withStyles(styles),
-  connect(mapStateToProps, { registerU2FDevice: registerU2FDeviceAction }),
+  connect(
+    mapStateToProps,
+    { registerU2FDevice: registerU2FDeviceAction },
+  ),
 )
 
 export default enhancer(AddDevice)

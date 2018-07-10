@@ -37,9 +37,6 @@ type State = {
 }
 
 export class Login extends React.Component<Props, State> {
-  props: Props
-  state: State
-
   static defaultProps = {
     authError: '',
     u2fError: '',
@@ -175,4 +172,7 @@ const mapStateToProps = (state: Object): Object => ({
   u2fError: u2fErrorSelector(state),
 })
 
-export default connect(mapStateToProps, { login: loginAction })(Login)
+export default connect(
+  mapStateToProps,
+  { login: loginAction },
+)(Login)

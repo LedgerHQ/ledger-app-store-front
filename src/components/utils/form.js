@@ -24,9 +24,6 @@ type State = {
 }
 
 class Form extends React.Component<Props, State> {
-  props: Props
-  state: State
-
   static defaultProps = {
     type: '',
   }
