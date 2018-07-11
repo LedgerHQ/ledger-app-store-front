@@ -149,7 +149,7 @@ const FirmwareFinalVersion = ({
                 }
               >
                 {providers.map(provider => (
-                  <MenuItem key={provider.name} value={provider.id}>
+                  <MenuItem key={`${provider.name}_${provider.id}`} value={provider.id}>
                     <Checkbox checked={fields.providers.indexOf(provider.id) > -1} />
                     {provider.name}
                   </MenuItem>
@@ -171,7 +171,7 @@ const FirmwareFinalVersion = ({
                 }
               >
                 {deviceVersions.map(version => (
-                  <MenuItem key={version.name} value={version.id}>
+                  <MenuItem key={`${version.name}_${version.id}`} value={version.id}>
                     <Checkbox checked={fields.device_versions.indexOf(version.id) > -1} />
                     {`${version.topName} - ${version.name}`}
                   </MenuItem>

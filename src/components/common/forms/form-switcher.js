@@ -30,6 +30,7 @@ type Props = {
   createResource: Function,
   initFields?: Object,
   success: boolean,
+  editMode: boolean,
 }
 
 const styles = (theme: Object): Object => ({

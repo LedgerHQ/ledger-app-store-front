@@ -39,6 +39,15 @@ class TableCreator extends React.Component<Props> {
     </React.Fragment>
   )
 
+  renderWithIcon = (key: string, item: Object): React.Node =>
+    key === 'icon' ? (
+      <TableCell key={key}>
+        {item[key] ? <img style={{ maxWidth: 50 }} src={item[key]} alt="icon" /> : ''}
+      </TableCell>
+    ) : (
+      <TableCell key={key}>{item[key]}</TableCell>
+    )
+
   renderTableRows = (items: Object[]): React.Node =>
     items.map(item => (
       <TableRow key={item.id}>
@@ -63,7 +72,7 @@ class TableCreator extends React.Component<Props> {
                 )}
               </TableCell>
             ) : (
-              <TableCell key={key}>{item[key]}</TableCell>
+              this.renderWithIcon(key, item)
             ),
         )}
       </TableRow>

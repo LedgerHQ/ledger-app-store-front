@@ -99,7 +99,7 @@ const DeviceVersion = ({
                 }
               >
                 {providers.map(provider => (
-                  <MenuItem key={provider.name} value={provider.id}>
+                  <MenuItem key={`${provider.name}_${provider.id}`} value={provider.id}>
                     <Checkbox checked={fields.providers.indexOf(provider.id) > -1} />
                     {provider.name}
                   </MenuItem>

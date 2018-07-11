@@ -8,6 +8,7 @@ type ChidrenArgs = {
     callback: Function,
   ) => (evt: SyntheticEvent<HTMLButtonElement | HTMLFormElement>) => void,
   onSelectChange: (field: string) => (e: Object) => void,
+  onFileChange: (field: string) => (e: Object) => void,
   fields: *,
 }
 
@@ -61,6 +62,14 @@ class Form extends React.Component<Props, State> {
     }))
   }
 
+  onFileChange = (field: string): Function => (evt: Object): void => {
+    const file = evt.target.files[0]
+    this.setState(state => ({
+      ...state,
+      fields: { ...state.fields, [field]: file },
+    }))
+  }
+
   onSubmit = (callback: Function) => (
     evt: SyntheticEvent<HTMLButtonElement | HTMLFormElement>,
   ): void => {
@@ -81,6 +90,7 @@ class Form extends React.Component<Props, State> {
       onChange: this.onChange,
       onSubmit: this.onSubmit,
       onSelectChange: this.onSelectChange,
+      onFileChange: this.onFileChange,
       fields,
     })
   }

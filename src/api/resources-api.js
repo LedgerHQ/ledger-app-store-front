@@ -36,12 +36,26 @@ export const createResource = async (
   method: string = 'POST',
 ): Promise<mixed> => {
   try {
-    const json = await fetchWithToken(token)(`${BASE_URL}/api/${type}`, {
-      method,
-      body: JSON.stringify({
-        ...fields,
-      }),
+    const body = new FormData()
+    Object.keys(fields).forEach(prop => {
+      const current = fields[prop]
+      if (prop === 'icon') {
+        body.append(prop, current, current.name)
+      } else if (Array.isArray(current)) {
+        current.forEach(val => body.append(prop, val))
+      } else {
+        body.append(prop, current)
+      }
     })
+
+    const json = await fetchWithToken(token)(
+      `${BASE_URL}/api/${type}`,
+      {
+        method,
+        body,
+      },
+      true,
+    )
 
     return json
   } catch (err) {
@@ -83,12 +97,27 @@ export const updateResource = async (
 ): Promise<mixed> => {
   try {
     const { id, ...rest } = fields
-    const json = await fetchWithToken(token)(`${BASE_URL}/api/${type}/${id}`, {
-      method,
-      body: JSON.stringify({
-        ...rest,
-      }),
+
+    const body = new FormData()
+    Object.keys(rest).forEach(prop => {
+      const current = rest[prop]
+      if (prop === 'icon') {
+        body.append(prop, current, current.name)
+      } else if (Array.isArray(current)) {
+        current.forEach(val => body.append(prop, val))
+      } else {
+        body.append(prop, current)
+      }
     })
+
+    const json = await fetchWithToken(token)(
+      `${BASE_URL}/api/${type}/${id}`,
+      {
+        method,
+        body,
+      },
+      true,
+    )
 
     return json
   } catch (err) {
