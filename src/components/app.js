@@ -26,8 +26,8 @@ const App = (): React.Node => (
         height: 100%;
       }
 
-      .MuiInput-inputType-152 {
-        height: 100%;
+      [class*='MuiInput-multiline'] textarea {
+        height: 100% !important;
       }
     `}</style>
   </React.Fragment>
