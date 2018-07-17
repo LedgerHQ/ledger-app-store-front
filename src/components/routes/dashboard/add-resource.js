@@ -16,6 +16,7 @@ import {
   resourcesApplicationVersionsSelector,
   resourcesFinalFirmwareVersionsSelector,
   resourcesDeviceVersionsSelector,
+  resourcesIconsSelector,
   resourcesMcuSelector,
   resourcesMcuVersionsSelector,
   resourcesSuccessSelector,
@@ -42,6 +43,7 @@ type Props = {
   categories: Object[],
   mcu: Object[],
   mcuVersions: Object[],
+  icons: Object[],
   classes: Object,
   fetchResources: Function,
   success: boolean,
@@ -98,6 +100,7 @@ class AddResources extends React.Component<Props, State> {
           <MenuItem value="providers">Provider</MenuItem>
           <MenuItem value="publishers">Publisher</MenuItem>
           <MenuItem value="categories">Category</MenuItem>
+          <MenuItem value="icons">Icon</MenuItem>
           <MenuItem value="firmwares">Se Firmware</MenuItem>
           {others.firmwares &&
             others.firmwares.length && (
@@ -148,6 +151,7 @@ const mapStateToProps = state => ({
   categories: resourcesCategoriesSelector(state),
   mcu: resourcesMcuSelector(state),
   mcu_versions: resourcesMcuVersionsSelector(state),
+  icons: resourcesIconsSelector(state),
   success: resourcesSuccessSelector(state),
 })
 

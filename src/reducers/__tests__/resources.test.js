@@ -22,6 +22,11 @@ const mcu = [
   { name: 'mcu2', id: 32, mcu_versions: [{ id: 3 }] },
 ]
 
+const icons = [
+  { id: 1, name: 'BTC', file: 'https://some.url/btc.png' },
+  { id: 2, name: 'BTCASH', file: 'https://some.url/btcash.png' },
+]
+
 describe('resources reducer', () => {
   test(`should reduce ${types.GET_APPLICATIONS}`, () => {
     const expected = { ...initialState, applications }
@@ -62,6 +67,12 @@ describe('resources reducer', () => {
   test(`should reduce ${types.GET_MCU}`, () => {
     const expected = { ...initialState, mcu }
     const newState = resourcesReducer(initialState, actions.getMcu(mcu))
+    expect(newState).toEqual(expected)
+  })
+
+  test(`should reduce ${types.GET_ICONS}`, () => {
+    const expected = { ...initialState, icons }
+    const newState = resourcesReducer(initialState, actions.getIcons(icons))
     expect(newState).toEqual(expected)
   })
 

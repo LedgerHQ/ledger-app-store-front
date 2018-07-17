@@ -8,6 +8,7 @@ type State = {
   +publishers: Object[],
   +categories: Object[],
   +devices: Object[],
+  +icons: Object[],
   +mcu: Object[],
   +error: string,
   +success: boolean,
@@ -26,6 +27,7 @@ export const initialState: State = {
   providers: [],
   publishers: [],
   categories: [],
+  icons: [],
   mcu: [],
   error: '',
   success: false,
@@ -86,6 +88,14 @@ const resources = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         mcu: action.payload,
+        error: '',
+        success: false,
+        type: '',
+      }
+    case types.GET_ICONS:
+      return {
+        ...state,
+        icons: action.payload,
         error: '',
         success: false,
         type: '',

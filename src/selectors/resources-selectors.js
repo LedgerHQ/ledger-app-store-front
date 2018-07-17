@@ -34,6 +34,11 @@ export const resourcesDevicesSelector = createSelector(
   resources => resources.devices || [],
 )
 
+export const resourcesIconsSelector = createSelector(
+  resourcesSelector,
+  resources => resources.icons || [],
+)
+
 export const resourcesDeviceVersionsSelector = createSelector(resourcesDevicesSelector, devices =>
   getVersions('device_versions', devices),
 )
@@ -85,6 +90,7 @@ export const allResourcesSelector = createSelector(
   resourcesProvidersSelector,
   resourcesCategoriesSelector,
   resourcesMcuSelector,
+  resourcesIconsSelector,
   (
     firmwares: Object[],
     applications: Object[],
@@ -93,6 +99,7 @@ export const allResourcesSelector = createSelector(
     providers: Object[],
     categories: Object[],
     mcu: Object[],
+    icons: Object[],
   ): Object => ({
     firmwares,
     applications,
@@ -101,6 +108,7 @@ export const allResourcesSelector = createSelector(
     providers,
     categories,
     mcu,
+    icons,
   }),
 )
 
@@ -117,6 +125,7 @@ export const allResourcesAndVersionsSelector = createSelector(
   resourcesCategoriesSelector,
   resourcesMcuSelector,
   resourcesMcuVersionsSelector,
+  resourcesIconsSelector,
   (
     firmwares: Object[],
     finalFirmwareVersions: Object[],
@@ -130,6 +139,7 @@ export const allResourcesAndVersionsSelector = createSelector(
     categories: Object[],
     mcu: Object[],
     mcuVersions: Object[],
+    icons: Object[],
   ): Object => ({
     firmwares,
     finalFirmwareVersions,
@@ -143,5 +153,6 @@ export const allResourcesAndVersionsSelector = createSelector(
     categories,
     mcu,
     mcuVersions,
+    icons,
   }),
 )

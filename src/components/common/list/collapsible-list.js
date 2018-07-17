@@ -19,7 +19,17 @@ import EditDialogConnected from '../dialog/edit-dialog'
 import SuccessSnack from '../snackbar/success-snack'
 import ErrorSnack from '../snackbar/error-snack'
 
+type Icon = {
+  id: number,
+  name: string,
+  file: string,
+}
+
 type Props = {
+  resources: {
+    [string]: Array<{}>,
+    icons: Array<Icon>,
+  },
   items: Object[],
   subItemsKey?: string,
   title?: string,
@@ -126,8 +136,7 @@ class CollapsibleList extends React.Component<Props, State> {
   }
 
   render() {
-    const { items, subItemsKey, type, title, updateResource } = this.props
-
+    const { items, subItemsKey, type, title, updateResource, resources } = this.props
     return (
       <React.Fragment>
         <List
@@ -155,6 +164,7 @@ class CollapsibleList extends React.Component<Props, State> {
                   <Collapse in={this.state.selected === idx} timeout="auto" unmountOnExit>
                     <div>
                       <Table
+                        resources={resources}
                         items={item[subItemsKey]}
                         openEditModal={this.openModal(
                           this.getSubItemType(subItemsKey),

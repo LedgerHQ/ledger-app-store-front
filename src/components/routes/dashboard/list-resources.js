@@ -17,9 +17,16 @@ import {
   updateResource as updateResourceAction,
 } from '../../../actions/resources-actions'
 
+type Icon = {
+  id: number,
+  name: string,
+  file: string,
+}
+
 type Props = {
   resources: {
     [string]: Array<{}>,
+    icons: Array<Icon>,
   },
   final: Array<{ [string]: any }>,
   fetchResources: Function,
@@ -84,6 +91,7 @@ class Resources extends React.Component<Props, State> {
     if (current === FIRMWARE_OSU) {
       return (
         <CollapsibleList
+          resources={resources}
           type="firmware_final_versions"
           items={final}
           subItemsKey="osu_versions"
@@ -93,9 +101,15 @@ class Resources extends React.Component<Props, State> {
       )
     }
 
-    if (current === 'publishers' || current === 'providers' || current === 'categories') {
+    if (
+      current === 'publishers' ||
+      current === 'providers' ||
+      current === 'categories' ||
+      current === 'icons'
+    ) {
       return (
         <CollapsibleList
+          resources={resources}
           type={current}
           items={resources[current]}
           deleteResource={deleteResource}
@@ -106,6 +120,7 @@ class Resources extends React.Component<Props, State> {
 
     return (
       <CollapsibleList
+        resources={resources}
         type={current}
         items={resources[current]}
         subItemsKey={this.getSubItemKey(current)}

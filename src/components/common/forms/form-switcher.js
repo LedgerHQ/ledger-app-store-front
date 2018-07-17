@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles'
 import ResourcesForm from './toplevel/resources'
 import ApplicationForm from './toplevel/application'
 import ProviderForm from './toplevel/provider'
+import IconForm from './toplevel/icon'
 import ApplicationVersionForm from './versions/application-version'
 import FinalFirmwareVersionForm from './versions/firmware-final-version'
 import McuVersionForm from './versions/mcu-version'
@@ -24,6 +25,7 @@ type Props = {
   deviceVersions: Object[],
   firmwares: Object[],
   finalFirmwareVersions: Object[],
+  icons: Object[],
   mcu: Object[],
   mcuVersions: Object[],
   method?: 'POST' | 'DELETE' | 'PUT',
@@ -62,6 +64,9 @@ const FormSwitcher = ({ selected, classes, ...props }: Props) => {
       break
     case 'applications':
       comp = <ApplicationForm {...props} />
+      break
+    case 'icons':
+      comp = <IconForm {...props} />
       break
     case '':
       comp = ''

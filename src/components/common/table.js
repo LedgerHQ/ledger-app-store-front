@@ -16,7 +16,17 @@ const isObject = (value: *): boolean =>
 
 const formatArrayValues = (value: *) => (isObject(value) ? value.id : value)
 
+type Icon = {
+  id: number,
+  name: string,
+  file: string,
+}
+
 type Props = {
+  resources: {
+    [string]: Array<{}>,
+    icons: Array<Icon>,
+  },
   items: Object[],
   openEditModal: Function,
   openDeleteModal: Function,
@@ -39,14 +49,22 @@ class TableCreator extends React.Component<Props> {
     </React.Fragment>
   )
 
-  renderWithIcon = (key: string, item: Object): React.Node =>
-    key === 'icon' ? (
+  renderWithIcon = (key: string, item: Object): React.Node => {
+    const {
+      resources: { icons },
+    } = this.props
+    let icon
+    if (key === 'icon') {
+      icon = icons.find((icn: { id: number, file: string, name: string }) => icn.id === item[key])
+    }
+    return icon ? (
       <TableCell key={key}>
-        {item[key] ? <img style={{ maxWidth: 50 }} src={item[key]} alt="icon" /> : ''}
+        <img style={{ maxWidth: 40 }} src={icon.file} alt={icon.name} />
       </TableCell>
     ) : (
       <TableCell key={key}>{item[key]}</TableCell>
     )
+  }
 
   renderTableRows = (items: Object[]): React.Node =>
     items.map(item => (

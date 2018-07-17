@@ -1,4 +1,5 @@
 // @flow
+import checkType from 'ramda/src/type'
 import fetchWithToken from '../utils/fetch'
 
 const BASE_URL = process.env.API_URL || 'http://localhost:8000'
@@ -39,7 +40,7 @@ export const createResource = async (
     const body = new FormData()
     Object.keys(fields).forEach(prop => {
       const current = fields[prop]
-      if (prop === 'icon') {
+      if (checkType(current) === 'Object') {
         body.append(prop, current, current.name)
       } else if (Array.isArray(current)) {
         current.forEach(val => body.append(prop, val))
@@ -101,7 +102,7 @@ export const updateResource = async (
     const body = new FormData()
     Object.keys(rest).forEach(prop => {
       const current = rest[prop]
-      if (prop === 'icon') {
+      if (checkType(current) === 'Object') {
         body.append(prop, current, current.name)
       } else if (Array.isArray(current)) {
         current.forEach(val => body.append(prop, val))

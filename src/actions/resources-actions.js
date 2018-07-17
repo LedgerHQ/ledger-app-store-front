@@ -50,6 +50,11 @@ export const getMcu = (mcu: Object[]): Action => ({
   payload: mcu,
 })
 
+export const getIcons = (icons: Object[]): Action => ({
+  type: types.GET_ICONS,
+  payload: icons,
+})
+
 export const typeDispatch = (type: string, resource: any): Action => {
   switch (type) {
     case 'applications':
@@ -66,8 +71,10 @@ export const typeDispatch = (type: string, resource: any): Action => {
       return getCategories(resource)
     case 'mcu':
       return getMcu(resource)
+    case 'icons':
+      return getIcons(resource)
     default:
-      return { type: '' }
+      return { type: 'UNKNOWN_TYPE' }
   }
 }
 
@@ -87,9 +94,16 @@ export const fetchResource = (type: string): Function => async (
 
 export const fetchResources = (): Function => async (dispatch: Function): Promise<void> => {
   await Promise.all(
-    ['firmwares', 'applications', 'devices', 'publishers', 'providers', 'categories', 'mcu'].map(
-      type => dispatch(fetchResource(type)),
-    ),
+    [
+      'firmwares',
+      'applications',
+      'devices',
+      'publishers',
+      'providers',
+      'categories',
+      'mcu',
+      'icons',
+    ].map(type => dispatch(fetchResource(type))),
   )
 }
 

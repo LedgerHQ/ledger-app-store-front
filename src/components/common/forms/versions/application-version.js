@@ -9,17 +9,15 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Checkbox from '@material-ui/core/Checkbox'
-import isEmpty from 'ramda/src/isEmpty'
-import not from 'ramda/src/not'
 
 import Form from '../../../utils/form'
 import { cleanMerge } from '../../../../utils/merge'
-import ImgReader from '../../img-reader'
 
 type Props = {
   applications: Object[],
   deviceVersions: Object[],
   finalFirmwareVersions: Object[],
+  icons: Object[],
   providers: Object[],
   initFields: Object,
   method: 'POST' | 'DELETE' | 'PUT',
@@ -52,288 +50,257 @@ const baseFields = {
   providers: [],
 }
 
-class ApplicationVersion extends React.Component<Props, State> {
-  state = {
-    init: {},
-    pristine: true,
-  }
-
-  componentDidMount() {
-    this.init()
-  }
-
-  init = () => {
-    const { initFields } = this.props
-    const clean = cleanMerge(baseFields, initFields)
-    this.setState({ init: clean })
-  }
-
-  onChangeIcon = (callback: (evt: SyntheticEvent<HTMLInputElement>) => void) => (
-    evt: SyntheticEvent<HTMLInputElement>,
-  ) => {
-    const { pristine } = this.state
-    if (pristine) {
-      this.setState({ pristine: false })
-    }
-
-    callback(evt)
-  }
-
-  render() {
-    const {
-      applications,
-      finalFirmwareVersions,
-      deviceVersions,
-      createResource,
-      providers,
-      method,
-      success,
-      editMode = false,
-    } = this.props
-    const { init, pristine } = this.state
-
-    return not(isEmpty(init)) ? (
-      <React.Fragment>
-        <Form type="application_versions" initFields={init} method={method} success={success}>
-          {({ onChange, onSelectChange, onSubmit, fields, onFileChange }) => (
-            <form className="form" onSubmit={onSubmit(createResource)}>
-              <TextField
-                id="app"
-                select
-                required
-                label="application"
-                value={fields.app}
-                onChange={onSelectChange('app')}
-                className="input"
+const ApplicationVersion = ({
+  applications,
+  finalFirmwareVersions,
+  deviceVersions,
+  icons,
+  createResource,
+  providers,
+  method,
+  success,
+  initFields,
+}: Props): React.Node => {
+  const init = cleanMerge(baseFields, initFields)
+  return (
+    <React.Fragment>
+      <Form type="application_versions" initFields={init} method={method} success={success}>
+        {({ onChange, onSelectChange, onSubmit, fields }) => (
+          <form className="form" onSubmit={onSubmit(createResource)}>
+            <TextField
+              id="app"
+              select
+              required
+              label="application"
+              value={fields.app}
+              onChange={onSelectChange('app')}
+              className="input"
+            >
+              {applications.map(app => (
+                <MenuItem key={app.id} value={app.id}>
+                  {app.name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              id="name"
+              label="name"
+              type="string"
+              onChange={onChange('name')}
+              value={fields.name}
+              className="input"
+              required
+            />
+            <TextField
+              id="version"
+              label="version"
+              type="string"
+              onChange={onChange('version')}
+              value={fields.version}
+              className="input"
+              required
+            />
+            <TextField
+              id="notes"
+              label="notes"
+              type="string"
+              onChange={onChange('notes')}
+              value={fields.notes}
+              className="input full"
+              multiline
+            />
+            <TextField
+              id="display_name"
+              label="display name"
+              type="string"
+              onChange={onChange('display_name')}
+              value={fields.display_name}
+              className="input"
+            />
+            <TextField
+              id="hash"
+              label="hash"
+              type="string"
+              onChange={onChange('hash')}
+              value={fields.hash}
+              className="input"
+            />
+            <TextField
+              id="perso"
+              label="perso"
+              type="string"
+              onChange={onChange('perso')}
+              value={fields.perso}
+              className="input"
+            />
+            <TextField
+              id="firmware"
+              label="firmware"
+              type="string"
+              onChange={onChange('firmware')}
+              value={fields.firmware}
+              className="input"
+            />
+            <TextField
+              id="firmware_key"
+              label="firmware key"
+              type="string"
+              onChange={onChange('firmware_key')}
+              value={fields.firmware_key}
+              className="input"
+            />
+            <TextField
+              id="delete"
+              label="delete"
+              type="string"
+              onChange={onChange('delete')}
+              value={fields.delete}
+              className="input"
+            />
+            <TextField
+              id="delete_key"
+              label="delete key"
+              type="string"
+              onChange={onChange('delete_key')}
+              value={fields.delete_key}
+              className="input"
+            />
+            <FormControl className="input">
+              <InputLabel htmlFor="icon">Icon</InputLabel>
+              <Select
+                input={<Input id="icon" />}
+                onChange={onSelectChange('icon')}
+                value={fields.icon}
+                renderValue={selected =>
+                  icons
+                    .filter(icon => icon.id === selected)
+                    .map(icon => icon.name)
+                    .join(', ')
+                }
               >
-                {applications.map(app => (
-                  <MenuItem key={app.id} value={app.id}>
-                    {app.name}
+                {icons.map(icon => (
+                  <MenuItem key={`${icon.name}_${icon.id}`} value={icon.id}>
+                    <Checkbox checked={fields.icon === icon.id} />
+                    <img src={icon.file} alt={icon.name} style={{ maxHeight: 30 }} />
                   </MenuItem>
                 ))}
-              </TextField>
-              <TextField
-                id="name"
-                label="name"
-                type="string"
-                onChange={onChange('name')}
-                value={fields.name}
-                className="input"
-                required
-              />
-              <TextField
-                id="version"
-                label="version"
-                type="string"
-                onChange={onChange('version')}
-                value={fields.version}
-                className="input"
-                required
-              />
-              <TextField
-                id="notes"
-                label="notes"
-                type="string"
-                onChange={onChange('notes')}
-                value={fields.notes}
-                className="input full"
-                multiline
-              />
-              <TextField
-                id="display_name"
-                label="display name"
-                type="string"
-                onChange={onChange('display_name')}
-                value={fields.display_name}
-                className="input"
-              />
-              <TextField
-                id="hash"
-                label="hash"
-                type="string"
-                onChange={onChange('hash')}
-                value={fields.hash}
-                className="input"
-              />
-              <label className="input full label" htmlFor="icon">
-                <Button variant="raised" component="span">
-                  Upload Icon
-                </Button>
-                {editMode && pristine ? (
-                  <img src={fields.icon} alt="icon" style={{ maxWidth: 100 }} />
-                ) : (
-                  <ImgReader
-                    file={fields.icon}
-                    style={{ maxWidth: 100 }}
-                    defaultText="no icon selected yet"
-                  />
-                )}
-                <input
-                  className="file"
-                  type="file"
-                  accept="image/*"
-                  id="icon"
-                  onChange={this.onChangeIcon(onFileChange('icon'))}
-                />
-              </label>
-              <TextField
-                id="perso"
-                label="perso"
-                type="string"
-                onChange={onChange('perso')}
-                value={fields.perso}
-                className="input"
-              />
-              <TextField
-                id="firmware"
-                label="firmware"
-                type="string"
-                onChange={onChange('firmware')}
-                value={fields.firmware}
-                className="input"
-              />
-              <TextField
-                id="firmware_key"
-                label="firmware key"
-                type="string"
-                onChange={onChange('firmware_key')}
-                value={fields.firmware_key}
-                className="input"
-              />
-              <TextField
-                id="delete"
-                label="delete"
-                type="string"
-                onChange={onChange('delete')}
-                value={fields.delete}
-                className="input"
-              />
-              <TextField
-                id="delete_key"
-                label="delete key"
-                type="string"
-                onChange={onChange('delete_key')}
-                value={fields.delete_key}
-                className="input"
-              />
-              <FormControl className="input">
-                <InputLabel htmlFor="provider">provider(s)</InputLabel>
-                <Select
-                  multiple
-                  input={<Input id="provider" />}
-                  onChange={onSelectChange('providers')}
-                  value={fields.providers}
-                  renderValue={selected =>
-                    providers
-                      .filter(provider => selected.includes(provider.id))
-                      .map(el => el.name)
-                      .join(', ')
-                  }
-                >
-                  {providers.map(provider => (
-                    <MenuItem key={`${provider.name}_${provider.id}`} value={provider.id}>
-                      <Checkbox checked={fields.providers.indexOf(provider.id) > -1} />
-                      {provider.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl className="input">
-                <InputLabel htmlFor="device_versions">device version(s)</InputLabel>
-                <Select
-                  multiple
-                  input={<Input id="device_versions" />}
-                  onChange={onSelectChange('device_versions')}
-                  value={fields.device_versions}
-                  renderValue={selected =>
-                    deviceVersions
-                      .filter(version => selected.includes(version.id))
-                      .map(el => el.name)
-                      .join(', ')
-                  }
-                >
-                  {deviceVersions.map(version => (
-                    <MenuItem key={`${version.name}_${version.id}`} value={version.id}>
-                      <Checkbox checked={fields.device_versions.indexOf(version.id) > -1} />
-                      {`${version.topName} - ${version.name}`}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl className="input">
-                <InputLabel htmlFor="se_firmware_final_versions">
-                  se firmwares version(s)
-                </InputLabel>
-                <Select
-                  multiple
-                  input={<Input id="se_firmware_final_versions" />}
-                  onChange={onSelectChange('se_firmware_final_versions')}
-                  value={fields.se_firmware_final_versions}
-                  renderValue={selected =>
-                    finalFirmwareVersions
-                      .filter(version => selected.includes(version.id))
-                      .map(el => el.name)
-                      .join(', ')
-                  }
-                >
-                  {finalFirmwareVersions.map(version => (
-                    <MenuItem key={`${version.name}_${version.id}`} value={version.id}>
-                      <Checkbox
-                        checked={fields.se_firmware_final_versions.indexOf(version.id) > -1}
-                      />
-                      {`${version.topName} - ${version.name}`}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <TextField
-                id="description"
-                label="description"
-                type="string"
-                onChange={onChange('description')}
-                value={fields.description}
-                className="input full"
-                multiline
-              />
-              <div className="submit">
-                <Button type="submit" size="large" variant="raised" color="secondary">
-                  Submit
-                </Button>
-              </div>
-            </form>
-          )}
-        </Form>
+              </Select>
+            </FormControl>
+            <FormControl className="input">
+              <InputLabel htmlFor="provider">provider(s)</InputLabel>
+              <Select
+                multiple
+                input={<Input id="provider" />}
+                onChange={onSelectChange('providers')}
+                value={fields.providers}
+                renderValue={selected =>
+                  providers
+                    .filter(provider => selected.includes(provider.id))
+                    .map(el => el.name)
+                    .join(', ')
+                }
+              >
+                {providers.map(provider => (
+                  <MenuItem key={`${provider.name}_${provider.id}`} value={provider.id}>
+                    <Checkbox checked={fields.providers.indexOf(provider.id) > -1} />
+                    {provider.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl className="input">
+              <InputLabel htmlFor="device_versions">device version(s)</InputLabel>
+              <Select
+                multiple
+                input={<Input id="device_versions" />}
+                onChange={onSelectChange('device_versions')}
+                value={fields.device_versions}
+                renderValue={selected =>
+                  deviceVersions
+                    .filter(version => selected.includes(version.id))
+                    .map(el => el.name)
+                    .join(', ')
+                }
+              >
+                {deviceVersions.map(version => (
+                  <MenuItem key={`${version.name}_${version.id}`} value={version.id}>
+                    <Checkbox checked={fields.device_versions.indexOf(version.id) > -1} />
+                    {`${version.topName} - ${version.name}`}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl className="input">
+              <InputLabel htmlFor="se_firmware_final_versions">se firmwares version(s)</InputLabel>
+              <Select
+                multiple
+                input={<Input id="se_firmware_final_versions" />}
+                onChange={onSelectChange('se_firmware_final_versions')}
+                value={fields.se_firmware_final_versions}
+                renderValue={selected =>
+                  finalFirmwareVersions
+                    .filter(version => selected.includes(version.id))
+                    .map(el => el.name)
+                    .join(', ')
+                }
+              >
+                {finalFirmwareVersions.map(version => (
+                  <MenuItem key={`${version.name}_${version.id}`} value={version.id}>
+                    <Checkbox
+                      checked={fields.se_firmware_final_versions.indexOf(version.id) > -1}
+                    />
+                    {`${version.topName} - ${version.name}`}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              id="description"
+              label="description"
+              type="string"
+              onChange={onChange('description')}
+              value={fields.description}
+              className="input full"
+              multiline
+            />
+            <div className="submit">
+              <Button type="submit" size="large" variant="raised" color="secondary">
+                Submit
+              </Button>
+            </div>
+          </form>
+        )}
+      </Form>
 
-        <style jsx>{`
-          .form :global(.input) {
-            box-sizing: border-box;
-            padding-right: 8px;
-            margin-top: 12px;
-            width: 50%;
-          }
+      <style jsx>{`
+        .form :global(.input) {
+          box-sizing: border-box;
+          padding-right: 8px;
+          margin-top: 12px;
+          width: 50%;
+        }
 
-          .form :global(.full) {
-            width: 100%;
-          }
+        .form :global(.full) {
+          width: 100%;
+        }
 
-          .label {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 20px !important;
-          }
+        .label {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 20px !important;
+        }
 
-          .file {
-            display: none !important;
-          }
+        .file {
+          display: none !important;
+        }
 
-          .form .submit {
-            padding: 12px 0;
-          }
-        `}</style>
-      </React.Fragment>
-    ) : null
-  }
+        .form .submit {
+          padding: 12px 0;
+        }
+      `}</style>
+    </React.Fragment>
+  )
 }
 
 export default ApplicationVersion
