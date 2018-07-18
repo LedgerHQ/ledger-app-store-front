@@ -1,5 +1,4 @@
 // @flow
-/* globals SyntheticEvent */
 import * as React from 'react'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -23,12 +22,6 @@ type Props = {
   method: 'POST' | 'DELETE' | 'PUT',
   createResource: Function,
   success: boolean,
-  editMode: boolean,
-}
-
-type State = {
-  init: Object,
-  pristine: boolean,
 }
 
 const baseFields = {
@@ -40,6 +33,7 @@ const baseFields = {
   hash: '',
   perso: '',
   icon: '',
+  picure: '',
   firmware: '',
   firmware_key: '',
   delete: '',
@@ -101,15 +95,6 @@ const ApplicationVersion = ({
               required
             />
             <TextField
-              id="notes"
-              label="notes"
-              type="string"
-              onChange={onChange('notes')}
-              value={fields.notes}
-              className="input full"
-              multiline
-            />
-            <TextField
               id="display_name"
               label="display name"
               type="string"
@@ -165,12 +150,20 @@ const ApplicationVersion = ({
               value={fields.delete_key}
               className="input"
             />
+            <TextField
+              id="icon"
+              label="icon"
+              type="string"
+              onChange={onChange('icon')}
+              value={fields.icon}
+              className="input"
+            />
             <FormControl className="input">
-              <InputLabel htmlFor="icon">Icon</InputLabel>
+              <InputLabel htmlFor="picture">picture</InputLabel>
               <Select
-                input={<Input id="icon" />}
-                onChange={onSelectChange('icon')}
-                value={fields.icon}
+                input={<Input id="picture" />}
+                onChange={onSelectChange('picture')}
+                value={fields.picture}
                 renderValue={selected =>
                   icons
                     .filter(icon => icon.id === selected)
@@ -180,7 +173,7 @@ const ApplicationVersion = ({
               >
                 {icons.map(icon => (
                   <MenuItem key={`${icon.name}_${icon.id}`} value={icon.id}>
-                    <Checkbox checked={fields.icon === icon.id} />
+                    <Checkbox checked={fields.picture === icon.id} />
                     <img src={icon.file} alt={icon.name} style={{ maxHeight: 30 }} />
                   </MenuItem>
                 ))}
@@ -260,6 +253,15 @@ const ApplicationVersion = ({
               type="string"
               onChange={onChange('description')}
               value={fields.description}
+              className="input full"
+              multiline
+            />
+            <TextField
+              id="notes"
+              label="notes"
+              type="string"
+              onChange={onChange('notes')}
+              value={fields.notes}
               className="input full"
               multiline
             />

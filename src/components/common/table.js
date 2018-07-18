@@ -54,7 +54,7 @@ class TableCreator extends React.Component<Props> {
       resources: { icons },
     } = this.props
     let icon
-    if (key === 'icon') {
+    if (key === 'picture') {
       icon = icons.find((icn: { id: number, file: string, name: string }) => icn.id === item[key])
     }
     return icon ? (
