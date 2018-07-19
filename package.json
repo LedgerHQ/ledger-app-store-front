@@ -15,7 +15,11 @@
   },
   "lint-staged": {
     "*.test.js": "jest",
-    "*.js": ["eslint --fix", "prettier --write", "git add"]
+    "*.js": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
   },
   "jest": {
     "clearMocks": true,
