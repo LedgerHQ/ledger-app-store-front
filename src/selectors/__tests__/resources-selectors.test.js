@@ -22,6 +22,11 @@ describe('resources selectors', () => {
     { name: 'mcu2', id: 32, mcu_versions: [{ id: 3 }] },
   ]
 
+  const icons = [
+    { id: 1, name: 'BTC', file: 'https://some.url/btc.png' },
+    { id: 2, name: 'BTCASH', file: 'https://some.url/btcash.png' },
+  ]
+
   describe('resourcesSelector', () => {
     test('should return resources object from state', () => {
       const state = {
@@ -34,6 +39,7 @@ describe('resources selectors', () => {
           categories,
           publishers,
           providers,
+          icons,
         },
         other: { other: 'other' },
       }
@@ -51,7 +57,16 @@ describe('resources selectors', () => {
   describe('resourcesApplicationsSelector', () => {
     test('should return resources.applications object from state', () => {
       const state = {
-        resources: { applications, firmwares, devices, mcu, categories, publishers, providers },
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const result = selectors.resourcesApplicationsSelector(state)
@@ -68,7 +83,16 @@ describe('resources selectors', () => {
   describe('resourcesApplicationVersionsSelector', () => {
     test('should return all versions found in state.applications object from state', () => {
       const state = {
-        resources: { applications, firmwares, devices, mcu, categories, publishers, providers },
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const expected = getVersions('application_versions', applications)
@@ -78,7 +102,16 @@ describe('resources selectors', () => {
 
     test('should return an empty array if no application_versions found in state', () => {
       const state = {
-        resources: { applications: [], firmwares, devices, mcu, categories, publishers, providers },
+        resources: {
+          applications: [],
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const result = selectors.resourcesApplicationVersionsSelector(state)
@@ -89,7 +122,16 @@ describe('resources selectors', () => {
   describe('resourcesFirmwaresSelector', () => {
     test('should return resources.firmwares object from state', () => {
       const state = {
-        resources: { applications, firmwares, devices, mcu, categories, publishers, providers },
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const result = selectors.resourcesFirmwaresSelector(state)
@@ -106,7 +148,16 @@ describe('resources selectors', () => {
   describe('resourcesFinalFirmwareVersionsSelector', () => {
     test('should return all versions found in state.firmwares object from state', () => {
       const state = {
-        resources: { applications, firmwares, devices, mcu, categories, publishers, providers },
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const expected = getVersions('se_firmware_final_versions', firmwares)
@@ -127,7 +178,16 @@ describe('resources selectors', () => {
   describe('resourcesDevicesSelector', () => {
     test('should return resources.devices object from state', () => {
       const state = {
-        resources: { applications, firmwares, devices, mcu, categories, publishers, providers },
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const result = selectors.resourcesDevicesSelector(state)
@@ -144,7 +204,16 @@ describe('resources selectors', () => {
   describe('resourcesDeviceVersionsSelector', () => {
     test('should return all versions found in state.devices object from state', () => {
       const state = {
-        resources: { applications, firmwares, devices, mcu, categories, publishers, providers },
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const expected = getVersions('device_versions', devices)
@@ -154,7 +223,16 @@ describe('resources selectors', () => {
 
     test('should return an empty array if no device_versions found in state', () => {
       const state = {
-        resources: { applications, firmwares, devices: [], mcu, categories, publishers, providers },
+        resources: {
+          applications,
+          firmwares,
+          devices: [],
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const result = selectors.resourcesDeviceVersionsSelector(state)
@@ -165,7 +243,16 @@ describe('resources selectors', () => {
   describe('resourcesMcuSelector', () => {
     test('should return resources.mcu object from state', () => {
       const state = {
-        resources: { applications, firmwares, devices, mcu, categories, publishers, providers },
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const result = selectors.resourcesMcuSelector(state)
@@ -182,7 +269,16 @@ describe('resources selectors', () => {
   describe('resourcesMcuVersionsSelector', () => {
     test('should return all versions found in state.mcu object from state', () => {
       const state = {
-        resources: { applications, firmwares, devices, mcu, categories, publishers, providers },
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const expected = getVersions('mcu_versions', mcu)
@@ -192,7 +288,16 @@ describe('resources selectors', () => {
 
     test('should return an empty array if no device_versions found in state', () => {
       const state = {
-        resources: { applications, firmwares, devices, mcu: [], categories, publishers, providers },
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu: [],
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const result = selectors.resourcesMcuVersionsSelector(state)
@@ -203,7 +308,16 @@ describe('resources selectors', () => {
   describe('resourcesPublishersSelector', () => {
     test('should return resources.publishers object from state', () => {
       const state = {
-        resources: { applications, firmwares, devices, mcu, categories, publishers, providers },
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const result = selectors.resourcesPublishersSelector(state)
@@ -220,7 +334,16 @@ describe('resources selectors', () => {
   describe('resourcesProvidersSelector', () => {
     test('should return resources.providers object from state', () => {
       const state = {
-        resources: { applications, firmwares, devices, mcu, categories, publishers, providers },
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const result = selectors.resourcesProvidersSelector(state)
@@ -234,10 +357,45 @@ describe('resources selectors', () => {
     })
   })
 
+  describe('resourcesIconsSelector', () => {
+    test('should return resources.icons object from state', () => {
+      const state = {
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
+        other: { other: 'other' },
+      }
+      const result = selectors.resourcesIconsSelector(state)
+      expect(result).toEqual(state.resources.icons)
+    })
+
+    test('should return empty array  if icons object is not in state', () => {
+      const state = { other: { other: 'other' } }
+      const result = selectors.resourcesIconsSelector(state)
+      expect(result).toEqual([])
+    })
+  })
+
   describe('resourcesCategoriesSelector', () => {
     test('should return resources.categories object from state', () => {
       const state = {
-        resources: { applications, firmwares, devices, mcu, categories, publishers, providers },
+        resources: {
+          applications,
+          firmwares,
+          devices,
+          mcu,
+          categories,
+          publishers,
+          providers,
+          icons,
+        },
         other: { other: 'other' },
       }
       const result = selectors.resourcesCategoriesSelector(state)
@@ -304,6 +462,7 @@ describe('resources selectors', () => {
           categories,
           publishers,
           providers,
+          icons,
         },
         other: { other: 'other' },
       }
@@ -316,6 +475,7 @@ describe('resources selectors', () => {
         categories,
         publishers,
         providers,
+        icons,
       }
       expect(result).toEqual(expected)
     })
@@ -332,6 +492,7 @@ describe('resources selectors', () => {
           categories,
           publishers,
           providers,
+          icons,
         },
         other: { other: 'other' },
       }
@@ -351,6 +512,7 @@ describe('resources selectors', () => {
         categories,
         publishers,
         providers,
+        icons,
       }
       expect(result).toEqual(expected)
     })

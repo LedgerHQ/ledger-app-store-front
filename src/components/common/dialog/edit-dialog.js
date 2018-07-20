@@ -49,6 +49,7 @@ export const EditDialog = ({
           createResource={updater}
           initFields={resource}
           method="PUT"
+          editMode
         />
       </DialogContent>
       <DialogActions>

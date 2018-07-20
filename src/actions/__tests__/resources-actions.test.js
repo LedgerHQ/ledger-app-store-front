@@ -28,6 +28,11 @@ const mcu = [
   { name: 'mcu2', id: 32, mcu_versions: [{ id: 3 }] },
 ]
 
+const icons = [
+  { id: 1, name: 'BTC', file: 'https://some.url/btc.png' },
+  { id: 2, name: 'BTCASH', file: 'https://some.url/btcash.png' },
+]
+
 describe('resources actions', () => {
   test('resourcesError should return the correct action', () => {
     const expected = { type: types.RESOURCES_ERROR, payload: 'error' }
@@ -67,6 +72,11 @@ describe('resources actions', () => {
   test('getMcu should return the correct action', () => {
     const expected = { type: types.GET_MCU, payload: mcu }
     expect(actions.getMcu(mcu)).toEqual(expected)
+  })
+
+  test('getIcons should return the correct action', () => {
+    const expected = { type: types.GET_ICONS, payload: icons }
+    expect(actions.getIcons(icons)).toEqual(expected)
   })
 
   test('createResourceAction should return the correct action', () => {
@@ -145,9 +155,15 @@ describe('resources actions', () => {
       expect(actions.typeDispatch('mcu', resource)).toEqual(expected)
     })
 
+    test('should return getICons', () => {
+      const resource = []
+      const expected = { type: types.GET_ICONS, payload: resource }
+      expect(actions.typeDispatch('icons', resource)).toEqual(expected)
+    })
+
     test('should return an empty action', () => {
       const resource = []
-      const expected = { type: '' }
+      const expected = { type: 'UNKNOWN_TYPE' }
       expect(actions.typeDispatch('something', resource)).toEqual(expected)
     })
   })
@@ -177,6 +193,7 @@ describe('resources actions', () => {
           .mockResolvedValueOnce(providers)
           .mockResolvedValueOnce(categories)
           .mockResolvedValueOnce(mcu)
+          .mockResolvedValueOnce(icons)
 
         const expected = [
           actions.getFirmwares(firmwares),
@@ -186,6 +203,7 @@ describe('resources actions', () => {
           actions.getProviders(providers),
           actions.getCategories(categories),
           actions.getMcu(mcu),
+          actions.getIcons(icons),
         ]
 
         await store.dispatch(actions.fetchResources())
@@ -203,6 +221,7 @@ describe('resources actions', () => {
           .mockResolvedValueOnce(providers)
           .mockResolvedValueOnce(categories)
           .mockRejectedValueOnce({ error: 'could not fetch mcu' })
+          .mockResolvedValueOnce(icons)
 
         const expected = [
           actions.getFirmwares(firmwares),
@@ -212,6 +231,7 @@ describe('resources actions', () => {
           actions.getProviders(providers),
           actions.getCategories(categories),
           actions.resourcesError('could not fetch mcu'),
+          actions.getIcons(icons),
         ]
 
         await store.dispatch(actions.fetchResources())
@@ -229,6 +249,7 @@ describe('resources actions', () => {
           .mockResolvedValueOnce(providers)
           .mockResolvedValueOnce(categories)
           .mockRejectedValueOnce({ message: 'could not fetch mcu' })
+          .mockResolvedValue(icons)
 
         const expected = [
           actions.getFirmwares(firmwares),
@@ -238,6 +259,7 @@ describe('resources actions', () => {
           actions.getProviders(providers),
           actions.getCategories(categories),
           actions.resourcesError('could not fetch mcu'),
+          actions.getIcons(icons),
         ]
 
         await store.dispatch(actions.fetchResources())

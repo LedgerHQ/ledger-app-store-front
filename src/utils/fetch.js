@@ -5,10 +5,13 @@ import fetch from 'unfetch'
  * @name fetchWithToken
  * @description boilerplate for fetching with a user's token
  * @param {string} token user's logged in token
+ * @param {Object} options fetch options
+ * @param {boolean} withFile if a file is present in data, needed to remove content-type
  */
 const fetchWithToken = (token: string): Function => async (
   url: string,
   options: Object,
+  form: boolean = true,
 ): Promise<any> => {
   const headers = token
     ? {
@@ -19,14 +22,20 @@ const fetchWithToken = (token: string): Function => async (
         'content-type': 'application/json',
       }
 
+  const data = {
+    ...options,
+    headers: {
+      ...headers,
+      ...options.headers,
+    },
+  }
+
+  if (form) {
+    delete data.headers['content-type']
+  }
+
   try {
-    const response = await fetch(url, {
-      ...options,
-      headers: {
-        ...headers,
-        ...options.headers,
-      },
-    })
+    const response = await fetch(url, data)
 
     if (response.status === 204) {
       return {}

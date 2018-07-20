@@ -16,6 +16,7 @@ type Props = {
   applications: Object[],
   deviceVersions: Object[],
   finalFirmwareVersions: Object[],
+  icons: Object[],
   providers: Object[],
   initFields: Object,
   method: 'POST' | 'DELETE' | 'PUT',
@@ -32,6 +33,7 @@ const baseFields = {
   hash: '',
   perso: '',
   icon: '',
+  picure: '',
   firmware: '',
   firmware_key: '',
   delete: '',
@@ -46,11 +48,12 @@ const ApplicationVersion = ({
   applications,
   finalFirmwareVersions,
   deviceVersions,
+  icons,
   createResource,
   providers,
   method,
-  initFields,
   success,
+  initFields,
 }: Props): React.Node => {
   const init = cleanMerge(baseFields, initFields)
   return (
@@ -92,28 +95,11 @@ const ApplicationVersion = ({
               required
             />
             <TextField
-              id="notes"
-              label="notes"
-              type="string"
-              onChange={onChange('notes')}
-              value={fields.notes}
-              className="input full"
-              multiline
-            />
-            <TextField
               id="display_name"
               label="display name"
               type="string"
               onChange={onChange('display_name')}
               value={fields.display_name}
-              className="input"
-            />
-            <TextField
-              id="icon"
-              label="icon"
-              type="string"
-              onChange={onChange('icon')}
-              value={fields.icon}
               className="input"
             />
             <TextField
@@ -164,6 +150,35 @@ const ApplicationVersion = ({
               value={fields.delete_key}
               className="input"
             />
+            <TextField
+              id="icon"
+              label="icon"
+              type="string"
+              onChange={onChange('icon')}
+              value={fields.icon}
+              className="input"
+            />
+            <FormControl className="input">
+              <InputLabel htmlFor="picture">picture</InputLabel>
+              <Select
+                input={<Input id="picture" />}
+                onChange={onSelectChange('picture')}
+                value={fields.picture}
+                renderValue={selected =>
+                  icons
+                    .filter(icon => icon.id === selected)
+                    .map(icon => icon.name)
+                    .join(', ')
+                }
+              >
+                {icons.map(icon => (
+                  <MenuItem key={`${icon.name}_${icon.id}`} value={icon.id}>
+                    <Checkbox checked={fields.picture === icon.id} />
+                    <img src={icon.file} alt={icon.name} style={{ maxHeight: 30 }} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <FormControl className="input">
               <InputLabel htmlFor="provider">provider(s)</InputLabel>
               <Select
@@ -179,7 +194,7 @@ const ApplicationVersion = ({
                 }
               >
                 {providers.map(provider => (
-                  <MenuItem key={provider.name} value={provider.id}>
+                  <MenuItem key={`${provider.name}_${provider.id}`} value={provider.id}>
                     <Checkbox checked={fields.providers.indexOf(provider.id) > -1} />
                     {provider.name}
                   </MenuItem>
@@ -201,7 +216,7 @@ const ApplicationVersion = ({
                 }
               >
                 {deviceVersions.map(version => (
-                  <MenuItem key={version.name} value={version.id}>
+                  <MenuItem key={`${version.name}_${version.id}`} value={version.id}>
                     <Checkbox checked={fields.device_versions.indexOf(version.id) > -1} />
                     {`${version.topName} - ${version.name}`}
                   </MenuItem>
@@ -223,7 +238,7 @@ const ApplicationVersion = ({
                 }
               >
                 {finalFirmwareVersions.map(version => (
-                  <MenuItem key={version.name} value={version.id}>
+                  <MenuItem key={`${version.name}_${version.id}`} value={version.id}>
                     <Checkbox
                       checked={fields.se_firmware_final_versions.indexOf(version.id) > -1}
                     />
@@ -238,6 +253,15 @@ const ApplicationVersion = ({
               type="string"
               onChange={onChange('description')}
               value={fields.description}
+              className="input full"
+              multiline
+            />
+            <TextField
+              id="notes"
+              label="notes"
+              type="string"
+              onChange={onChange('notes')}
+              value={fields.notes}
               className="input full"
               multiline
             />
@@ -260,6 +284,17 @@ const ApplicationVersion = ({
 
         .form :global(.full) {
           width: 100%;
+        }
+
+        .label {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 20px !important;
+        }
+
+        .file {
+          display: none !important;
         }
 
         .form .submit {

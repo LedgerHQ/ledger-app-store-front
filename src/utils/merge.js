@@ -8,7 +8,7 @@ const merger = (first: any, second: any): any => {
   if (isFirstNil) {
     return isSecondNil ? '' : second
   } else if (isSecondNil) {
-    return isFirstNil ? '' : first
+    return first
   }
 
   return second
