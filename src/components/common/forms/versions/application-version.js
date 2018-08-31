@@ -31,7 +31,7 @@ const baseFields = {
   display_name: '',
   notes: '',
   hash: '',
-  perso: '',
+  perso: 'perso_11',
   icon: '',
   picture: '',
   firmware: '',
@@ -43,6 +43,21 @@ const baseFields = {
   se_firmware_final_versions: [],
   providers: [],
 }
+
+const makeEventObject = (evt, value) => ({
+  ...evt,
+  target: {
+    ...evt.target,
+    ...evt.currentTarget,
+    value,
+  },
+  currentTarget: {
+    ...evt.currentTarget,
+    ...evt.target,
+    value,
+  },
+  preventDefault: evt.preventDefault || (() => null),
+})
 
 const ApplicationVersion = ({
   applications,
@@ -67,11 +82,20 @@ const ApplicationVersion = ({
               required
               label="application"
               value={fields.app}
-              onChange={onSelectChange('app')}
+              onChange={evt => {
+                const app = applications[evt.target.value]
+                const appEvent = makeEventObject(evt, app.id)
+                const nameEvent = makeEventObject(evt, app.name)
+                const iconEvent = makeEventObject(evt, app.name.toLowerCase())
+                onSelectChange('app')(appEvent)
+                onChange('name')(nameEvent)
+                onChange('icon')(iconEvent)
+                onChange('display_name')(nameEvent)
+              }}
               className="input"
             >
-              {applications.map(app => (
-                <MenuItem key={app.id} value={app.id}>
+              {applications.map((app, idx) => (
+                <MenuItem key={app.id} value={idx}>
                   {app.name}
                 </MenuItem>
               ))}
@@ -87,7 +111,7 @@ const ApplicationVersion = ({
             />
             <TextField
               id="version"
-              label="version"
+              label="version (M.m.p)"
               type="string"
               onChange={onChange('version')}
               value={fields.version}
@@ -117,14 +141,25 @@ const ApplicationVersion = ({
               onChange={onChange('perso')}
               value={fields.perso}
               className="input"
+              required
             />
             <TextField
               id="firmware"
               label="firmware"
               type="string"
-              onChange={onChange('firmware')}
+              onChange={evt => {
+                const key = makeEventObject(evt, `${evt.target.value}_key`)
+                const def = makeEventObject(evt, `${evt.target.value}`)
+                const del = makeEventObject(evt, `${evt.target.value}_del`)
+                const delKey = makeEventObject(evt, `${evt.target.value}_del_key`)
+                onChange('firmware')(def)
+                onChange('delete')(del)
+                onChange('firmware_key')(key)
+                onChange('delete_key')(delKey)
+              }}
               value={fields.firmware}
               className="input"
+              required
             />
             <TextField
               id="firmware_key"
@@ -133,6 +168,7 @@ const ApplicationVersion = ({
               onChange={onChange('firmware_key')}
               value={fields.firmware_key}
               className="input"
+              required
             />
             <TextField
               id="delete"
@@ -141,6 +177,7 @@ const ApplicationVersion = ({
               onChange={onChange('delete')}
               value={fields.delete}
               className="input"
+              required
             />
             <TextField
               id="delete_key"
@@ -149,6 +186,7 @@ const ApplicationVersion = ({
               onChange={onChange('delete_key')}
               value={fields.delete_key}
               className="input"
+              required
             />
             <TextField
               id="icon"
