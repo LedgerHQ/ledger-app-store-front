@@ -17,6 +17,7 @@ type Props = {
   applications: Object[],
   deviceVersions: Object[],
   finalFirmwareVersions: Object[],
+  applicationVersions: Object[],
   icons: Object[],
   providers: Object[],
   initFields: Object,
@@ -39,6 +40,7 @@ const baseFields = {
   firmware_key: '',
   delete: '',
   version: '',
+  required_application_versions: [],
   delete_key: '',
   device_versions: [],
   se_firmware_final_versions: [],
@@ -48,6 +50,7 @@ const baseFields = {
 const ApplicationVersion = ({
   applications,
   finalFirmwareVersions,
+  applicationVersions,
   deviceVersions,
   icons,
   createResource,
@@ -269,6 +272,42 @@ const ApplicationVersion = ({
                     {`${version.topName} - ${version.name}`}
                   </MenuItem>
                 ))}
+              </Select>
+            </FormControl>
+            <FormControl className="input">
+              <InputLabel htmlFor="required_application_versions">
+                required application version(s)
+              </InputLabel>
+              <Select
+                disabled={fields.se_firmware_final_versions.length < 1}
+                multiple
+                input={<Input id="required_application_versions" />}
+                onChange={onSelectChange('required_application_versions')}
+                value={fields.required_application_versions}
+                renderValue={selected =>
+                  applicationVersions
+                    .filter(version => selected.includes(version.id))
+                    .map(el => el.name)
+                    .join(', ')
+                }
+              >
+                {applicationVersions
+                  .filter(
+                    version =>
+                      finalFirmwareVersions.filter(
+                        se =>
+                          version.se_firmware_final_versions.includes(se.id) &&
+                          fields.se_firmware_final_versions.includes(se.id),
+                      ).length > 0,
+                  )
+                  .map(version => (
+                    <MenuItem key={`${version.name}_${version.id}`} value={version.id}>
+                      <Checkbox
+                        checked={fields.required_application_versions.indexOf(version.id) > -1}
+                      />
+                      {`${version.name} - ${version.version}`}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
             <TextField
