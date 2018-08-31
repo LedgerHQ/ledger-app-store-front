@@ -97,6 +97,7 @@ const ApplicationForm = ({
                 onChange={onSelectChange('category')}
                 value={fields.category}
               >
+                <MenuItem value="">None</MenuItem>
                 {categories.map(category => (
                   <MenuItem key={category.name} value={category.id}>
                     {category.name}
