@@ -33,7 +33,7 @@ const baseFields = {
   hash: '',
   perso: '',
   icon: '',
-  picure: '',
+  picture: '',
   firmware: '',
   firmware_key: '',
   delete: '',
