@@ -11,6 +11,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 
 import Form from '../../../utils/form'
 import { cleanMerge } from '../../../../utils/merge'
+import { makeEventObject } from '../../../../utils/object'
 
 type Props = {
   applications: Object[],
@@ -43,21 +44,6 @@ const baseFields = {
   se_firmware_final_versions: [],
   providers: [],
 }
-
-const makeEventObject = (evt, value) => ({
-  ...evt,
-  target: {
-    ...evt.target,
-    ...evt.currentTarget,
-    value,
-  },
-  currentTarget: {
-    ...evt.currentTarget,
-    ...evt.target,
-    value,
-  },
-  preventDefault: evt.preventDefault || (() => null),
-})
 
 const ApplicationVersion = ({
   applications,
