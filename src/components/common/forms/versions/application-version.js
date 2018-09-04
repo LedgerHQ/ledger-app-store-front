@@ -72,19 +72,21 @@ const ApplicationVersion = ({
               label="application"
               value={fields.app}
               onChange={evt => {
-                const app = applications[evt.target.value]
-                const appEvent = makeEventObject(evt, app.id)
-                const nameEvent = makeEventObject(evt, app.name)
-                const iconEvent = makeEventObject(evt, app.name.toLowerCase())
-                onSelectChange('app')(appEvent)
-                onChange('name')(nameEvent)
-                onChange('icon')(iconEvent)
-                onChange('display_name')(nameEvent)
+                const app = applications.find(obj => obj.id === evt.target.value)
+                if (app) {
+                  const appEvent = makeEventObject(evt, app.id)
+                  const nameEvent = makeEventObject(evt, app.name)
+                  const iconEvent = makeEventObject(evt, app.name.toLowerCase())
+                  onSelectChange('app')(appEvent)
+                  onChange('name')(nameEvent)
+                  onChange('icon')(iconEvent)
+                  onChange('display_name')(nameEvent)
+                }
               }}
               className="input"
             >
-              {applications.map((app, idx) => (
-                <MenuItem key={app.id} value={idx}>
+              {applications.map(app => (
+                <MenuItem key={app.id} value={app.id}>
                   {app.name}
                 </MenuItem>
               ))}
