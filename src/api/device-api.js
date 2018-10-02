@@ -28,12 +28,16 @@ export const getChallenge = async (token: string): Promise<Object> => {
  */
 export const verifyChallenge = async (token: string, challenge: Object): Promise<Object> => {
   try {
-    const json = await fetchWithToken(token)(`${BASE_URL}/api/key_registration`, {
-      method: 'POST',
-      body: JSON.stringify({
-        response: challenge,
-      }),
-    })
+    const json = await fetchWithToken(token)(
+      `${BASE_URL}/api/key_registration`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          response: challenge,
+        }),
+      },
+      false,
+    )
 
     return json
   } catch (err) {

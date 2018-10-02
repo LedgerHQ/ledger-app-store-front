@@ -49,13 +49,17 @@ export const finishLogin = async (
   username: string,
 ): Promise<Object> => {
   try {
-    const json = await fetchWithToken(token)(`${BASE_URL}/api/finish_auth`, {
-      method: 'POST',
-      body: JSON.stringify({
-        username,
-        response: challenge,
-      }),
-    })
+    const json = await fetchWithToken(token)(
+      `${BASE_URL}/api/finish_auth`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          username,
+          response: challenge,
+        }),
+      },
+      false,
+    )
 
     return json
   } catch (err) {
