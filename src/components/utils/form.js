@@ -8,6 +8,7 @@ type ChidrenArgs = {
     callback: Function,
   ) => (evt: SyntheticEvent<HTMLButtonElement | HTMLFormElement>) => void,
   onSelectChange: (field: string) => (e: Object) => void,
+  onBoolChange: (field: string) => (e: Object) => void,
   onFileChange: (field: string) => (e: Object) => void,
   fields: *,
 }
@@ -54,6 +55,15 @@ class Form extends React.Component<Props, State> {
     }))
   }
 
+  onBoolChange = (field: string) => (evt: SyntheticEvent<HTMLInputElement>): void => {
+    const { checked } = evt.currentTarget
+    this.setState(state => ({
+      ...state,
+      // $FlowFixMe
+      fields: { ...state.fields, [field]: !!checked },
+    }))
+  }
+
   onSelectChange = (field: string): Function => (evt: Object): void => {
     const { value } = evt.target
     this.setState(state => ({
@@ -76,7 +86,6 @@ class Form extends React.Component<Props, State> {
     evt.preventDefault()
     const { fields } = this.state
     const { type, method } = this.props
-    console.log(fields)
     callback(type, fields, method)
   }
 
@@ -88,6 +97,7 @@ class Form extends React.Component<Props, State> {
   render(): React.Node {
     const { fields } = this.state
     return this.props.children({
+      onBoolChange: this.onBoolChange,
       onChange: this.onChange,
       onSubmit: this.onSubmit,
       onSelectChange: this.onSelectChange,
