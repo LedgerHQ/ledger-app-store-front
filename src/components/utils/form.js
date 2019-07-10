@@ -8,6 +8,7 @@ type ChidrenArgs = {
     callback: Function,
   ) => (evt: SyntheticEvent<HTMLButtonElement | HTMLFormElement>) => void,
   onSelectChange: (field: string) => (e: Object) => void,
+  onBoolChange: (field: string) => (e: Object) => void,
   onFileChange: (field: string) => (e: Object) => void,
   fields: *,
 }
@@ -62,6 +63,15 @@ class Form extends React.Component<Props, State> {
     }))
   }
 
+  onBoolChange = (field: string) => (evt: SyntheticEvent<HTMLInputElement>): void => {
+    const { checked } = evt.currentTarget
+    this.setState(state => ({
+      ...state,
+      // $FlowFixMe
+      fields: { ...state.fields, [field]: !!checked },
+    }))
+  }
+
   onFileChange = (field: string): Function => (evt: Object): void => {
     const file = evt.target.files[0]
     this.setState(state => ({
@@ -88,6 +98,7 @@ class Form extends React.Component<Props, State> {
   render(): React.Node {
     const { fields } = this.state
     return this.props.children({
+      onBoolChange: this.onBoolChange,
       onChange: this.onChange,
       onSubmit: this.onSubmit,
       onSelectChange: this.onSelectChange,
