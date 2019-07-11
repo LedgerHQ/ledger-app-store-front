@@ -12,9 +12,9 @@ export default merge(webpackBaseConfig, {
   devServer: {
     contentBase: './dist',
     historyApiFallback: true,
-    port: 9000,
+    port: 9001,
     hot: true,
-    https: true,
+    https: false,
   },
 
   plugins: [new webpack.HotModuleReplacementPlugin()],
