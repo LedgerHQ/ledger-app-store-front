@@ -7,6 +7,8 @@ import Select from '@material-ui/core/Select'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+
 import Checkbox from '@material-ui/core/Checkbox'
 
 import Form from '../../../utils/form'
@@ -28,6 +30,8 @@ const baseFields = {
   version: '',
   description: '',
   display_name: '',
+  distribution_ratio: '',
+  exclude_by_default: '',
   notes: '',
   perso: '',
   firmware: '',
@@ -50,7 +54,7 @@ const FirmwareFinalVersion = ({
   return (
     <React.Fragment>
       <Form type="firmware_final_versions" initFields={init} method={method} success={success}>
-        {({ onChange, onSelectChange, onSubmit, fields }) => (
+        {({ onChange, onSelectChange, onSubmit, onBoolChange, fields }) => (
           <form className="form" onSubmit={onSubmit(createResource)}>
             <TextField
               id="se_firmware"
@@ -186,6 +190,25 @@ const FirmwareFinalVersion = ({
               value={fields.description}
               className="input full"
               multiline
+            />
+            <TextField
+              id="distribution_ratio"
+              label="Score to reach to see the update (disabled if empty or 0, scores are uniform [0-99])"
+              type="number"
+              inputProps={{ min: '0', max: '999', step: '1', maxLength: '2' }}
+              onChange={onChange('distribution_ratio')}
+              value={fields.distribution_ratio}
+              className="input full"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  id="exclude_by_default"
+                  checked={fields.exclude_by_default}
+                  onChange={onBoolChange('exclude_by_default')}
+                />
+              }
+              label="Fail if no score provided"
             />
             <div className="submit">
               <Button type="submit" size="large" variant="raised" color="secondary">
