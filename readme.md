@@ -1,5 +1,9 @@
 # Ledger App Store Front
 
+## Requirements
+[Node](https://nodejs.org/download/release/latest-dubnium/)
+[Yarn](https://yarnpkg.com/en/docs/install)
+
 ## Starter
 
 Based on [React Silicon Life](https://github.com/valpinkman/react-silicon-life), check out the repo for more informartion about the technical stack.
@@ -14,7 +18,8 @@ Once you have both setup and running, you can then start this project
 $ git clone https://github.com/LedgerHQ/ledger-app-store-front
 $ cd ledger-app-store-front
 $ yarn # or $ npm install
+$ echo "API_URL=<URL_where_the_api_runs>" > .env
 $ yarn start # or $ npm start
 ```
 
-Then navigate to `https://localhost:9000/` and start coding 🙂
+Then navigate to `https://localhost:9000/`
