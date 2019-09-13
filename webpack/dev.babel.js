@@ -12,7 +12,7 @@ export default merge(webpackBaseConfig, {
   devServer: {
     contentBase: './dist',
     historyApiFallback: true,
-    port: 9001,
+    port: process.env.APP_STORE_PORT || 9000,
     hot: true,
     https: false,
   },
