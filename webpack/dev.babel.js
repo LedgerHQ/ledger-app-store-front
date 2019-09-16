@@ -14,7 +14,7 @@ export default merge(webpackBaseConfig, {
     historyApiFallback: true,
     port: process.env.APP_STORE_PORT || 9000,
     hot: true,
-    https: false,
+    https: true,
   },
 
   plugins: [new webpack.HotModuleReplacementPlugin()],
