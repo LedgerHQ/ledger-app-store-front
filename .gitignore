@@ -6,3 +6,4 @@
 /flow-typed/
 /.vscode/
 /coverage/
+/*.csv
