@@ -7,6 +7,7 @@ import Select from '@material-ui/core/Select'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 
 import Form from '../../../utils/form'
@@ -28,6 +29,7 @@ const baseFields = {
   publisher: '',
   name: '',
   description: '',
+  discontinued: false,
 }
 
 const ApplicationForm = ({
@@ -43,7 +45,7 @@ const ApplicationForm = ({
   return (
     <React.Fragment>
       <Form initFields={init} type="applications" method={method} success={success}>
-        {({ onChange, onSubmit, fields, onSelectChange }) => (
+        {({ onChange, onSubmit, fields, onSelectChange, onBoolChange }) => (
           <form onSubmit={onSubmit(createResource)} className="form">
             <TextField
               id="name"
@@ -113,6 +115,16 @@ const ApplicationForm = ({
               value={fields.description}
               className="input full"
               multiline
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  id="discontinued"
+                  checked={fields.discontinued}
+                  onChange={onBoolChange('discontinued')}
+                />
+              }
+              label="Discontinued"
             />
             <div className="submit">
               <Button type="submit" size="large" variant="raised" color="secondary">
