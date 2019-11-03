@@ -107,6 +107,15 @@ const FirmwareFinalVersion = ({
               className="input"
             />
             <TextField
+              id="blocks"
+              placeholder="MUST = (device mem - apps space)"
+              label="memory blocks firmware takes"
+              type="number"
+              onChange={onChange('blocks')}
+              value={fields.blocks}
+              className="input"
+            />
+            <TextField
               id="perso"
               label="perso"
               type="string"

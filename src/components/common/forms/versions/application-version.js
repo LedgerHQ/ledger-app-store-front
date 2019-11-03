@@ -118,6 +118,35 @@ const ApplicationVersion = ({
               className="input"
             />
             <TextField
+              id="dependency"
+              select
+              label="dependency"
+              value={fields.dependency}
+              onChange={evt => {
+                const app = applications.find(obj => obj.id === evt.target.value)
+                const appEvent = makeEventObject(evt, app ? app.id : null)
+                onSelectChange('dependency')(appEvent)
+              }}
+              className="input"
+            >
+              <MenuItem key="empty" value={null}>
+                (NONE)
+              </MenuItem>
+              {applications.map(app => (
+                <MenuItem key={app.id} value={app.id}>
+                  {app.name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              id="bytes"
+              label="size in bytes (on device)"
+              type="number"
+              onChange={onChange('bytes')}
+              value={fields.bytes}
+              className="input"
+            />
+            <TextField
               id="hash"
               label="hash"
               type="string"
