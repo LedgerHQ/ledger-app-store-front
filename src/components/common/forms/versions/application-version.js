@@ -40,11 +40,13 @@ const baseFields = {
   firmware_key: '',
   delete: '',
   version: '',
+  warning: '',
   required_application_versions: [],
   delete_key: '',
   device_versions: [],
   se_firmware_final_versions: [],
   providers: [],
+  dependencies: [],
 }
 
 const ApplicationVersion = ({
@@ -115,6 +117,38 @@ const ApplicationVersion = ({
               type="string"
               onChange={onChange('display_name')}
               value={fields.display_name}
+              className="input"
+            />
+
+            <FormControl className="input">
+              <InputLabel htmlFor="dependencies">dependencies</InputLabel>
+              <Select
+                multiple
+                input={<Input id="dependencies" />}
+                onChange={onSelectChange('dependencies')}
+                value={fields.dependencies}
+                renderValue={selected =>
+                  applications
+                    .filter(app => selected.includes(app.id))
+                    .map(el => el.name)
+                    .join(', ')
+                }
+              >
+                {applications.map(application => (
+                  <MenuItem key={`${application.name}_${application.id}`} value={application.id}>
+                    <Checkbox checked={fields.dependencies.indexOf(application.id) > -1} />
+                    {application.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <TextField
+              id="bytes"
+              label="size in bytes (on device)"
+              type="number"
+              onChange={onChange('bytes')}
+              value={fields.bytes}
               className="input"
             />
             <TextField
@@ -312,6 +346,15 @@ const ApplicationVersion = ({
                   ))}
               </Select>
             </FormControl>
+            <TextField
+              id="warning"
+              label="warning"
+              placeholder="if set, deprecated this version with a message"
+              type="string"
+              onChange={onChange('warning')}
+              value={fields.warning}
+              className="input full"
+            />
             <TextField
               id="description"
               label="description"
