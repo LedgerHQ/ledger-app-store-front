@@ -46,7 +46,6 @@ const baseFields = {
   device_versions: [],
   se_firmware_final_versions: [],
   providers: [],
-  dependencies: [],
 }
 
 const ApplicationVersion = ({
@@ -119,29 +118,6 @@ const ApplicationVersion = ({
               value={fields.display_name}
               className="input"
             />
-
-            <FormControl className="input">
-              <InputLabel htmlFor="dependencies">dependencies</InputLabel>
-              <Select
-                multiple
-                input={<Input id="dependencies" />}
-                onChange={onSelectChange('dependencies')}
-                value={fields.dependencies}
-                renderValue={selected =>
-                  applications
-                    .filter(app => selected.includes(app.id))
-                    .map(el => el.name)
-                    .join(', ')
-                }
-              >
-                {applications.map(application => (
-                  <MenuItem key={`${application.name}_${application.id}`} value={application.id}>
-                    <Checkbox checked={fields.dependencies.indexOf(application.id) > -1} />
-                    {application.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
 
             <TextField
               id="bytes"
