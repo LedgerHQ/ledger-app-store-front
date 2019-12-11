@@ -40,6 +40,7 @@ const baseFields = {
   firmware_key: '',
   delete: '',
   version: '',
+  warning: '',
   required_application_versions: [],
   delete_key: '',
   device_versions: [],
@@ -115,6 +116,15 @@ const ApplicationVersion = ({
               type="string"
               onChange={onChange('display_name')}
               value={fields.display_name}
+              className="input"
+            />
+
+            <TextField
+              id="bytes"
+              label="size in bytes (on device)"
+              type="number"
+              onChange={onChange('bytes')}
+              value={fields.bytes}
               className="input"
             />
             <TextField
@@ -312,6 +322,15 @@ const ApplicationVersion = ({
                   ))}
               </Select>
             </FormControl>
+            <TextField
+              id="warning"
+              label="warning"
+              placeholder="if set, deprecated this version with a message"
+              type="string"
+              onChange={onChange('warning')}
+              value={fields.warning}
+              className="input full"
+            />
             <TextField
               id="description"
               label="description"

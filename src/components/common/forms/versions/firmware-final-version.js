@@ -107,6 +107,14 @@ const FirmwareFinalVersion = ({
               className="input"
             />
             <TextField
+              id="bytes"
+              label="size of the firmware in bytes"
+              type="number"
+              onChange={onChange('bytes')}
+              value={fields.bytes}
+              className="input"
+            />
+            <TextField
               id="perso"
               label="perso"
               type="string"
