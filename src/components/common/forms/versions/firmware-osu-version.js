@@ -32,6 +32,7 @@ const baseFields = {
   firmware_key: '',
   hash: '',
   next_se_firmware_final_version: '',
+  minimum_live_common_version: '',
   previous_se_firmware_final_versions: [],
   device_versions: [],
   providers: [],
@@ -123,6 +124,14 @@ const FirmwareOSUVersion = ({
               onChange={onChange('hash')}
               value={fields.hash}
               className="input"
+            />
+            <TextField
+              id="minimum_live_common_version"
+              label="minimum live-common version to support this firmware (optional)"
+              type="string"
+              onChange={onChange('minimum_live_common_version')}
+              value={fields.minimum_live_common_version}
+              className="input full"
             />
             <FormControl className="input">
               <InputLabel htmlFor="previous_se_firmware_final_versions">
