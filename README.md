@@ -2,7 +2,7 @@
 
 ## Requirements
 
-[Node](https://nodejs.org/download/release/latest-dubnium/)
+[Node 8](https://nodejs.org/download/release/latest-dubnium/)
 [Yarn](https://yarnpkg.com/en/docs/install)
 
 ## Development
