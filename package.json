@@ -67,7 +67,7 @@
     "@material-ui/core": "^1.0.0",
     "material-ui": "^1.0.0-beta.38",
     "material-ui-icons": "^1.0.0-beta.36",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "ramda": "^0.25.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
