@@ -10,6 +10,7 @@ import CollapsibleList from '../../common/list/collapsible-list'
 import {
   allResourcesSelector,
   resourcesFinalFirmwareVersionsSelector,
+  resourcesFirmwaresSelector,
 } from '../../../selectors/resources-selectors'
 import {
   fetchResources as fetchResourcesAction,
@@ -29,6 +30,7 @@ type Props = {
     icons: Array<Icon>,
   },
   final: Array<{ [string]: any }>,
+  firmwares: Array<{ [string]: any }>,
   fetchResources: Function,
   deleteResource: Function,
   updateResource: Function,
@@ -70,6 +72,9 @@ class Resources extends React.Component<Props, State> {
       case key === 'firmwares':
         return 'se_firmware_final_versions'
 
+        case key === 'firmwares osu':
+          return 'osu_versions'
+
       case key.endsWith('s'):
         return `${key.substring(0, key.length - 1)}_versions`
 
@@ -80,7 +85,7 @@ class Resources extends React.Component<Props, State> {
 
   renderTabContent = () => {
     const { tab, resourcesName } = this.state
-    const { resources, deleteResource, updateResource, final } = this.props
+    const { resources, deleteResource, updateResource, final, firmwares } = this.props
 
     if (tab === -1) {
       return null
@@ -88,13 +93,14 @@ class Resources extends React.Component<Props, State> {
 
     const current = resourcesName[tab]
 
-    if (current === FIRMWARE_OSU) {
+    if (current === 'firmwares osu') {
       return (
         <CollapsibleList
           resources={resources}
-          type="firmware_final_versions"
-          items={final}
-          subItemsKey="osu_versions"
+          type={current}
+          //items={final}
+          items={firmwares}
+          subItemsKey='osu_versions'
           deleteResource={deleteResource}
           updateResource={updateResource}
         />
@@ -156,6 +162,7 @@ class Resources extends React.Component<Props, State> {
 const mapStateToProps = (state: Object): Object => ({
   resources: allResourcesSelector(state),
   final: resourcesFinalFirmwareVersionsSelector(state),
+  firmwares: resourcesFirmwaresSelector(state)
 })
 
 export default connect(

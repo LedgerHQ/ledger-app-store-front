@@ -145,7 +145,7 @@ class CollapsibleList extends React.Component<Props, State> {
         >
           {items.map((item, idx) => (
             <React.Fragment key={`${item.name}_${item.id}`}>
-              {subItemsKey ? (
+              {subItemsKey !== 'osu_versions' ? (
                 <React.Fragment>
                   <ListItem>
                     <ListItemText primary={item.name} />
@@ -179,15 +179,52 @@ class CollapsibleList extends React.Component<Props, State> {
                   </Collapse>
                 </React.Fragment>
               ) : (
-                <ListItem>
-                  <ListItemText primary={item.name} />
-                  <IconButton onClick={this.openModal(type, 'deleteDialog')(item)}>
-                    <Delete />
-                  </IconButton>
-                  <IconButton onClick={this.openModal(type, 'editDialog')(item)}>
-                    <Edit />
-                  </IconButton>
-                </ListItem>
+                subItemsKey === 'osu_versions' ? (
+                  <React.Fragment>
+                    <ListItem>
+                      <ListItemText primary={`${item.name}`} />
+                      {item['se_firmware_final_versions'].length > 0 && (
+                      <IconButton onClick={this.toggleCollapse(idx)}>
+                        {this.state.selected === idx ? <ExpandLess /> : <ExpandMore />}
+                      </IconButton>
+                      )}
+                      <IconButton onClick={this.openModal(type, 'deleteDialog')(item)}>
+                        <Delete />
+                      </IconButton>
+                      <IconButton onClick={this.openModal(type, 'editDialog')(item)}>
+                        <Edit />
+                      </IconButton>
+                    </ListItem>
+                    {item['se_firmware_final_versions'].map((iteem, iidx) => (
+                      <Collapse in={this.state.selected === idx} timeout="auto" unmountOnExit>
+                        <div>
+                          <Table
+                            resources={resources}
+                            items={iteem[subItemsKey]}
+                            openEditModal={this.openModal(
+                              this.getSubItemType(subItemsKey),
+                              'editDialog',
+                            )}
+                            openDeleteModal={this.openModal(
+                              this.getSubItemType(subItemsKey),
+                              'deleteDialog',
+                            )}
+                          />
+                        </div>
+                      </Collapse>
+                    ))}
+                  </React.Fragment>
+                ) :(
+                  <ListItem>
+                    <ListItemText primary={item.name} />
+                    <IconButton onClick={this.openModal(type, 'deleteDialog')(item)}>
+                      <Delete />
+                    </IconButton>
+                    <IconButton onClick={this.openModal(type, 'editDialog')(item)}>
+                      <Edit />
+                    </IconButton>
+                  </ListItem>
+                )
               )}
             </React.Fragment>
           ))}
