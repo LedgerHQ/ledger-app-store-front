@@ -99,25 +99,14 @@ export const updateResource = async (
   try {
     const { id, ...rest } = fields
 
-    const body = new FormData()
-    Object.keys(rest).forEach(prop => {
-      const current = rest[prop]
-      if (checkType(current) === 'Object') {
-        body.append(prop, current, current.name)
-      } else if (Array.isArray(current)) {
-        current.forEach(val => body.append(prop, val))
-      } else {
-        body.append(prop, current)
-      }
-    })
-
+    const body = JSON.stringify(rest)
     const json = await fetchWithToken(token)(
       `${BASE_URL}/api/${type}/${id}`,
       {
         method,
         body,
       },
-      true,
+      false,
     )
 
     return json
