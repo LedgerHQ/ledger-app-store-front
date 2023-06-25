@@ -78,7 +78,7 @@
     "redux-persist": "^5.9.1",
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
-    "semver": "^6.3.0",
+    "semver": "^7.5.2",
     "styled-jsx": "^2.2.5",
     "u2f-api-polyfill": "^0.4.3",
     "unfetch": "^3.0.0",
